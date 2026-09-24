@@ -1,0 +1,100 @@
+{
+    "activeFile": "Adventure.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Adventure.tmx": {
+            "expandedGroupLayers": [
+                17,
+                16
+            ],
+            "scale": 1,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 375,
+                "y": 483.5
+            }
+        },
+        "Dungeon_Tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Floors_Tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tavern.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Wall_Tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Water_tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 2
+        },
+        "barrel.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "bridges.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "dirt.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "house.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "mountains.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "water.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "waterfall.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/ja-de/Desktop/TopDownAdventure/LPC Base Assets/tiles",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "Adventure.tmx",
+        "grass.tsx",
+        "water.tsx",
+        "house.tsx",
+        "dirt.tsx",
+        "bridges.tsx",
+        "barrel.tsx",
+        "waterfall.tsx",
+        "mountains.tsx"
+    ],
+    "project": "Adventure.tiled-project",
+    "recentFiles": [
+        "mountains.tsx",
+        "waterfall.tsx",
+        "barrel.tsx",
+        "bridges.tsx",
+        "dirt.tsx",
+        "house.tsx",
+        "water.tsx",
+        "grass.tsx",
+        "Adventure.tmx",
+        "Water_tiles.tsx",
+        "Wall_Tiles.tsx",
+        "Floors_Tiles.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

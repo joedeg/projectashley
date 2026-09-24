@@ -1,0 +1,9 @@
+player.png
+size:2048,512
+repeat:none
+idle
+bounds:1094,2,128,256
+run
+bounds:580,2,512,256
+walk
+bounds:2,2,576,256

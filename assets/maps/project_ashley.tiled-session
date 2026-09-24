@@ -1,0 +1,46 @@
+{
+    "activeFile": "test.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "level.tmx": {
+            "scale": 0.4641145833333333,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 479.40747390865226,
+                "y": 321.0414094938839
+            }
+        },
+        "overworld.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "test.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 188.75,
+                "y": 310
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/ja-de/IdeaProjects/projectashley/assets/maps",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "test.tmx"
+    ],
+    "project": "project_ashley.tiled-project",
+    "recentFiles": [
+        "test.tmx",
+        "overworld.tsx",
+        "level.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
