@@ -3,7 +3,7 @@ package com.jdegnan.projectashley.bootstrap;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.jdegnan.projectashley.LevelManager;
+import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.factories.PlayerFactory;

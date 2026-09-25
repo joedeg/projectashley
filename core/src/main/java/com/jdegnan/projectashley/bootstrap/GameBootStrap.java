@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import com.jdegnan.projectashley.LevelLoader;
-import com.jdegnan.projectashley.LevelManager;
+import com.jdegnan.projectashley.assets.ChestAssets;
+import com.jdegnan.projectashley.factories.ChestFactory;
+import com.jdegnan.projectashley.level.LevelLoader;
+import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.SpatialGrid;
 
 import com.jdegnan.projectashley.assets.Assets;
@@ -28,6 +30,7 @@ import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.systems.AnimationSystem;
 import com.jdegnan.projectashley.systems.BulletHitSystem;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
+import com.jdegnan.projectashley.systems.ChestInteractionSystem;
 import com.jdegnan.projectashley.systems.ColliderSyncSystem;
 import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
@@ -140,6 +143,9 @@ public class GameBootStrap {
         TestEntityFactory testFactory = new TestEntityFactory(engine);
         factoryRegistry.register("test", testFactory);
         LevelEntityLoader levelEntityLoader = new LevelEntityLoader(factoryRegistry);
+
+        ChestFactory chestFactory = new ChestFactory(engine, assets);
+        factoryRegistry.register("chest", chestFactory);
 
 
         LevelLoader levelLoader =
@@ -344,6 +350,10 @@ public class GameBootStrap {
 
         engine.addSystem(
             new WeaponSystem(bulletFactory)
+        );
+
+        engine.addSystem(
+            new ChestInteractionSystem()
         );
 
         engine.addSystem(

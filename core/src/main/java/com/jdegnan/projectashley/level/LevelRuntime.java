@@ -1,10 +1,9 @@
-package com.jdegnan.projectashley;
+package com.jdegnan.projectashley.level;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.jdegnan.projectashley.level.LevelEntityLoader;
 import com.jdegnan.projectashley.rendering.MapRenderer;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.systems.MapCollisionSystem;

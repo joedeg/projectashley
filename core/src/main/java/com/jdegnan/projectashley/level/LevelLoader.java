@@ -1,12 +1,10 @@
-package com.jdegnan.projectashley;
+package com.jdegnan.projectashley.level;
 
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Rectangle;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.config.GameConfig;
-import com.jdegnan.projectashley.level.LevelEntityLoader;
 
 public class LevelLoader {
 

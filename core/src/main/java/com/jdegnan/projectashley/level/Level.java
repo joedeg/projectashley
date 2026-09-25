@@ -1,7 +1,8 @@
-package com.jdegnan.projectashley;
+package com.jdegnan.projectashley.level;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
+import com.jdegnan.projectashley.MapCollisionData;
 import com.jdegnan.projectashley.config.GameConfig;
 
 public class Level {

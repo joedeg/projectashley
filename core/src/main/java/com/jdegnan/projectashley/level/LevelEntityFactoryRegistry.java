@@ -28,25 +28,17 @@ public class LevelEntityFactoryRegistry {
 
     }
 
-    public Entity create(MapObject object) {
+    public Entity create(LevelObjectData object) {
         String type =
-            object.getProperties()
-                .get("type", String.class);
-
-        if(type == null){
-            throw new IllegalStateException(
-                "Map object '" +
-                    object.getName() +
-                    "' has no 'type' property."
-
-            );
-        }
+            object.getType();
 
         LevelEntityFactory factory = factories.get(type);
 
         if(factory == null){
             throw new IllegalStateException(
-                "No factory registered for type:" + type
+               "No LevelEntityFactory registered for type:"
+                   + type
+
             );
         }
 

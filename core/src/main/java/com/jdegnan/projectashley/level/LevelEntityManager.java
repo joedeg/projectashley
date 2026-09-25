@@ -1,4 +1,4 @@
-package com.jdegnan.projectashley;
+package com.jdegnan.projectashley.level;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;

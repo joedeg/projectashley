@@ -1,4 +1,4 @@
-package com.jdegnan.projectashley;
+package com.jdegnan.projectashley.level;
 
 public enum LevelState {
     NONE,

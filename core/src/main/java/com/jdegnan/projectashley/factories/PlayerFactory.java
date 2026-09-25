@@ -9,6 +9,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
@@ -55,6 +56,9 @@ public class PlayerFactory {
         render.height = 64;
         render.layer = 1;
         entity.add(render);
+
+        InteractionRequestComponent interaction = new InteractionRequestComponent();
+        entity.add(interaction);
 
         VelocityComponent vel = new VelocityComponent();
         entity.add(vel);

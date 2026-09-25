@@ -3,9 +3,9 @@ package com.jdegnan.projectashley.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.jdegnan.projectashley.LevelManager;
-import com.jdegnan.projectashley.LevelRuntime;
-import com.jdegnan.projectashley.Levels;
+import com.jdegnan.projectashley.level.LevelManager;
+import com.jdegnan.projectashley.level.LevelRuntime;
+import com.jdegnan.projectashley.level.Levels;
 import com.jdegnan.projectashley.bootstrap.GameServices;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.rendering.RenderPipeline;

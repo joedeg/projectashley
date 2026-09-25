@@ -15,23 +15,14 @@ public class TestEntityFactory implements LevelEntityFactory {
         this.engine = engine;
     }
     @Override
-    public Entity create(MapObject object) {
-
-        if(!(object instanceof RectangleMapObject)){
-            throw new IllegalStateException(
-                "Test object must be a rectangle."
-            );
-        }
-
-        Rectangle rectangle = ((RectangleMapObject) object)
-            .getRectangle();
+    public Entity create(LevelObjectData object) {
 
         Entity entity = engine.createEntity();
 
         PositionComponent pos = engine.createComponent(PositionComponent.class);
 
-        pos.x = rectangle.x;
-        pos.y = rectangle.y;
+        pos.x = object.getPosition().x;
+        pos.y = object.getPosition().y;
         entity.add(pos);
 
         System.out.println(
