@@ -3,8 +3,10 @@ package com.jdegnan.projectashley.factories;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.ChestAssets;
+import com.jdegnan.projectashley.components.ChestAnimationComponent;
 import com.jdegnan.projectashley.components.ChestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
@@ -31,7 +33,7 @@ public class ChestFactory implements LevelEntityFactory {
             throw new IllegalStateException("Chest atlas not loaded");
         }
 
-        TextureAtlas atlas = assets.get(ChestAssets.CHEST_ATLAS);
+
 
         Entity chest = engine.createEntity();
 
@@ -58,30 +60,44 @@ public class ChestFactory implements LevelEntityFactory {
             engine.createComponent(
                 RenderComponent.class
             );
+
+        ChestAnimationComponent animationComponent =
+            engine.createComponent(
+                ChestAnimationComponent.class);
+
+        TextureAtlas atlas = assets.get(ChestAssets.CHEST_ATLAS);
+
+        TextureRegion[][] split =
+            atlas.findRegion("blue_chest")
+                .split(32, 32);
+
+        for(int y = 0; y < split.length; y++){
+            for(int x = 0; x < split[y].length; x++){
+                animationComponent.frames.add(split[y][x]);
+            }
+        }
+
+        animationComponent.currentFrame = 0;
+        animationComponent.timer = 0;
+        animationComponent.playing = false;
+
         renderComponent.region =
-            atlas.findRegion("blue_chest");
+            animationComponent.frames.get(0);
 
         if(renderComponent.region == null){
             throw new RuntimeException(
                 "Could not find region for chest");
         }
 
-        renderComponent.width = 32;
-        renderComponent.height = 32;
+        renderComponent.width = renderComponent.region.getRegionWidth();
+        renderComponent.height = renderComponent.region.getRegionHeight();
         renderComponent.layer = 0;
 
+        chest.add(animationComponent);
         chest.add(positionComponent);
         chest.add(chestComponent);
         chest.add(renderComponent);
 
-        System.out.println(
-            "Created chest at "
-                + positionComponent.x
-                + ", "
-                + positionComponent.y
-                + " locked="
-                + chestComponent.locked
-        );
 
         return chest;
     }

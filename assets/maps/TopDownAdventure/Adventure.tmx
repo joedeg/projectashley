@@ -730,7 +730,7 @@
   </object>
   <object id="18" x="448" y="960" width="32" height="32">
    <properties>
-    <property name="locked" type="bool" value="true"/>
+    <property name="locked" type="bool" value="false"/>
     <property name="type" value="chest"/>
    </properties>
   </object>

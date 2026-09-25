@@ -62,7 +62,6 @@ public class PlayerInputSystem extends IteratingSystem {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
             interaction.interact = true;
-            
         }
 
     }

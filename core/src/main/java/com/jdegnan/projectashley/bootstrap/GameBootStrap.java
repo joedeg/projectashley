@@ -30,6 +30,7 @@ import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.systems.AnimationSystem;
 import com.jdegnan.projectashley.systems.BulletHitSystem;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
+import com.jdegnan.projectashley.systems.ChestAnimationSystem;
 import com.jdegnan.projectashley.systems.ChestInteractionSystem;
 import com.jdegnan.projectashley.systems.ColliderSyncSystem;
 import com.jdegnan.projectashley.systems.CollisionSystem;
@@ -355,6 +356,8 @@ public class GameBootStrap {
         engine.addSystem(
             new ChestInteractionSystem()
         );
+
+        engine.addSystem(new ChestAnimationSystem());
 
         engine.addSystem(
             new RenderSubmissionSystem(renderQueue)

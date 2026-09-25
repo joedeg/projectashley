@@ -53,7 +53,7 @@ public class ChestInteractionSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
-        if(players.size() == 0){
+        if (players.size() == 0) {
             return;
         }
 
@@ -62,16 +62,16 @@ public class ChestInteractionSystem extends IteratingSystem {
         ChestComponent chest = cm.get(entity);
 
 
-        if(chest.opened){
+        if (chest.opened) {
             return;
         }
 
         InteractionRequestComponent interaction = im.get(player);
 
-        if(!interaction.interact){
+        if (!interaction.interact) {
+
             return;
         }
-
         PositionComponent playerPos = pm.get(player);
 
         PositionComponent chestPos = pm.get(entity);
@@ -85,7 +85,10 @@ public class ChestInteractionSystem extends IteratingSystem {
 
         if(distanceSquared > interactionDistance * interactionDistance){
             return;
+        }
 
+        if(chest.locked){
+            return;
         }
 
         chest.opened = true;
