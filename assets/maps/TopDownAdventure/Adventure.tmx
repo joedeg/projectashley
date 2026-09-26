@@ -723,13 +723,14 @@
 </data>
  </layer>
  <objectgroup id="25" name="Entities">
-  <object id="17" x="224" y="1056" width="32" height="32">
+  <object id="17" name="Player Spawn" x="256" y="864" width="32" height="32">
    <properties>
     <property name="type" value="test"/>
    </properties>
   </object>
-  <object id="18" x="448" y="960" width="32" height="32">
+  <object id="18" name="Chest_1" x="448" y="960" width="32" height="32">
    <properties>
+    <property name="item" value="forest_key"/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="chest"/>
    </properties>

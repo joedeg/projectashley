@@ -6,8 +6,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.jdegnan.projectashley.Direction;
 import com.jdegnan.projectashley.components.ChestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
@@ -25,6 +27,10 @@ public class ChestInteractionSystem extends IteratingSystem {
 
     private final ComponentMapper<ColliderComponent> col =
         ComponentMapper.getFor(ColliderComponent.class);
+
+    private final ComponentMapper<FacingComponent> fm =
+        ComponentMapper.getFor(FacingComponent.class);
+
 
     private ImmutableArray<Entity> players;
 
@@ -59,7 +65,16 @@ public class ChestInteractionSystem extends IteratingSystem {
 
         Entity player = players.first();
 
+        FacingComponent facing = fm.get(player);
+
         ChestComponent chest = cm.get(entity);
+
+        if(!isFacingChest(
+            pm.get(player),
+            pm.get(entity),
+            facing.direction)){
+            return;
+        }
 
 
         if (chest.opened) {
@@ -83,15 +98,37 @@ public class ChestInteractionSystem extends IteratingSystem {
 
         float interactionDistance = 48f;
 
-        if(distanceSquared > interactionDistance * interactionDistance){
+        if (distanceSquared > interactionDistance * interactionDistance) {
             return;
         }
 
-        if(chest.locked){
+        if (chest.locked) {
             return;
         }
 
         chest.opened = true;
 
+    }
+
+    private boolean isFacingChest(
+        PositionComponent playerPos,
+        PositionComponent chestPos,
+        Direction direction) {
+
+        float dx = chestPos.x - playerPos.x;
+        float dy = chestPos.y - playerPos.y;
+
+        switch (direction) {
+            case UP:
+                return dy > 0;
+            case DOWN:
+                return dy < 0;
+            case LEFT:
+                return dx < 0;
+            case RIGHT:
+                return dx > 0;
+            default:
+                return false;
+        }
     }
 }

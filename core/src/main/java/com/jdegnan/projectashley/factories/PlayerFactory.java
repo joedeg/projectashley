@@ -9,6 +9,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
@@ -66,6 +67,9 @@ public class PlayerFactory {
         ColliderComponent col = new ColliderComponent();
         col.localBounds.set(0, 0, 32, 32); // Assuming some collider size
         entity.add(col);
+
+        FacingComponent facing = new FacingComponent();
+        entity.add(facing);
 
         entity.add(new PlayerComponent());
 

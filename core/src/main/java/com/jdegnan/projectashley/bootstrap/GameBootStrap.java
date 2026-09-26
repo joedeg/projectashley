@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.factories.ChestFactory;
+import com.jdegnan.projectashley.level.ChestRewardSystem;
 import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.SpatialGrid;
@@ -357,7 +358,13 @@ public class GameBootStrap {
             new ChestInteractionSystem()
         );
 
-        engine.addSystem(new ChestAnimationSystem());
+        engine.addSystem(
+            new ChestAnimationSystem()
+        );
+
+        engine.addSystem(
+            new ChestRewardSystem()
+        );
 
         engine.addSystem(
             new RenderSubmissionSystem(renderQueue)

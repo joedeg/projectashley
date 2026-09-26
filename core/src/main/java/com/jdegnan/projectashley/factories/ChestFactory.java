@@ -56,6 +56,12 @@ public class ChestFactory implements LevelEntityFactory {
                 false
             );
 
+        chestComponent.item =
+            object.getStringProperty(
+                "item",
+                null
+            );
+
         RenderComponent renderComponent =
             engine.createComponent(
                 RenderComponent.class
