@@ -359,8 +359,7 @@ public class GameBootStrap {
         );
 
         engine.addSystem(
-            new ChestAnimationSystem()
-        );
+            new ChestAnimationSystem());
 
         engine.addSystem(
             new ChestRewardSystem()

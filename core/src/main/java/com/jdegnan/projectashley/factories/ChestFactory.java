@@ -10,6 +10,7 @@ import com.jdegnan.projectashley.components.ChestAnimationComponent;
 import com.jdegnan.projectashley.components.ChestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
+import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
 
@@ -56,11 +57,13 @@ public class ChestFactory implements LevelEntityFactory {
                 false
             );
 
-        chestComponent.item =
-            object.getStringProperty(
-                "item",
-                null
-            );
+        String itemName =
+            object.getStringProperty("item", null);
+
+        if(itemName != null){
+            chestComponent.item =
+                ItemType.valueOf(itemName.toUpperCase());
+        }
 
         RenderComponent renderComponent =
             engine.createComponent(

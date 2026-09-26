@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="19">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="20">
  <tileset firstgid="1" source="grass.tsx"/>
  <tileset firstgid="19" source="water.tsx"/>
  <tileset firstgid="37" source="house.tsx"/>
@@ -729,6 +729,13 @@
    </properties>
   </object>
   <object id="18" name="Chest_1" x="448" y="960" width="32" height="32">
+   <properties>
+    <property name="item" value="forest_key"/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="chest"/>
+   </properties>
+  </object>
+  <object id="19" name="Chest_2" x="512" y="1120" width="32" height="32">
    <properties>
     <property name="item" value="forest_key"/>
     <property name="locked" type="bool" value="false"/>
