@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.factories.ChestFactory;
+import com.jdegnan.projectashley.factories.DoorFactory;
 import com.jdegnan.projectashley.level.ChestRewardSystem;
 import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
@@ -37,6 +38,7 @@ import com.jdegnan.projectashley.systems.ColliderSyncSystem;
 import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
+import com.jdegnan.projectashley.systems.DoorInteractionSystem;
 import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
@@ -148,6 +150,11 @@ public class GameBootStrap {
 
         ChestFactory chestFactory = new ChestFactory(engine, assets);
         factoryRegistry.register("chest", chestFactory);
+
+        DoorFactory doorFactory = new DoorFactory(engine,assets);
+        factoryRegistry.register("door", doorFactory);
+
+
 
 
         LevelLoader levelLoader =
@@ -363,6 +370,10 @@ public class GameBootStrap {
 
         engine.addSystem(
             new ChestRewardSystem()
+        );
+
+        engine.addSystem(
+            new DoorInteractionSystem()
         );
 
         engine.addSystem(

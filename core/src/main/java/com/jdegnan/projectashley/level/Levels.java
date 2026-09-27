@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.assets.ChestAssets;
+import com.jdegnan.projectashley.assets.animations.DoorAssets;
 
 public final class Levels {
 
@@ -35,7 +36,9 @@ public final class Levels {
         new AssetDescriptor<>(
             "maps/TopDownAdventure/Adventure.tmx", TiledMap.class
         ),
-        Array.with(ChestAssets.CHEST_ATLAS),
+        Array.with(
+            ChestAssets.CHEST_ATLAS,
+            DoorAssets.DOOR_ATLAS),
         new Vector2(160, 160)
     );
 
