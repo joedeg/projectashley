@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import com.jdegnan.projectashley.assets.ChestAssets;
+import com.jdegnan.projectashley.assets.animations.ItemAssetRegistry;
+import com.jdegnan.projectashley.assets.animations.ItemAssets;
 import com.jdegnan.projectashley.factories.ChestFactory;
 import com.jdegnan.projectashley.factories.DoorFactory;
+import com.jdegnan.projectashley.factories.ItemPickupFactory;
+import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.ChestRewardSystem;
 import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
@@ -39,6 +43,7 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.ItemPickupSystem;
 import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
@@ -110,7 +115,15 @@ public class GameBootStrap {
         OrthographicCamera camera =
             createOrthographicCamera();
 
-        CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
+        CameraFollowSystem cameraFollowSystem =
+            new CameraFollowSystem(camera);
+
+
+        ItemAssetRegistry itemAssetRegistry = new ItemAssetRegistry();
+
+        itemAssetRegistry.register(
+            ItemType.FOREST_KEY,
+            ItemAssets.FOREST_KEY);
 
 
         // -------------------------------------------------
@@ -144,8 +157,6 @@ public class GameBootStrap {
         // -------------------------------------------------
 
         LevelEntityFactoryRegistry factoryRegistry = new LevelEntityFactoryRegistry();
-        TestEntityFactory testFactory = new TestEntityFactory(engine);
-        factoryRegistry.register("test", testFactory);
         LevelEntityLoader levelEntityLoader = new LevelEntityLoader(factoryRegistry);
 
         ChestFactory chestFactory = new ChestFactory(engine, assets);
@@ -153,6 +164,12 @@ public class GameBootStrap {
 
         DoorFactory doorFactory = new DoorFactory(engine,assets);
         factoryRegistry.register("door", doorFactory);
+
+        ItemPickupFactory itemPickupFactory =
+            new ItemPickupFactory(engine, assets, itemAssetRegistry);
+
+        factoryRegistry.register("item", itemPickupFactory);
+
 
 
 
@@ -331,8 +348,6 @@ public class GameBootStrap {
             new BulletHitSystem()
         );
 
-
-
         engine.addSystem(
             new DamageSystem()
         );
@@ -375,6 +390,11 @@ public class GameBootStrap {
         engine.addSystem(
             new DoorInteractionSystem()
         );
+
+        engine.addSystem(
+            new ItemPickupSystem()
+        );
+
 
         engine.addSystem(
             new RenderSubmissionSystem(renderQueue)

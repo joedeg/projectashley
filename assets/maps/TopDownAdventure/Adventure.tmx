@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="23">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="29">
  <tileset firstgid="1" source="grass.tsx"/>
  <tileset firstgid="19" source="water.tsx"/>
  <tileset firstgid="37" source="house.tsx"/>
@@ -12,6 +12,7 @@
  <tileset firstgid="183" source="mountains.tsx"/>
  <tileset firstgid="291" source="trunk.tsx"/>
  <tileset firstgid="309" source="treetop.tsx"/>
+ <tileset firstgid="351" source="../../sprites/stuff.tsx"/>
  <group id="16" name="Ground_floor_0">
   <layer id="2" name="WaterLevel" width="60" height="40">
    <data encoding="csv">
@@ -723,11 +724,6 @@
 </data>
  </layer>
  <objectgroup id="25" name="Entities">
-  <object id="17" name="Player Spawn" x="256" y="864" width="32" height="32">
-   <properties>
-    <property name="type" value="test"/>
-   </properties>
-  </object>
   <object id="18" name="Chest_1" x="448" y="960" width="32" height="32">
    <properties>
     <property name="item" value="forest_key"/>
@@ -742,11 +738,17 @@
     <property name="type" value="chest"/>
    </properties>
   </object>
-  <object id="20" name="Forest_Door" x="735" y="832" width="32" height="96">
+  <object id="20" name="Forest_Door" x="736" y="832" width="32" height="96">
    <properties>
     <property name="locked" type="bool" value="true"/>
     <property name="requiredItem" value="forest_key"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="26" name="Forest_key" x="480" y="768" width="32" height="32">
+   <properties>
+    <property name="item" value="forest_key"/>
+    <property name="type" value="item"/>
    </properties>
   </object>
  </objectgroup>

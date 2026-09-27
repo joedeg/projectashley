@@ -1,0 +1,15 @@
+package com.jdegnan.projectashley.assets.animations;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.graphics.Texture;
+
+public class ItemAssets {
+
+    public static final AssetDescriptor<Texture> FOREST_KEY =
+        new AssetDescriptor<>(
+            "sprites/forest_key.png",
+            Texture.class
+        );
+
+    private ItemAssets(){}
+}
