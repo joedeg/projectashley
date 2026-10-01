@@ -2,15 +2,14 @@ package com.jdegnan.projectashley.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.Assets;
-import com.jdegnan.projectashley.assets.animations.ItemAssetRegistry;
-import com.jdegnan.projectashley.assets.animations.ItemAssets;
+import com.jdegnan.projectashley.assets.ItemAssetRegistry;
 import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
+import com.jdegnan.projectashley.inventory.ItemDefinition;
 import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
@@ -59,10 +58,10 @@ public class ItemPickupFactory implements LevelEntityFactory {
         itemPickup.item =
             ItemType.valueOf(itemName.toUpperCase());
 
-        AssetDescriptor<Texture> descriptor =
+        ItemDefinition definition =
             itemAssetRegistry.get(itemPickup.item);
 
-        Texture texture = assets.get(descriptor);
+        Texture texture = assets.get(definition.getAsset());
 
         TextureRegion region = new TextureRegion(texture);
 

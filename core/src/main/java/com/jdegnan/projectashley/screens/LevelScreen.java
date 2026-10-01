@@ -3,6 +3,7 @@ package com.jdegnan.projectashley.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.jdegnan.projectashley.inventory.InventoryUIRenderer;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.level.LevelRuntime;
 import com.jdegnan.projectashley.level.Levels;
@@ -16,6 +17,8 @@ public class LevelScreen extends BaseScreen {
     private final RenderPipeline renderPipeline;
     protected final RenderContext renderContext;
     private final LevelManager levelManager;
+
+    private InventoryUIRenderer inventoryUIRenderer;
 
     public LevelScreen(GameServices services) {
         super(services.getOrthographicCamera());
@@ -33,6 +36,18 @@ public class LevelScreen extends BaseScreen {
         levelManager.loadInitialLevel(Levels.ADVENTURE);
 
         renderPipeline = new RenderPipeline(renderContext.getSpriteBatch());
+
+        inventoryUIRenderer = new InventoryUIRenderer(
+            services.getSpriteBatch(),
+            services.getAssets(),
+            services.getItemAssetRegistry()
+            );
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        inventoryUIRenderer.resize(width, height);
     }
 
     @Override
@@ -46,5 +61,14 @@ public class LevelScreen extends BaseScreen {
 
         engine.update(deltaTime);
         renderPipeline.render(renderContext);
+
+        inventoryUIRenderer.render(levelManager.getPlayer());
+    }
+
+    @Override
+    public void dispose() {
+        inventoryUIRenderer.dispose();
+        super.dispose();
+
     }
 }

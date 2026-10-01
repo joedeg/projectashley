@@ -3,6 +3,7 @@ package com.jdegnan.projectashley.bootstrap;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jdegnan.projectashley.assets.ItemAssetRegistry;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
@@ -27,6 +28,8 @@ public class GameServices {
 
     private final LevelManager levelManager;
 
+    private final ItemAssetRegistry itemAssetRegistry;
+
     public GameServices(
         Assets assets,
         PooledEngine engine,
@@ -35,7 +38,8 @@ public class GameServices {
         OrthographicCamera orthographicCamera,
         RenderQueue renderQueue,
         SpriteBatch spriteBatch,
-        LevelManager levelManager) {
+        LevelManager levelManager,
+        ItemAssetRegistry itemAssetRegistry) {
 
         this.assets = assets;
         this.engine = engine;
@@ -45,6 +49,7 @@ public class GameServices {
         this.renderQueue = renderQueue;
         this.spriteBatch = spriteBatch;
         this.levelManager = levelManager;
+        this.itemAssetRegistry = itemAssetRegistry;
 
     }
 
@@ -80,4 +85,7 @@ public class GameServices {
         return levelManager;
     }
 
+    public ItemAssetRegistry getItemAssetRegistry(){
+        return itemAssetRegistry;
+    }
 }

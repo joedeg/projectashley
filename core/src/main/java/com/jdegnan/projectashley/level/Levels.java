@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.assets.animations.DoorAssets;
-import com.jdegnan.projectashley.assets.animations.ItemAssets;
+import com.jdegnan.projectashley.assets.ItemAssets;
 
 public final class Levels {
 
@@ -40,7 +40,8 @@ public final class Levels {
         Array.with(
             ChestAssets.CHEST_ATLAS,
             DoorAssets.DOOR_ATLAS,
-            ItemAssets.FOREST_KEY),
+            ItemAssets.FOREST_KEY,
+            ItemAssets.MARSH_AMULET),
         new Vector2(160, 160)
     );
 

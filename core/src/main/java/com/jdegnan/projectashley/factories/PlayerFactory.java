@@ -12,6 +12,7 @@ import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.InventoryComponent;
+import com.jdegnan.projectashley.components.InventoryUIComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
@@ -75,6 +76,8 @@ public class PlayerFactory {
         InventoryComponent inventory = new InventoryComponent();
         entity.add(inventory);
 
+        InventoryUIComponent ui = new InventoryUIComponent();
+        entity.add(ui);
 
         entity.add(new PlayerComponent());
 

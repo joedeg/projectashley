@@ -1,4 +1,4 @@
-package com.jdegnan.projectashley.assets.animations;
+package com.jdegnan.projectashley.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +10,13 @@ public class ItemAssets {
             "sprites/forest_key.png",
             Texture.class
         );
+
+    public static final AssetDescriptor<Texture> MARSH_AMULET =
+        new AssetDescriptor<>(
+            "sprites/marsh_amulet.png",
+            Texture.class
+        );
+
 
     private ItemAssets(){}
 }
