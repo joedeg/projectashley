@@ -13,6 +13,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.assets.animations.AnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.PlayerAnimationRegistry;
 import com.jdegnan.projectashley.config.GameConfig;
+import com.jdegnan.projectashley.factories.BrazierFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
 import com.jdegnan.projectashley.factories.ChestFactory;
 import com.jdegnan.projectashley.factories.DoorFactory;
@@ -27,6 +28,8 @@ import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.systems.AnimationSystem;
+import com.jdegnan.projectashley.systems.BrazierAnimationSystem;
+import com.jdegnan.projectashley.systems.BrazierInteractionSystem;
 import com.jdegnan.projectashley.systems.BulletHitSystem;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
 import com.jdegnan.projectashley.systems.ChestAnimationSystem;
@@ -197,6 +200,15 @@ public class GameBootStrap {
             )
         );
 
+        itemAssetRegistry.register(
+            new ItemDefinition(
+                ItemType.FIRE_ROD,
+                "Fire Rod",
+                "A magical rod that can ignite ancient flames.",
+                ItemAssets.FIRE_ROD
+            )
+        );
+
         return itemAssetRegistry;
     }
 
@@ -253,12 +265,20 @@ public class GameBootStrap {
         ItemAssetRegistry itemAssetRegistry
     ) {
 
-        LevelEntityFactoryRegistry factoryRegistry = new LevelEntityFactoryRegistry();
-        LevelEntityLoader levelEntityLoader = new LevelEntityLoader(factoryRegistry);
+        LevelEntityFactoryRegistry factoryRegistry =
+            new LevelEntityFactoryRegistry();
+        LevelEntityLoader levelEntityLoader =
+            new LevelEntityLoader(factoryRegistry);
 
-        factoryRegistry.register("chest", new ChestFactory(engine, assets));
-        factoryRegistry.register("door", new DoorFactory(engine, assets));
-        factoryRegistry.register("item", new ItemPickupFactory(engine, assets, itemAssetRegistry));
+        factoryRegistry.register("chest",
+            new ChestFactory(engine, assets));
+        factoryRegistry.register("door",
+            new DoorFactory(engine, assets));
+        factoryRegistry.register("item",
+            new ItemPickupFactory(engine, assets, itemAssetRegistry));
+        factoryRegistry.register("brazier",
+            new BrazierFactory(assets));
+
 
         LevelLoader levelLoader = new LevelLoader(assets, gameConfig, levelEntityLoader);
 
@@ -313,6 +333,9 @@ public class GameBootStrap {
         engine.addSystem(new DoorInteractionSystem(itemAssetRegistry));
         engine.addSystem(new ItemPickupSystem());
         engine.addSystem(new InteractionMessageSystem());
+        engine.addSystem(new BrazierInteractionSystem());
+        engine.addSystem(new BrazierAnimationSystem());
+
 
         // Inventory & UI Systems
         engine.addSystem(new InventoryUISystem());

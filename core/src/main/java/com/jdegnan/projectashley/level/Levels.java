@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.jdegnan.projectashley.assets.BrazierAssets;
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.assets.DoorAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
@@ -41,7 +42,10 @@ public final class Levels {
             ChestAssets.CHEST_ATLAS,
             DoorAssets.DOOR_ATLAS,
             ItemAssets.FOREST_KEY,
-            ItemAssets.MARSH_AMULET),
+            ItemAssets.MARSH_AMULET,
+            ItemAssets.FIRE_ROD,
+            BrazierAssets.BRAZIER
+            ),
         new Vector2(160, 160)
     );
 

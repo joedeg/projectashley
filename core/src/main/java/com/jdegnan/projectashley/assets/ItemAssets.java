@@ -17,6 +17,14 @@ public class ItemAssets {
             Texture.class
         );
 
+    public static final AssetDescriptor<Texture> FIRE_ROD =
+        new AssetDescriptor<>(
+            "sprites/fire_rod.png",
+            Texture.class
+        );
+
+
+
 
     private ItemAssets(){}
 }
