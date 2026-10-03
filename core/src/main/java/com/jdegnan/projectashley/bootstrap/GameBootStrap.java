@@ -36,6 +36,7 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.InteractionMessageSystem;
 import com.jdegnan.projectashley.systems.InventoryUIInputSystem;
 import com.jdegnan.projectashley.systems.InventoryUISystem;
 import com.jdegnan.projectashley.systems.ItemPickupSystem;
@@ -104,7 +105,7 @@ public class GameBootStrap {
 
         // 4. Systems
         CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
-        registerSystems(engine, renderQueue, grid, camera, cameraFollowSystem, bulletFactory);
+        registerSystems(engine, renderQueue, grid, camera, cameraFollowSystem, bulletFactory, itemAssetRegistry);
 
         // 5. Level management
         LevelManager levelManager = createLevelManager(
@@ -251,6 +252,7 @@ public class GameBootStrap {
         CameraFollowSystem cameraFollowSystem,
         ItemAssetRegistry itemAssetRegistry
     ) {
+
         LevelEntityFactoryRegistry factoryRegistry = new LevelEntityFactoryRegistry();
         LevelEntityLoader levelEntityLoader = new LevelEntityLoader(factoryRegistry);
 
@@ -277,6 +279,7 @@ public class GameBootStrap {
      * @param camera             Camera used for rendering and debug visualizations.
      * @param cameraFollowSystem System updating camera positioning based on target entities.
      * @param bulletFactory      Factory for spawning projectile entities upon shooting.
+     * @param itemAssetRegistry  Registry containing item definitions.
      */
     private void registerSystems(
         PooledEngine engine,
@@ -284,7 +287,8 @@ public class GameBootStrap {
         SpatialGrid spatialGrid,
         OrthographicCamera camera,
         CameraFollowSystem cameraFollowSystem,
-        BulletFactory bulletFactory
+        BulletFactory bulletFactory,
+        ItemAssetRegistry itemAssetRegistry
     ) {
         // Physics & Movement Systems
         engine.addSystem(new MovementCollisionSystem());
@@ -306,8 +310,9 @@ public class GameBootStrap {
         engine.addSystem(new ChestInteractionSystem());
         engine.addSystem(new ChestAnimationSystem());
         engine.addSystem(new ChestRewardSystem());
-        engine.addSystem(new DoorInteractionSystem());
+        engine.addSystem(new DoorInteractionSystem(itemAssetRegistry));
         engine.addSystem(new ItemPickupSystem());
+        engine.addSystem(new InteractionMessageSystem());
 
         // Inventory & UI Systems
         engine.addSystem(new InventoryUISystem());

@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.assets.ChestAssets;
-import com.jdegnan.projectashley.assets.animations.DoorAssets;
+import com.jdegnan.projectashley.assets.DoorAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
 
 public final class Levels {

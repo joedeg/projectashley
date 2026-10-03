@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.Assets;
-import com.jdegnan.projectashley.assets.animations.DoorAssets;
+import com.jdegnan.projectashley.assets.DoorAssets;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.DoorAnimationComponent;
 import com.jdegnan.projectashley.components.DoorComponent;

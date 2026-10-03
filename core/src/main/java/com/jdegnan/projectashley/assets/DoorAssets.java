@@ -1,4 +1,4 @@
-package com.jdegnan.projectashley.assets.animations;
+package com.jdegnan.projectashley.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

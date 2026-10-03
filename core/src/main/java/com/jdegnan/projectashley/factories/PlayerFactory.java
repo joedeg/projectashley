@@ -10,6 +10,7 @@ import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
+import com.jdegnan.projectashley.components.InteractionMessageComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.InventoryComponent;
 import com.jdegnan.projectashley.components.InventoryUIComponent;
@@ -70,16 +71,16 @@ public class PlayerFactory {
         col.localBounds.set(0, 0, 32, 32); // Assuming some collider size
         entity.add(col);
 
-        FacingComponent facing = new FacingComponent();
-        entity.add(facing);
+        entity.add(new FacingComponent());
 
-        InventoryComponent inventory = new InventoryComponent();
-        entity.add(inventory);
+        entity.add(new InventoryComponent());
 
-        InventoryUIComponent ui = new InventoryUIComponent();
-        entity.add(ui);
+        entity.add(new InventoryUIComponent());
+
+        entity.add(new InteractionMessageComponent());
 
         entity.add(new PlayerComponent());
+
 
         Animation<TextureRegion> idle = animSet.set.get(AnimationState.IDLE);
 

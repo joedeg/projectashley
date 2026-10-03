@@ -7,21 +7,22 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.jdegnan.projectashley.Direction;
+import com.jdegnan.projectashley.assets.ItemAssetRegistry;
 import com.jdegnan.projectashley.components.DoorAnimationComponent;
 import com.jdegnan.projectashley.components.DoorComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
+import com.jdegnan.projectashley.components.InteractionMessageComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.InventoryComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.components.TagComponents.WallComponent;
+import com.jdegnan.projectashley.inventory.ItemDefinition;
 
 public class DoorInteractionSystem extends IteratingSystem {
-
     private final ComponentMapper<DoorComponent> dm =
         ComponentMapper.getFor(DoorComponent.class);
-
 
     private final ComponentMapper<PositionComponent> pm =
         ComponentMapper.getFor(PositionComponent.class);
@@ -41,15 +42,23 @@ public class DoorInteractionSystem extends IteratingSystem {
     private final ComponentMapper<RenderComponent> rm =
         ComponentMapper.getFor(RenderComponent.class);
 
+    private final ComponentMapper<InteractionMessageComponent> mm =
+        ComponentMapper.getFor(InteractionMessageComponent.class);
+
+
     private ImmutableArray<Entity> players;
 
     private static final float INTERACTION_DISTANCE = 48f;
 
-    public DoorInteractionSystem() {
+    private final ItemAssetRegistry itemAssetRegistry;
+
+    public DoorInteractionSystem(ItemAssetRegistry itemAssetRegistry) {
         super(Family.all(
             DoorComponent.class,
             PositionComponent.class
         ).get());
+
+        this.itemAssetRegistry = itemAssetRegistry;
     }
 
     @Override
@@ -115,6 +124,18 @@ public class DoorInteractionSystem extends IteratingSystem {
 
 
         if (!inventory.has(doorComp.requiredItem)) {
+            InteractionMessageComponent message = mm.get(player);
+
+            ItemDefinition definition =
+                itemAssetRegistry.get(doorComp.requiredItem);
+
+            message.show(
+                "You need a "
+                    + definition.getDisplayName()
+                    + " to open this door.",
+                3f
+            );
+
             return;
         }
 

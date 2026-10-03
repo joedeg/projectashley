@@ -8,6 +8,7 @@ import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.level.LevelRuntime;
 import com.jdegnan.projectashley.level.Levels;
 import com.jdegnan.projectashley.bootstrap.GameServices;
+import com.jdegnan.projectashley.rendering.InteractionMessageRenderer;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.rendering.RenderPipeline;
 
@@ -17,6 +18,8 @@ public class LevelScreen extends BaseScreen {
     private final RenderPipeline renderPipeline;
     protected final RenderContext renderContext;
     private final LevelManager levelManager;
+
+    private final InteractionMessageRenderer interactionMessageRenderer;
 
     private InventoryUIRenderer inventoryUIRenderer;
 
@@ -42,12 +45,17 @@ public class LevelScreen extends BaseScreen {
             services.getAssets(),
             services.getItemAssetRegistry()
             );
+
+        interactionMessageRenderer = new InteractionMessageRenderer(
+            services.getSpriteBatch()
+        );
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         inventoryUIRenderer.resize(width, height);
+        interactionMessageRenderer.resize(width, height);
     }
 
     @Override
@@ -63,6 +71,8 @@ public class LevelScreen extends BaseScreen {
         renderPipeline.render(renderContext);
 
         inventoryUIRenderer.render(levelManager.getPlayer());
+
+        interactionMessageRenderer.render(levelManager.getPlayer());
     }
 
     @Override

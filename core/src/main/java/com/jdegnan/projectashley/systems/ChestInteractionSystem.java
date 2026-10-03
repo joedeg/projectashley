@@ -10,6 +10,7 @@ import com.jdegnan.projectashley.Direction;
 import com.jdegnan.projectashley.components.ChestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
+import com.jdegnan.projectashley.components.InteractionMessageComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
@@ -30,7 +31,8 @@ public class ChestInteractionSystem extends IteratingSystem {
 
     private final ComponentMapper<FacingComponent> fm =
         ComponentMapper.getFor(FacingComponent.class);
-
+    private final ComponentMapper<InteractionMessageComponent> mm =
+        ComponentMapper.getFor(InteractionMessageComponent.class);
 
     private ImmutableArray<Entity> players;
 
@@ -103,6 +105,12 @@ public class ChestInteractionSystem extends IteratingSystem {
         }
 
         if (chest.locked) {
+
+            InteractionMessageComponent message = mm.get(player);
+            message.show(
+                "This chest is locked.",
+                3f
+            );
             return;
         }
 
