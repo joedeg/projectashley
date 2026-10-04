@@ -94,14 +94,14 @@ public class BrazierInteractionSystem extends IteratingSystem {
             return;
         }
 
-        float dx = playerPos.x - brazierPos.x;
-        float dy = playerPos.y - brazierPos.y;
+        float dx = brazierPos.x - playerPos.x;
+        float dy = brazierPos.y - playerPos.y;
 
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        float distance = dx * dx + dy * dy;
 
         float interactionDistance = 48f;
 
-        if(distance > interactionDistance * interactionDistance){
+        if(distance > interactionDistance * interactionDistance ){
             return;
         }
 
@@ -114,12 +114,14 @@ public class BrazierInteractionSystem extends IteratingSystem {
                 "You need to light it.",
                 2f
             );
+
+            interaction.interact = false;
             return;
         }
 
         brazier.lit = true;
+        interaction.interact = false;
 
-        System.out.println("Brazier lit!");
     }
 
     private boolean isFacingBrazier(

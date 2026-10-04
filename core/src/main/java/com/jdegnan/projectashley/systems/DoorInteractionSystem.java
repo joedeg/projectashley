@@ -90,6 +90,10 @@ public class DoorInteractionSystem extends IteratingSystem {
             return;
         }
 
+        if(doorComp.requiredItem == null){
+            return;
+        }
+
         InteractionRequestComponent interaction =
             im.get(player);
 

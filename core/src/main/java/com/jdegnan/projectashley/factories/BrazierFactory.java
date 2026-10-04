@@ -9,6 +9,7 @@ import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.BrazierAssets;
 import com.jdegnan.projectashley.components.BrazierAnimationComponent;
 import com.jdegnan.projectashley.components.BrazierComponent;
+import com.jdegnan.projectashley.components.BrazierGateComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
@@ -40,6 +41,8 @@ public class BrazierFactory implements LevelEntityFactory {
 
         BrazierComponent brazier = new BrazierComponent();
         entity.add(brazier);
+
+        brazier.puzzleId = object.getStringProperty("puzzleId", null);
 
         BrazierAnimationComponent animation =
             new BrazierAnimationComponent();

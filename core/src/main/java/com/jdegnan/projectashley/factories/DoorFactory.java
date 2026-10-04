@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.DoorAssets;
+import com.jdegnan.projectashley.components.BrazierGateComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.DoorAnimationComponent;
 import com.jdegnan.projectashley.components.DoorComponent;
@@ -48,6 +49,20 @@ public class DoorFactory implements LevelEntityFactory {
         DoorAnimationComponent animation =
             engine.createComponent(DoorAnimationComponent.class);
 
+        BrazierGateComponent gate = engine.createComponent(BrazierGateComponent.class);
+
+        gate.requiredBraziers =
+            object.getIntProperty(
+                "requiredBraziers",
+                1
+            );
+
+        gate.puzzleId = object.getStringProperty("puzzleId", null);
+
+        if (gate.puzzleId != null) {
+            door.add(gate);
+        }
+
         if (!assets.isLoaded(DoorAssets.DOOR_ATLAS)) {
             throw new IllegalStateException("Door atlas not loaded");
         }
@@ -72,7 +87,6 @@ public class DoorFactory implements LevelEntityFactory {
         render.width = render.region.getRegionWidth();
         render.height = render.region.getRegionHeight();
         render.layer = 0;
-
 
 
         pos.x = object.getPosition().x;
@@ -108,4 +122,6 @@ public class DoorFactory implements LevelEntityFactory {
 
         return door;
     }
+
+
 }

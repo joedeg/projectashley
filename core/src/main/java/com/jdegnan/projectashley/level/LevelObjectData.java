@@ -44,11 +44,45 @@ public class LevelObjectData {
         return properties;
     }
 
+    public int getIntProperty(
+        String name,
+        int defaultValue){
+        Object value = properties.get(name);
+
+        if(value == null){
+            return defaultValue;
+        }
+
+        if(value instanceof Integer){
+            return (Integer) value;
+        }
+
+        if(value instanceof Float){
+            return ((Float) value).intValue();
+        }
+
+        if(value instanceof String){
+            try {
+                return Integer.parseInt((String) value);
+            }catch (NumberFormatException e){
+                return defaultValue;
+            }
+        }
+
+        return defaultValue;
+    }
+
     public String getStringProperty(
         String name,
         String defaultValue){
 
-        String value = (String) properties.get(name, String.class);
+        String value = null;
+
+        try {
+            value = (String) properties.get(name, String.class);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         return value != null ? value : defaultValue;
     }

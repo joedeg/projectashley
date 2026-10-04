@@ -29,6 +29,7 @@ import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.systems.AnimationSystem;
 import com.jdegnan.projectashley.systems.BrazierAnimationSystem;
+import com.jdegnan.projectashley.systems.BrazierGateSystem;
 import com.jdegnan.projectashley.systems.BrazierInteractionSystem;
 import com.jdegnan.projectashley.systems.BulletHitSystem;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
@@ -182,6 +183,7 @@ public class GameBootStrap {
     private ItemAssetRegistry createItemAssetRegistry() {
         ItemAssetRegistry itemAssetRegistry = new ItemAssetRegistry();
 
+
         itemAssetRegistry.register(
             new ItemDefinition(
                 ItemType.FOREST_KEY,
@@ -334,6 +336,7 @@ public class GameBootStrap {
         engine.addSystem(new ItemPickupSystem());
         engine.addSystem(new InteractionMessageSystem());
         engine.addSystem(new BrazierInteractionSystem());
+        engine.addSystem(new BrazierGateSystem());
         engine.addSystem(new BrazierAnimationSystem());
 
 
