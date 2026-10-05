@@ -10,6 +10,7 @@ import com.jdegnan.projectashley.components.BrazierGateComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.DoorAnimationComponent;
 import com.jdegnan.projectashley.components.DoorComponent;
+import com.jdegnan.projectashley.components.GateGlowComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.TagComponents.WallComponent;
@@ -60,7 +61,18 @@ public class DoorFactory implements LevelEntityFactory {
         gate.puzzleId = object.getStringProperty("puzzleId", null);
 
         if (gate.puzzleId != null) {
-            door.add(gate);
+            BrazierGateComponent gateComp =
+                engine.createComponent(BrazierGateComponent.class);
+
+            gateComp.puzzleId = gate.puzzleId;
+            gateComp.requiredBraziers =
+                object.getIntProperty("requiredBraziers", 1);
+
+            GateGlowComponent glowComp =
+                engine.createComponent(GateGlowComponent.class);
+
+            door.add(glowComp);
+            door.add(gateComp);
         }
 
         if (!assets.isLoaded(DoorAssets.DOOR_ATLAS)) {

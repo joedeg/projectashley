@@ -8,6 +8,7 @@ import com.jdegnan.projectashley.assets.BrazierAssets;
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.assets.DoorAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
+import com.jdegnan.projectashley.assets.PuzzleAssets;
 
 public final class Levels {
 
@@ -44,7 +45,8 @@ public final class Levels {
             ItemAssets.FOREST_KEY,
             ItemAssets.MARSH_AMULET,
             ItemAssets.FIRE_ROD,
-            BrazierAssets.BRAZIER
+            BrazierAssets.BRAZIER,
+            PuzzleAssets.GATE_OPEN
             ),
         new Vector2(160, 160)
     );

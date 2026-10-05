@@ -18,6 +18,7 @@ import com.jdegnan.projectashley.factories.BulletFactory;
 import com.jdegnan.projectashley.factories.ChestFactory;
 import com.jdegnan.projectashley.factories.DoorFactory;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
+import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.factories.PlayerFactory;
 import com.jdegnan.projectashley.inventory.ItemDefinition;
 import com.jdegnan.projectashley.inventory.ItemType;
@@ -40,12 +41,14 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.GateGlowSystem;
 import com.jdegnan.projectashley.systems.InteractionMessageSystem;
 import com.jdegnan.projectashley.systems.InventoryUIInputSystem;
 import com.jdegnan.projectashley.systems.InventoryUISystem;
 import com.jdegnan.projectashley.systems.ItemPickupSystem;
 import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
+import com.jdegnan.projectashley.systems.ParticleMovementSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
 import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
@@ -84,6 +87,10 @@ public class GameBootStrap {
      * Container holding all core game services initialized during bootstrapping.
      */
     private final GameServices gameServices;
+    private final ParticleFactory particleFactory;
+
+
+    private Assets assets;
 
     /**
      * Initializes all game infrastructure, services, factories, systems, and level managers.
@@ -106,6 +113,8 @@ public class GameBootStrap {
         ItemAssetRegistry itemAssetRegistry = createItemAssetRegistry();
         BulletFactory bulletFactory = createBulletFactory(engine);
         PlayerFactory playerFactory = createPlayerFactory(animationLibrary);
+        particleFactory = new ParticleFactory(engine);
+
 
         // 4. Systems
         CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
@@ -141,7 +150,7 @@ public class GameBootStrap {
      * @return The initialized {@link Assets} instance with asset loading queued.
      */
     private Assets createAssets() {
-        Assets assets = new Assets();
+        assets = new Assets();
         assets.loadGame();
         assets.finishLoading();
         return assets;
@@ -336,7 +345,8 @@ public class GameBootStrap {
         engine.addSystem(new ItemPickupSystem());
         engine.addSystem(new InteractionMessageSystem());
         engine.addSystem(new BrazierInteractionSystem());
-        engine.addSystem(new BrazierGateSystem());
+
+        engine.addSystem(new BrazierGateSystem(assets, particleFactory));
         engine.addSystem(new BrazierAnimationSystem());
 
 
@@ -347,6 +357,8 @@ public class GameBootStrap {
         // Visual & Animation State Systems
         engine.addSystem(new AnimationSystem());
         engine.addSystem(new PlayerAnimationStateSystem());
+        engine.addSystem(new GateGlowSystem());
+        engine.addSystem(new ParticleMovementSystem());
 
         // Rendering & Debug Systems
         engine.addSystem(new DebugCollisionRenderSystem(camera));

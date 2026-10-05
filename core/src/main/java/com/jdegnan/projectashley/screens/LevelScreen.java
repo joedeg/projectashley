@@ -3,12 +3,15 @@ package com.jdegnan.projectashley.screens;
 
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.inventory.InventoryUIRenderer;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.level.LevelRuntime;
 import com.jdegnan.projectashley.level.Levels;
 import com.jdegnan.projectashley.bootstrap.GameServices;
+import com.jdegnan.projectashley.rendering.GateGlowRenderer;
 import com.jdegnan.projectashley.rendering.InteractionMessageRenderer;
+import com.jdegnan.projectashley.rendering.ParticleRenderer;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.rendering.RenderPipeline;
 
@@ -19,9 +22,15 @@ public class LevelScreen extends BaseScreen {
     protected final RenderContext renderContext;
     private final LevelManager levelManager;
 
+    private final GateGlowRenderer gateGlowRenderer;
+
+    private final ParticleRenderer particleRenderer;
+
     private final InteractionMessageRenderer interactionMessageRenderer;
 
     private InventoryUIRenderer inventoryUIRenderer;
+
+    private final ParticleFactory particleFactory;;
 
     public LevelScreen(GameServices services) {
         super(services.getOrthographicCamera());
@@ -49,6 +58,23 @@ public class LevelScreen extends BaseScreen {
         interactionMessageRenderer = new InteractionMessageRenderer(
             services.getSpriteBatch()
         );
+
+        gateGlowRenderer =
+            new GateGlowRenderer(
+                services.getOrthographicCamera()
+                );
+        gateGlowRenderer.addedToEngine(engine);
+
+        particleRenderer = new ParticleRenderer(
+            services.getOrthographicCamera()
+        );
+        particleRenderer.addedToEngine(engine);
+
+        particleFactory = new ParticleFactory(engine);
+
+
+
+
     }
 
     @Override
@@ -70,9 +96,15 @@ public class LevelScreen extends BaseScreen {
         engine.update(deltaTime);
         renderPipeline.render(renderContext);
 
+        gateGlowRenderer.render();
+
+        particleRenderer.render();
+
         inventoryUIRenderer.render(levelManager.getPlayer());
 
         interactionMessageRenderer.render(levelManager.getPlayer());
+
+
     }
 
     @Override
