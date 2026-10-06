@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.assets.BrazierAssets;
 import com.jdegnan.projectashley.assets.ChestAssets;
 import com.jdegnan.projectashley.assets.DoorAssets;
+import com.jdegnan.projectashley.assets.EnemyAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
 import com.jdegnan.projectashley.assets.PuzzleAssets;
 
@@ -46,7 +47,8 @@ public final class Levels {
             ItemAssets.MARSH_AMULET,
             ItemAssets.FIRE_ROD,
             BrazierAssets.BRAZIER,
-            PuzzleAssets.GATE_OPEN
+            PuzzleAssets.GATE_OPEN,
+            EnemyAssets.SLIME_IDLE
             ),
         new Vector2(160, 160)
     );

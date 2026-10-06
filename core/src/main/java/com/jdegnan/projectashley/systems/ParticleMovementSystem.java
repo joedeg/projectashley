@@ -25,18 +25,16 @@ public class ParticleMovementSystem extends IteratingSystem {
         ParticleComponent particle =
             entity.getComponent(ParticleComponent.class);
 
+        // Update particle position based on velocity
         pos.x += particle.velocityX * deltaTime;
-
         pos.y += particle.velocityY * deltaTime;
-
-
-
 
 
         float speed = (float) Math.sqrt(
             particle.velocityX * particle.velocityX +
                 particle.velocityY * particle.velocityY
         );
+
 
         if (speed > 0) {
             float newSpeed = Math.max(
