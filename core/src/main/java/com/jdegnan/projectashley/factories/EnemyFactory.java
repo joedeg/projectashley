@@ -2,13 +2,9 @@ package com.jdegnan.projectashley.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import com.jdegnan.projectashley.assets.Assets;
-import com.jdegnan.projectashley.assets.EnemyAssets;
-import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
+
 import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.assets.animations.SlimeAnimationRegistry;
 import com.jdegnan.projectashley.components.AnimationSetComponent;

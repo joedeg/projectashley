@@ -55,7 +55,7 @@ public class RenderSubmissionSystem extends IteratingSystem {
 
         command.sortY = position.y;
 
-        command.color.set(Color.WHITE);
+        command.color.set(render.color);
 
         renderQueue.submit(command);
     }

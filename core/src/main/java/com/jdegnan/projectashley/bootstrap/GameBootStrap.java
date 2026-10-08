@@ -50,7 +50,7 @@ import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.ParticleMovementSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
-import com.jdegnan.projectashley.systems.PlayerEnemyCollisionSystem;
+import com.jdegnan.projectashley.systems.PlayerEnemyInteractionSystem;
 import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
 import com.jdegnan.projectashley.systems.SlimeMovementSystem;
@@ -341,8 +341,9 @@ public class GameBootStrap {
         engine.addSystem(new CollisionSystem());
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
 
-        // Player/Enemy interaction
-        engine.addSystem(new PlayerEnemyCollisionSystem());
+        // Gameplay collision responses
+        engine.addSystem(new PlayerEnemyInteractionSystem());
+
 
         // Camera & World Systems
         engine.addSystem(cameraFollowSystem);
