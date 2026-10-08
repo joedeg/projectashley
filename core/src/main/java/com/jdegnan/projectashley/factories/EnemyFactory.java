@@ -13,10 +13,14 @@ import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.assets.animations.SlimeAnimationRegistry;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
+import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.CollisionComponent;
+import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
+import com.jdegnan.projectashley.components.VelocityComponent;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
 
@@ -80,6 +84,33 @@ public class EnemyFactory implements LevelEntityFactory {
         renderComponent.height = 16;
         renderComponent.layer = 0;
 
+        ColliderComponent collider =
+            engine.createComponent(ColliderComponent.class);
+
+
+        collider.localBounds.set(
+            0,
+            0,
+            16,
+            8);
+
+        VelocityComponent vel =
+            engine.createComponent(VelocityComponent.class);
+
+        EnemyMovementComponent movement =
+            engine.createComponent(EnemyMovementComponent.class);
+
+        movement.speed = 20f;
+        movement.directionX = 1f;
+        movement.directionY = 0f;
+
+        CollisionComponent collision =
+            engine.createComponent(CollisionComponent.class);
+
+        enemy.add(collision);
+        enemy.add(movement);
+        enemy.add(vel);
+        enemy.add(collider);
         enemy.add(renderComponent);
         enemy.add(sprite);
         enemy.add(animSet);

@@ -6,7 +6,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Rectangle;
 import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.WallComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
@@ -24,13 +26,21 @@ public class MovementCollisionSystem extends IteratingSystem {
     private ComponentMapper<ColliderComponent> cm =
         ComponentMapper.getFor(ColliderComponent.class);
 
+    private ComponentMapper<CollisionComponent> ccm =
+        ComponentMapper.getFor(CollisionComponent.class);
+
+
     public MovementCollisionSystem() {
         super(Family.all(
             PositionComponent.class,
             VelocityComponent.class,
-            ColliderComponent.class).exclude(
+            ColliderComponent.class,
+            CollisionComponent.class
+        ).exclude(
             WallComponent.class
         ).get());
+
+        walls = null;
     }
 
     @Override
@@ -49,68 +59,112 @@ public class MovementCollisionSystem extends IteratingSystem {
         VelocityComponent vel = vm.get(entity);
         ColliderComponent col = cm.get(entity);
 
+        CollisionComponent collision = ccm.get(entity);
+        collision.reset();
+
+
         moveX(pos, vel, col, deltaTime);
-        resolveX(col, vel, pos);
+        resolveX(col, vel, pos, collision);
 
         moveY(pos, vel, col, deltaTime);
-        resolveY(col, vel, pos);
+        resolveY(col, vel, pos, collision);
     }
 
     private void moveY(PositionComponent pos, VelocityComponent vel, ColliderComponent col, float deltaTime) {
         pos.y += vel.vy * deltaTime;
-
-        col.localBounds.y = pos.y;
     }
 
     private void moveX(PositionComponent pos, VelocityComponent vel, ColliderComponent col, float deltaTime) {
         pos.x += vel.vx * deltaTime;
-
-        col.localBounds.x = pos.x;
     }
 
-    private void resolveX(ColliderComponent col, VelocityComponent vel, PositionComponent pos){
-        for(Entity wall : walls){
+    private Rectangle worldBounds(
+        PositionComponent pos,
+        ColliderComponent col) {
+        return new Rectangle(
+            pos.x + col.localBounds.x,
+            pos.y + col.localBounds.y,
+            col.localBounds.width,
+            col.localBounds.height
+        );
+    }
+
+    private void resolveX(
+        ColliderComponent col,
+        VelocityComponent vel,
+        PositionComponent pos,
+        CollisionComponent collision) {
+
+        Rectangle bounds = worldBounds(pos, col);
+
+
+        for (Entity wall : walls) {
             ColliderComponent wallCol = cm.get(wall);
 
-            if(!col.localBounds.overlaps(wallCol.localBounds))
+            if (!bounds.overlaps(wallCol.localBounds))
                 continue;
 
-            if(vel.vx > 0){
-                col.localBounds.x =
+            if (vel.vx > 0) {
+                pos.x =
                     wallCol.localBounds.x
-                    -col.localBounds.width;
-            }
-            else if (vel.vx < 0){
-                col.localBounds.x =
-                    wallCol.localBounds.x
-                    + wallCol.localBounds.width;
-            }
+                        - col.localBounds.x
+                        - col.localBounds.width;
 
-            pos.x = col.localBounds.x;
+                collision.collidedX = true;
+                collision.hitRight = true;
+
+
+            } else if (vel.vx < 0) {
+                pos.x =
+                    wallCol.localBounds.x
+                        + wallCol.localBounds.width
+                        - col.localBounds.x;
+
+                collision.collidedX = true;
+                collision.hitLeft = true;
+            }
             vel.vx = 0;
+
+            bounds = worldBounds(pos, col);
         }
     }
 
-    private void resolveY(ColliderComponent col, VelocityComponent vel, PositionComponent pos) {
-        for(Entity wall : walls){
+    private void resolveY(
+        ColliderComponent col,
+        VelocityComponent vel,
+        PositionComponent pos,
+        CollisionComponent collision) {
+
+        Rectangle bounds = worldBounds(pos, col);
+
+        for (Entity wall : walls) {
             ColliderComponent wallCol = cm.get(wall);
 
-            if(!col.localBounds.overlaps(wallCol.localBounds))
+            if (!bounds.overlaps(wallCol.localBounds))
                 continue;
 
-            if(vel.vy > 0){
-                col.localBounds.y =
+            if (vel.vy > 0) {
+                pos.y =
                     wallCol.localBounds.y
-                        -col.localBounds.height;
-            }
-            else if (vel.vy < 0){
-                col.localBounds.y =
+                        - col.localBounds.y
+                        - col.localBounds.height;
+
+                collision.collidedY = true;
+                collision.hitBottom = true;
+
+            } else if (vel.vy < 0) {
+                pos.y =
                     wallCol.localBounds.y
-                        + wallCol.localBounds.height;
+                        + wallCol.localBounds.height
+                        - col.localBounds.y;
+
+                collision.collidedY = true;
+                collision.hitTop = true;
             }
 
-            pos.y = col.localBounds.y;
             vel.vy = 0;
+
+            bounds = worldBounds(pos, col);
         }
 
     }

@@ -12,5 +12,6 @@ public class ColliderComponent implements Component, Pool.Poolable {
     @Override
     public void reset() {
         solid = true;
+        localBounds.set(0, 0, 0, 0);
     }
 }

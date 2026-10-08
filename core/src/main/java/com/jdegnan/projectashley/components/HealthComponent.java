@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.Pool;
 
 
 public class HealthComponent implements Component, Pool.Poolable {
-    public int hp;
-    public int maxHp;
+    public int hp = 3;
+    public int maxHp = 3;
 
     @Override
     public void reset() {
-        hp = 0;
-        maxHp = 0;
+        hp = 3;
+        maxHp = 3;
     }
 }

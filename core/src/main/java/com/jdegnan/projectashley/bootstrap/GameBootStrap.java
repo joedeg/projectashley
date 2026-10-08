@@ -12,7 +12,6 @@ import com.jdegnan.projectashley.assets.ItemAssets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.assets.animations.AnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.PlayerAnimationRegistry;
-import com.jdegnan.projectashley.assets.animations.SlimeAnimationRegistry;
 import com.jdegnan.projectashley.config.GameConfig;
 import com.jdegnan.projectashley.factories.BrazierFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
@@ -38,7 +37,6 @@ import com.jdegnan.projectashley.systems.BulletHitSystem;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
 import com.jdegnan.projectashley.systems.ChestAnimationSystem;
 import com.jdegnan.projectashley.systems.ChestInteractionSystem;
-import com.jdegnan.projectashley.systems.ColliderSyncSystem;
 import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
@@ -52,8 +50,10 @@ import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.ParticleMovementSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
+import com.jdegnan.projectashley.systems.PlayerEnemyCollisionSystem;
 import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
+import com.jdegnan.projectashley.systems.SlimeMovementSystem;
 import com.jdegnan.projectashley.systems.SpatialPartitionSystem;
 import com.jdegnan.projectashley.systems.WeaponSystem;
 
@@ -331,11 +331,18 @@ public class GameBootStrap {
         BulletFactory bulletFactory,
         ItemAssetRegistry itemAssetRegistry
     ) {
+
+        // NPC and Baddies
+        engine.addSystem(new SlimeMovementSystem());
+
+
         // Physics & Movement Systems
         engine.addSystem(new MovementCollisionSystem());
-        engine.addSystem(new ColliderSyncSystem());
         engine.addSystem(new CollisionSystem());
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
+
+        // Player/Enemy interaction
+        engine.addSystem(new PlayerEnemyCollisionSystem());
 
         // Camera & World Systems
         engine.addSystem(cameraFollowSystem);
@@ -358,6 +365,7 @@ public class GameBootStrap {
 
         engine.addSystem(new BrazierGateSystem(assets, particleFactory));
         engine.addSystem(new BrazierAnimationSystem());
+
 
 
         // Inventory & UI Systems
