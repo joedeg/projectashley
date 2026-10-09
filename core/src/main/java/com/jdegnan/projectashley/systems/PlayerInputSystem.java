@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.jdegnan.projectashley.Direction;
+import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
@@ -14,14 +15,18 @@ import com.jdegnan.projectashley.components.VelocityComponent;
 
 public class PlayerInputSystem extends IteratingSystem {
 
-    private ComponentMapper<VelocityComponent> vm =
+    private final ComponentMapper<VelocityComponent> vm =
         ComponentMapper.getFor(VelocityComponent.class);
 
-    private ComponentMapper<InteractionRequestComponent> im =
+    private final ComponentMapper<InteractionRequestComponent> im =
         ComponentMapper.getFor(InteractionRequestComponent.class);
 
-    private ComponentMapper<FacingComponent> fm =
+    private final ComponentMapper<FacingComponent> fm =
         ComponentMapper.getFor(FacingComponent.class);
+
+    private final ComponentMapper<AttackRequestComponent> am =
+        ComponentMapper.getFor(AttackRequestComponent.class);
+
 
 
 
@@ -30,7 +35,8 @@ public class PlayerInputSystem extends IteratingSystem {
             PlayerComponent.class,
             VelocityComponent.class,
             InteractionRequestComponent.class,
-            FacingComponent.class
+            FacingComponent.class,
+            AttackRequestComponent.class
         ).get());
     }
 
@@ -42,7 +48,11 @@ public class PlayerInputSystem extends IteratingSystem {
 
         FacingComponent facing = fm.get(entity);
 
+        AttackRequestComponent attack = am.get(entity);
+
         interaction.interact = false;
+        attack.attack = false;
+
 
 
         vel.vx = 0;
@@ -74,9 +84,8 @@ public class PlayerInputSystem extends IteratingSystem {
             interaction.interact = true;
         }
 
-
-
-
-
+         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+             attack.attack = true;
+         }
     }
 }

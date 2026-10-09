@@ -41,6 +41,7 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.EnemyDeathSystem;
 import com.jdegnan.projectashley.systems.GateGlowSystem;
 import com.jdegnan.projectashley.systems.InteractionMessageSystem;
 import com.jdegnan.projectashley.systems.InventoryUIInputSystem;
@@ -50,6 +51,7 @@ import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.ParticleMovementSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
+import com.jdegnan.projectashley.systems.PlayerAttackSystem;
 import com.jdegnan.projectashley.systems.PlayerEnemyInteractionSystem;
 import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
@@ -344,6 +346,8 @@ public class GameBootStrap {
         // Gameplay collision responses
         engine.addSystem(new PlayerEnemyInteractionSystem());
 
+        engine.addSystem(new EnemyDeathSystem());
+
 
         // Camera & World Systems
         engine.addSystem(cameraFollowSystem);
@@ -354,6 +358,9 @@ public class GameBootStrap {
         engine.addSystem(new BulletHitSystem());
         engine.addSystem(new DamageSystem());
         engine.addSystem(new LifetimeSystem());
+
+        engine.addSystem(new PlayerAttackSystem(engine));
+        engine.addSystem(new EnemyDeathSystem());
 
         // Environment & Interactive Object Systems
         engine.addSystem(new ChestInteractionSystem());
@@ -366,8 +373,6 @@ public class GameBootStrap {
 
         engine.addSystem(new BrazierGateSystem(assets, particleFactory));
         engine.addSystem(new BrazierAnimationSystem());
-
-
 
         // Inventory & UI Systems
         engine.addSystem(new InventoryUISystem());

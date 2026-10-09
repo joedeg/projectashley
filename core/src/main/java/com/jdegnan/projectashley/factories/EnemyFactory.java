@@ -12,6 +12,7 @@ import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
+import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
@@ -103,6 +104,10 @@ public class EnemyFactory implements LevelEntityFactory {
         CollisionComponent collision =
             engine.createComponent(CollisionComponent.class);
 
+        HealthComponent health =
+            engine.createComponent(HealthComponent.class);
+
+        enemy.add(health);
         enemy.add(collision);
         enemy.add(movement);
         enemy.add(vel);
