@@ -338,15 +338,14 @@ public class GameBootStrap {
         engine.addSystem(new SlimeMovementSystem());
 
 
-        // Physics & Movement Systems
-        engine.addSystem(new MovementCollisionSystem());
-        engine.addSystem(new CollisionSystem());
-        engine.addSystem(new SpatialPartitionSystem(spatialGrid));
+
+
+
 
         // Gameplay collision responses
         engine.addSystem(new PlayerEnemyInteractionSystem());
 
-        engine.addSystem(new EnemyDeathSystem());
+
 
 
         // Camera & World Systems
@@ -359,8 +358,15 @@ public class GameBootStrap {
         engine.addSystem(new DamageSystem());
         engine.addSystem(new LifetimeSystem());
 
+        // Physics & Movement Systems
+        engine.addSystem(new MovementCollisionSystem());
+        engine.addSystem(new CollisionSystem());
+        engine.addSystem(new SpatialPartitionSystem(spatialGrid));
+
+        // Combat
         engine.addSystem(new PlayerAttackSystem(engine));
         engine.addSystem(new EnemyDeathSystem());
+
 
         // Environment & Interactive Object Systems
         engine.addSystem(new ChestInteractionSystem());

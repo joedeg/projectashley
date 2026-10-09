@@ -21,9 +21,9 @@ import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 
 public class PlayerAttackSystem extends EntitySystem {
 
-    private static final float ATTACK_LIFETIME = 0.12f;
-    private static final float ATTACK_SIZE = 24f;
-    private static final float ATTACK_OFFSET = 24f;
+    private static final float ATTACK_LIFETIME = 0.20f;
+    private static final float ATTACK_SIZE = 32f;
+    private static final float ATTACK_OFFSET = 28f;
 
     private final ComponentMapper<PositionComponent> pm =
         ComponentMapper.getFor(PositionComponent.class);
@@ -90,18 +90,25 @@ public class PlayerAttackSystem extends EntitySystem {
     }
 
     private void updateExistingAttacks(float deltaTime) {
+        expiredAttacks.clear();
 
         for (int i = 0; i < attacks.size(); i++) {
             Entity attackEntity = attacks.get(i);
-
             AttackComponent attack = am.get(attackEntity);
+
+
+            if(attack.remainingTime <=0){
+                expiredAttacks.add(attackEntity);
+                continue;
+            }
+
+            damageOverlappingEnemies(attackEntity, attack);
+
             attack.remainingTime -= deltaTime;
 
             if (attack.remainingTime <= 0) {
                 expiredAttacks.add(attackEntity);
             }
-
-            damageOverlappingEnemies(attackEntity, attack);
         }
 
         for (int i = 0; i < expiredAttacks.size; i++) {
@@ -120,6 +127,7 @@ public class PlayerAttackSystem extends EntitySystem {
             }
 
             attackRequest.attack = false;
+
             createAttack(player);
         }
     }
@@ -151,6 +159,7 @@ public class PlayerAttackSystem extends EntitySystem {
                 position.x += ATTACK_OFFSET;
                 break;
 
+
         }
 
         ColliderComponent collider =
@@ -174,37 +183,40 @@ public class PlayerAttackSystem extends EntitySystem {
         attackEntity.add(attack);
 
         engine.addEntity(attackEntity);
-
-
-
     }
 
-    private void damageOverlappingEnemies(Entity attackEntity, AttackComponent attack) {
+    private void damageOverlappingEnemies(
+        Entity attackEntity, AttackComponent attack) {
+
         Rectangle attackBounds = getWorldBounds(attackEntity);
 
-        for(int i = 0; i < enemies.size(); i++){
+        for (int i = 0; i < enemies.size(); i++) {
             Entity enemy = enemies.get(i);
 
-            if(attack.enemiesHit.contains(enemy, true)){
+            if (attack.enemiesHit.contains(enemy, true)) {
                 continue;
             }
 
             Rectangle enemyBounds = getWorldBounds(enemy);
 
-            if(!attackBounds.overlaps(enemyBounds)){
+
+            if (!attackBounds.overlaps(enemyBounds)) {
+                System.out.println("MISS");
                 continue;
             }
 
             HealthComponent enemyHealth = hm.get(enemy);
 
-            if(enemyHealth.hp <= 0){
+            if (enemyHealth.hp <= 0) {
                 continue;
             }
 
             enemyHealth.hp -= attack.damage;
-
             attack.enemiesHit.add(enemy);
-            System.out.println("hit enemy");
+
+            System.out.println(
+                "Slime hit! HP remaining: " + enemyHealth.hp
+            );
         }
     }
 

@@ -15,5 +15,6 @@ public class AttackComponent implements Component, Pool.Poolable {
     public void reset() {
         remainingTime = 0.12f;
         damage = 1;
+        enemiesHit.clear();
     }
 }
