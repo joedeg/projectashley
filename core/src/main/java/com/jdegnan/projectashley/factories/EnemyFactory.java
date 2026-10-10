@@ -12,6 +12,7 @@ import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.DamageFlashComponent;
+import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.KnockbackComponent;
@@ -90,8 +91,8 @@ public class EnemyFactory implements LevelEntityFactory {
         collider.localBounds.set(
             0,
             0,
-            16,
-            8);
+            27,
+            16);
 
         VelocityComponent vel =
             engine.createComponent(VelocityComponent.class);
@@ -115,6 +116,10 @@ public class EnemyFactory implements LevelEntityFactory {
         KnockbackComponent knockback =
             engine.createComponent(KnockbackComponent.class);
 
+        EnemyDeathComponent death =
+            engine.createComponent(EnemyDeathComponent.class);
+
+        enemy.add(death);
         enemy.add(knockback);
         enemy.add(damageFlash);
         enemy.add(health);

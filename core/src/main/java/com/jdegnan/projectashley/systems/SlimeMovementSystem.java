@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.jdegnan.projectashley.components.CollisionComponent;
+import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.KnockbackComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
@@ -33,10 +34,26 @@ public class SlimeMovementSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
+        EnemyDeathComponent death =
+            entity.getComponent(EnemyDeathComponent.class);
+
+        if (death != null && death.dying) {
+            VelocityComponent velocity =
+                entity.getComponent(VelocityComponent.class);
+
+            if (velocity != null) {
+                velocity.vx = 0f;
+                velocity.vy = 0f;
+            }
+
+            return;
+        }
+
+
         KnockbackComponent knockback =
             entity.getComponent(KnockbackComponent.class);
 
-        if(knockback != null && knockback.active){
+        if (knockback != null && knockback.active) {
             return;
         }
 
@@ -46,14 +63,13 @@ public class SlimeMovementSystem extends IteratingSystem {
 
         CollisionComponent collision = cm.get(entity);
 
-        if(collision.hitRight){
+        if (collision.hitRight) {
             movement.directionX = -1f;
-        }
-        else if(collision.hitLeft){
+        } else if (collision.hitLeft) {
             movement.directionX = 1f;
         }
 
-        if(collision.hitTop || collision.hitBottom){
+        if (collision.hitTop || collision.hitBottom) {
             movement.directionY *= -1f;
         }
 

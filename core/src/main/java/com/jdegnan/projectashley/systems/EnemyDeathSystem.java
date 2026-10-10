@@ -7,18 +7,33 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Array;
+import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
+import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
+import com.jdegnan.projectashley.factories.ParticleFactory;
 
 public class EnemyDeathSystem extends EntitySystem {
-    private final ComponentMapper<HealthComponent> healthMapper =
+
+    private static final float DEATH_DURATION = 1f;
+    private final ComponentMapper<HealthComponent> hm =
         ComponentMapper.getFor(HealthComponent.class);
 
+    private final ComponentMapper<EnemyDeathComponent> edm =
+        ComponentMapper.getFor(EnemyDeathComponent.class);
+
+
     private ImmutableArray<Entity> enemies;
+
+    private final ParticleFactory particleFactory;
 
     private final Array<Entity> deadEnemies = new Array<>();
 
     private Engine engine;
+
+    public EnemyDeathSystem(ParticleFactory particleFactory) {
+        this.particleFactory = particleFactory;
+    }
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -28,7 +43,8 @@ public class EnemyDeathSystem extends EntitySystem {
             engine.getEntitiesFor(
                 Family.all(
                     EnemyComponent.class,
-                    HealthComponent.class
+                    HealthComponent.class,
+                    EnemyDeathComponent.class
                 ).get());
     }
 
@@ -40,10 +56,32 @@ public class EnemyDeathSystem extends EntitySystem {
         for(int i = 0; i < enemies.size(); i++) {
             Entity enemy = enemies.get(i);
 
-            HealthComponent health = healthMapper.get(enemy);
+            HealthComponent health = hm.get(enemy);
+            EnemyDeathComponent death = edm.get(enemy);
 
-            if(health.hp <=0){
-                deadEnemies.add(enemy);
+            /*
+            Mark the enemy as dying.
+             */
+            if (!death.dying && health.hp <= 0) {
+                death.dying = true;
+                death.remainingTime = DEATH_DURATION;
+
+                PositionComponent pos =
+                    enemy.getComponent(PositionComponent.class);
+                if(pos != null){
+                    float centerX = pos.x + 13.5f;
+                    float centerY = pos.y + 8f;
+
+                    particleFactory.createBurst(centerX, centerY, 12);
+                }
+            }
+
+            if (death.dying) {
+                death.remainingTime -= deltaTime;
+
+                if (death.remainingTime <= 0f) {
+                    deadEnemies.add(enemy);
+                }
             }
         }
 
