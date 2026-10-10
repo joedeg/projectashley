@@ -24,7 +24,7 @@ public class BrazierGateSystem extends EntitySystem {
     private ImmutableArray<Entity> braziers;
     private ImmutableArray<Entity> gates;
 
-    private ParticleFactory particleFactory;
+    private final ParticleFactory particleFactory;
 
     private final ComponentMapper<BrazierComponent> bm =
         ComponentMapper.getFor(BrazierComponent.class);

@@ -8,7 +8,7 @@ import com.jdegnan.projectashley.bootstrap.GameBootStrap;
 public class LoadingScreen extends BaseScreen{
 
     private final GameBootStrap gameBootStrap;
-    private Game game;
+    private final Game game;
 
     public LoadingScreen(Game game){
         this.game = game;

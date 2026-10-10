@@ -13,8 +13,8 @@ import com.jdegnan.projectashley.components.SpriteComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
 
 public class BulletFactory {
-    private PooledEngine engine;
-    private TextureAtlas atlas;
+    private final PooledEngine engine;
+    private final TextureAtlas atlas;
 
     public BulletFactory(PooledEngine engine, TextureAtlas atlas) {
         this.engine = engine;

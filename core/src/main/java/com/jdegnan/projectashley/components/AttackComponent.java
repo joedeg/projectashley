@@ -10,10 +10,13 @@ public class AttackComponent implements Component, Pool.Poolable {
     public float remainingTime = 0.12f;
     public int damage = 1;
 
+    public float damageDelay;
+
     public final Array<Entity> enemiesHit = new Array<>();
     @Override
     public void reset() {
         remainingTime = 0.12f;
+        damageDelay = 0f;
         damage = 1;
         enemiesHit.clear();
     }

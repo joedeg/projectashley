@@ -10,8 +10,8 @@ import com.jdegnan.projectashley.components.TagComponents.WallComponent;
 
 public class WallFactory {
 
-    private PooledEngine engine;
-    private TextureAtlas atlas;
+    private final PooledEngine engine;
+    private final TextureAtlas atlas;
 
     private final float TILE_SIZE;
 

@@ -8,6 +8,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
+import com.jdegnan.projectashley.components.AttackCooldownComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.CollisionComponent;
@@ -81,6 +82,8 @@ public class PlayerFactory {
         HealthComponent health = new HealthComponent();
 
         entity.add(new DamageCooldownComponent());
+
+        entity.add(new AttackCooldownComponent());
 
         entity.add(health);
 

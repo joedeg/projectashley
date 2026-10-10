@@ -17,10 +17,10 @@ import com.jdegnan.projectashley.events.EventBus;
  * the {@link HealthComponent} of victims based on the {@link DamageComponent} of attackers.
  */
 public class DamageSystem extends EntitySystem {
-    private ComponentMapper<DamageComponent> dm =
+    private final ComponentMapper<DamageComponent> dm =
         ComponentMapper.getFor(DamageComponent.class);
 
-    private ComponentMapper<HealthComponent> hm =
+    private final ComponentMapper<HealthComponent> hm =
         ComponentMapper.getFor(HealthComponent.class);
 
     /**

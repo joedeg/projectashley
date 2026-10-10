@@ -22,16 +22,16 @@ import com.jdegnan.projectashley.components.SpriteComponent;
  */
 public class AnimationSystem extends IteratingSystem {
 
-    private ComponentMapper<AnimationStateComponent> am =
+    private final ComponentMapper<AnimationStateComponent> am =
         ComponentMapper.getFor(AnimationStateComponent.class);
 
-    private ComponentMapper<AnimationSetComponent> asm =
+    private final ComponentMapper<AnimationSetComponent> asm =
         ComponentMapper.getFor(AnimationSetComponent.class);
 
-    private ComponentMapper<SpriteComponent> sm =
+    private final ComponentMapper<SpriteComponent> sm =
         ComponentMapper.getFor(SpriteComponent.class);
 
-    private ComponentMapper<RenderComponent> rm =
+    private final ComponentMapper<RenderComponent> rm =
         ComponentMapper.getFor(RenderComponent.class);
 
 

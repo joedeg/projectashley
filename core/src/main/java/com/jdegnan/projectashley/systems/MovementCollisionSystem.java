@@ -17,16 +17,16 @@ public class MovementCollisionSystem extends IteratingSystem {
 
     private ImmutableArray<Entity> walls;
 
-    private ComponentMapper<PositionComponent> pm =
+    private final ComponentMapper<PositionComponent> pm =
         ComponentMapper.getFor(PositionComponent.class);
 
-    private ComponentMapper<VelocityComponent> vm =
+    private final ComponentMapper<VelocityComponent> vm =
         ComponentMapper.getFor(VelocityComponent.class);
 
-    private ComponentMapper<ColliderComponent> cm =
+    private final ComponentMapper<ColliderComponent> cm =
         ComponentMapper.getFor(ColliderComponent.class);
 
-    private ComponentMapper<CollisionComponent> ccm =
+    private final ComponentMapper<CollisionComponent> ccm =
         ComponentMapper.getFor(CollisionComponent.class);
 
 

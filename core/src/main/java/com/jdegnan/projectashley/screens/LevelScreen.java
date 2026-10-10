@@ -28,9 +28,9 @@ public class LevelScreen extends BaseScreen {
 
     private final InteractionMessageRenderer interactionMessageRenderer;
 
-    private InventoryUIRenderer inventoryUIRenderer;
+    private final InventoryUIRenderer inventoryUIRenderer;
 
-    private final ParticleFactory particleFactory;;
+    private final ParticleFactory particleFactory;
 
     public LevelScreen(GameServices services) {
         super(services.getOrthographicCamera());

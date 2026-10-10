@@ -10,14 +10,18 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.components.AttackComponent;
+import com.jdegnan.projectashley.components.AttackCooldownComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
+import com.jdegnan.projectashley.components.DamageFlashComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 
+import com.jdegnan.projectashley.components.KnockbackComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
+import com.jdegnan.projectashley.factories.SwordSwingFactory;
 
 public class PlayerAttackSystem extends EntitySystem {
 
@@ -39,6 +43,18 @@ public class PlayerAttackSystem extends EntitySystem {
     private final ComponentMapper<HealthComponent> hm =
         ComponentMapper.getFor(HealthComponent.class);
 
+    private final ComponentMapper<DamageFlashComponent> dfm =
+        ComponentMapper.getFor(DamageFlashComponent.class);
+
+    private final ComponentMapper<KnockbackComponent> km =
+        ComponentMapper.getFor(KnockbackComponent.class);
+
+    private final ComponentMapper<AttackCooldownComponent> acm =
+        ComponentMapper.getFor(AttackCooldownComponent.class);
+
+
+    private final SwordSwingFactory swordSwingFactory;
+
     private ImmutableArray<Entity> enemies;
     private ImmutableArray<Entity> players;
     private ImmutableArray<Entity> attacks;
@@ -47,8 +63,12 @@ public class PlayerAttackSystem extends EntitySystem {
 
     private final PooledEngine engine;
 
-    public PlayerAttackSystem(PooledEngine engine) {
+    private static final float ATTACK_COOLDOWN = 0.35f;
+
+    public PlayerAttackSystem(PooledEngine engine,
+                              SwordSwingFactory factory) {
         this.engine = engine;
+        this.swordSwingFactory = factory;
     }
 
     @Override
@@ -61,7 +81,8 @@ public class PlayerAttackSystem extends EntitySystem {
                     PlayerComponent.class,
                     PositionComponent.class,
                     FacingComponent.class,
-                    AttackRequestComponent.class
+                    AttackRequestComponent.class,
+                    AttackCooldownComponent.class
                 ).get());
 
         enemies =
@@ -85,7 +106,7 @@ public class PlayerAttackSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         updateExistingAttacks(deltaTime);
-        createRequestedAttacks();
+        createRequestedAttacks(deltaTime);
 
     }
 
@@ -102,7 +123,11 @@ public class PlayerAttackSystem extends EntitySystem {
                 continue;
             }
 
-            damageOverlappingEnemies(attackEntity, attack);
+            attack.damageDelay -= deltaTime;
+
+            if(attack.damageDelay <= 0f){
+                damageOverlappingEnemies(attackEntity, attack);
+            }
 
             attack.remainingTime -= deltaTime;
 
@@ -116,11 +141,16 @@ public class PlayerAttackSystem extends EntitySystem {
         }
     }
 
-    private void createRequestedAttacks(){
+    private void createRequestedAttacks(float deltaTime){
         for(int i = 0; i < players.size(); i++){
             Entity player = players.get(i);
 
             AttackRequestComponent attackRequest = arm.get(player);
+            AttackCooldownComponent cooldown = acm.get(player);
+            cooldown.remaningTime = Math.max(
+                0f,
+                cooldown.remaningTime - deltaTime
+            );
 
             if(!attackRequest.attack){
                 continue;
@@ -128,7 +158,12 @@ public class PlayerAttackSystem extends EntitySystem {
 
             attackRequest.attack = false;
 
+            if(!cooldown.isReady()){
+                continue;
+            }
+
             createAttack(player);
+            cooldown.remaningTime = ATTACK_COOLDOWN;
         }
     }
 
@@ -137,30 +172,33 @@ public class PlayerAttackSystem extends EntitySystem {
         PositionComponent playerPos = pm.get(player);
         FacingComponent playerFacing = fm.get(player);
 
+        float attackX = playerPos.x;
+        float attackY = playerPos.y;
+
+        switch (playerFacing.direction) {
+            case UP:
+                attackY += ATTACK_OFFSET;
+                break;
+            case DOWN:
+                attackY -= ATTACK_OFFSET;
+                break;
+            case LEFT:
+                attackX -= ATTACK_OFFSET;
+                break;
+            case RIGHT:
+                attackX += ATTACK_OFFSET;
+                break;
+
+
+        }
+
         Entity attackEntity = engine.createEntity();
 
         PositionComponent position =
             engine.createComponent(PositionComponent.class);
 
-        position.x = playerPos.x;
-        position.y = playerPos.y;
-
-        switch (playerFacing.direction) {
-            case UP:
-                position.y += ATTACK_OFFSET;
-                break;
-            case DOWN:
-                position.y -= ATTACK_OFFSET;
-                break;
-            case LEFT:
-                position.x -= ATTACK_OFFSET;
-                break;
-            case RIGHT:
-                position.x += ATTACK_OFFSET;
-                break;
-
-
-        }
+        position.x = attackX;
+        position.y = attackY;
 
         ColliderComponent collider =
             engine.createComponent(ColliderComponent.class);
@@ -176,6 +214,7 @@ public class PlayerAttackSystem extends EntitySystem {
             engine.createComponent(AttackComponent.class);
 
         attack.remainingTime = ATTACK_LIFETIME;
+        attack.damageDelay = 0.06f;
         attack.damage = 1;
 
         attackEntity.add(position);
@@ -183,6 +222,36 @@ public class PlayerAttackSystem extends EntitySystem {
         attackEntity.add(attack);
 
         engine.addEntity(attackEntity);
+
+        float slashX = playerPos.x;
+        float slashY = playerPos.y;
+
+        switch (playerFacing.direction){
+            case UP:
+                slashX += 16f;
+                slashY += 32f;
+                break;
+
+            case DOWN:
+                slashX += 48f;
+                break;
+
+            case LEFT:
+                slashX += 16f;
+                break;
+
+            case RIGHT:
+                slashX += 48f;
+                slashY += 32f;
+                break;
+        }
+
+        swordSwingFactory.create(
+            player,
+            slashX,
+            slashY,
+            2,
+            playerFacing.direction);
     }
 
     private void damageOverlappingEnemies(
@@ -201,7 +270,6 @@ public class PlayerAttackSystem extends EntitySystem {
 
 
             if (!attackBounds.overlaps(enemyBounds)) {
-                System.out.println("MISS");
                 continue;
             }
 
@@ -214,10 +282,43 @@ public class PlayerAttackSystem extends EntitySystem {
             enemyHealth.hp -= attack.damage;
             attack.enemiesHit.add(enemy);
 
-            System.out.println(
-                "Slime hit! HP remaining: " + enemyHealth.hp
-            );
+            applyKnockback(attackEntity, enemy);
+
+            System.out.println("Enemy HP: " + enemyHealth.hp);
+
+            DamageFlashComponent flash = dfm.get(enemy);
+
+            if(flash != null){
+                flash.remainingTime = 0.12f;
+                flash.flashing = true;
+            }
+
         }
+    }
+
+    private void applyKnockback(Entity attackEntity, Entity enemy) {
+        PositionComponent attackPos = pm.get(attackEntity);
+        PositionComponent enemyPos = pm.get(enemy);
+
+        KnockbackComponent knockback = km.get(enemy);
+
+        if(knockback == null){
+            return;
+        }
+
+        float dx = enemyPos.x - attackPos.x;
+        float dy = enemyPos.y - attackPos.y;
+
+        float length = (float) Math.sqrt(dx * dx + dy * dy);
+
+        if(length == 0f){
+            return;
+        }
+
+        knockback.velocityX = dx / length * 100f;
+        knockback.velocityY = dy / length * 100f;
+        knockback.remainingTime = 0.15f;
+        knockback.active = true;
     }
 
     private Rectangle getWorldBounds(Entity attackEntity) {

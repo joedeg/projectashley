@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
+import com.jdegnan.projectashley.components.KnockbackComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
 
@@ -31,6 +32,14 @@ public class SlimeMovementSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+
+        KnockbackComponent knockback =
+            entity.getComponent(KnockbackComponent.class);
+
+        if(knockback != null && knockback.active){
+            return;
+        }
+
         EnemyMovementComponent movement = mm.get(entity);
 
         VelocityComponent vel = vm.get(entity);

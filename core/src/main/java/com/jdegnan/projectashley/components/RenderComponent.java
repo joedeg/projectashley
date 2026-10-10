@@ -17,9 +17,15 @@ public class RenderComponent implements Component, Pool.Poolable {
 
     public float offsetY;
 
+    public float originX;
+    public float originY;
+
     public int layer;
+    public float rotation;
 
     public Color color = new Color(Color.WHITE);
+
+
 
     @Override
     public void reset() {
@@ -29,7 +35,12 @@ public class RenderComponent implements Component, Pool.Poolable {
         offsetX = 0;
         offsetY = 0;
         layer = 0;
+        rotation = 0f;
+        originX = 0f;
+        originY = 0f;
 
         color.set(Color.WHITE);
+
+
     }
 }

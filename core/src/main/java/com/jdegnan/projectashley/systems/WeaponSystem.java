@@ -10,7 +10,7 @@ import com.jdegnan.projectashley.factories.BulletFactory;
 
 public class WeaponSystem extends IteratingSystem {
 
-    private BulletFactory bulletFactory;
+    private final BulletFactory bulletFactory;
 
 
     public WeaponSystem(BulletFactory bulletFactory) {

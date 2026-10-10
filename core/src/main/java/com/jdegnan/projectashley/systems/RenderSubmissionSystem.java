@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.graphics.Color;
 import com.jdegnan.projectashley.rendering.RenderCommand;
 import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.components.PositionComponent;
@@ -45,11 +44,15 @@ public class RenderSubmissionSystem extends IteratingSystem {
 
         command.region = render.region;
 
+
+
         command.x = position.x + render.offsetX;
         command.y = position.y + render.offsetY;
 
         command.width = render.width;
         command.height = render.height;
+
+        command.rotation = render.rotation;
 
         command.layer = render.layer;
 

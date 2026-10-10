@@ -9,9 +9,11 @@ import com.jdegnan.projectashley.SpatialGrid;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.ItemAssetRegistry;
 import com.jdegnan.projectashley.assets.ItemAssets;
+import com.jdegnan.projectashley.assets.PlayerAssets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.assets.animations.AnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.PlayerAnimationRegistry;
+import com.jdegnan.projectashley.assets.animations.SwordSwingAnimation;
 import com.jdegnan.projectashley.config.GameConfig;
 import com.jdegnan.projectashley.factories.BrazierFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
@@ -21,6 +23,7 @@ import com.jdegnan.projectashley.factories.EnemyFactory;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.factories.PlayerFactory;
+import com.jdegnan.projectashley.factories.SwordSwingFactory;
 import com.jdegnan.projectashley.inventory.ItemDefinition;
 import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.ChestRewardSystem;
@@ -47,6 +50,7 @@ import com.jdegnan.projectashley.systems.InteractionMessageSystem;
 import com.jdegnan.projectashley.systems.InventoryUIInputSystem;
 import com.jdegnan.projectashley.systems.InventoryUISystem;
 import com.jdegnan.projectashley.systems.ItemPickupSystem;
+import com.jdegnan.projectashley.systems.KnockbackSystem;
 import com.jdegnan.projectashley.systems.LifetimeSystem;
 import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.ParticleMovementSystem;
@@ -57,7 +61,9 @@ import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
 import com.jdegnan.projectashley.systems.SlimeMovementSystem;
 import com.jdegnan.projectashley.systems.SpatialPartitionSystem;
+import com.jdegnan.projectashley.systems.SwordSwingSystem;
 import com.jdegnan.projectashley.systems.WeaponSystem;
+import com.jdegnan.projectashley.systems.DamageFlashSystem;
 
 import java.util.List;
 
@@ -92,8 +98,6 @@ public class GameBootStrap {
      */
     private final GameServices gameServices;
     private final ParticleFactory particleFactory;
-
-
     private Assets assets;
 
     /**
@@ -113,6 +117,11 @@ public class GameBootStrap {
         PooledEngine engine = createEngine();
         AnimationLibrary animationLibrary = createAnimationLibrary(assets);
 
+        SwordSwingAnimation swordSwingAnimation =
+            new SwordSwingAnimation(assets.get(PlayerAssets.SWORD_SWING));
+        SwordSwingFactory swordSwingFactory =
+            new SwordSwingFactory(engine, swordSwingAnimation);
+
         // 3. Item registry & entity factories
         ItemAssetRegistry itemAssetRegistry = createItemAssetRegistry();
         BulletFactory bulletFactory = createBulletFactory(engine);
@@ -122,7 +131,15 @@ public class GameBootStrap {
 
         // 4. Systems
         CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
-        registerSystems(engine, renderQueue, grid, camera, cameraFollowSystem, bulletFactory, itemAssetRegistry);
+        registerSystems(
+            engine,
+            renderQueue,
+            grid,
+            camera,
+            cameraFollowSystem,
+            bulletFactory,
+            itemAssetRegistry,
+            swordSwingFactory);
 
         // 5. Level management
         LevelManager levelManager = createLevelManager(
@@ -146,6 +163,8 @@ public class GameBootStrap {
             levelManager,
             itemAssetRegistry
         );
+
+
     }
 
     /**
@@ -331,22 +350,15 @@ public class GameBootStrap {
         OrthographicCamera camera,
         CameraFollowSystem cameraFollowSystem,
         BulletFactory bulletFactory,
-        ItemAssetRegistry itemAssetRegistry
+        ItemAssetRegistry itemAssetRegistry,
+        SwordSwingFactory swordSwingFactory
     ) {
-
-        // NPC and Baddies
-        engine.addSystem(new SlimeMovementSystem());
-
-
 
 
 
 
         // Gameplay collision responses
         engine.addSystem(new PlayerEnemyInteractionSystem());
-
-
-
 
         // Camera & World Systems
         engine.addSystem(cameraFollowSystem);
@@ -362,10 +374,16 @@ public class GameBootStrap {
         engine.addSystem(new MovementCollisionSystem());
         engine.addSystem(new CollisionSystem());
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
+        // NPC and Baddies
+        engine.addSystem(new SlimeMovementSystem());
+
+
+
 
         // Combat
-        engine.addSystem(new PlayerAttackSystem(engine));
+        engine.addSystem(new PlayerAttackSystem(engine, swordSwingFactory));
         engine.addSystem(new EnemyDeathSystem());
+        engine.addSystem(new KnockbackSystem());
 
 
         // Environment & Interactive Object Systems
@@ -389,6 +407,8 @@ public class GameBootStrap {
         engine.addSystem(new PlayerAnimationStateSystem());
         engine.addSystem(new GateGlowSystem());
         engine.addSystem(new ParticleMovementSystem());
+        engine.addSystem(new SwordSwingSystem());
+        engine.addSystem(new DamageFlashSystem());
 
         // Rendering & Debug Systems
         engine.addSystem(new DebugCollisionRenderSystem(camera));

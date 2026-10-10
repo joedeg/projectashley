@@ -21,7 +21,7 @@ public class BrazierInteractionSystem extends IteratingSystem {
     private final ComponentMapper<PositionComponent> pm =
         ComponentMapper.getFor(PositionComponent.class);
 
-    private ComponentMapper<InteractionRequestComponent> im =
+    private final ComponentMapper<InteractionRequestComponent> im =
         ComponentMapper.getFor(InteractionRequestComponent.class);
 
     private final ComponentMapper<FacingComponent> fm =

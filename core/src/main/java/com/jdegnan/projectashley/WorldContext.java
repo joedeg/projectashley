@@ -9,7 +9,7 @@ public  class WorldContext {
 
     private final TiledMap map;
 
-    private int tileSize;
+    private final int tileSize;
 
     private final SpatialGrid grid;
 

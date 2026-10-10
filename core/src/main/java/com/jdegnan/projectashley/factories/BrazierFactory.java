@@ -15,8 +15,6 @@ import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
 
-;
-
 public class BrazierFactory implements LevelEntityFactory {
 
     private final Assets assets;

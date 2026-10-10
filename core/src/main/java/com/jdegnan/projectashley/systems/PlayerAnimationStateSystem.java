@@ -18,10 +18,10 @@ import com.jdegnan.projectashley.components.VelocityComponent;
  */
 public class PlayerAnimationStateSystem extends IteratingSystem {
 
-    private ComponentMapper<VelocityComponent> vm =
+    private final ComponentMapper<VelocityComponent> vm =
         ComponentMapper.getFor(VelocityComponent.class);
 
-    private ComponentMapper<AnimationStateComponent> am =
+    private final ComponentMapper<AnimationStateComponent> am =
         ComponentMapper.getFor(AnimationStateComponent.class);
 
     /**
