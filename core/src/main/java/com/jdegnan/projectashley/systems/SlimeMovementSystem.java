@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.jdegnan.projectashley.components.CollisionComponent;
+import com.jdegnan.projectashley.components.EnemyAIComponent;
 import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.KnockbackComponent;
@@ -63,15 +65,47 @@ public class SlimeMovementSystem extends IteratingSystem {
 
         CollisionComponent collision = cm.get(entity);
 
-        if (collision.hitRight) {
-            movement.directionX = -1f;
-        } else if (collision.hitLeft) {
-            movement.directionX = 1f;
+        if (collision.hitLeft || collision.hitRight
+            || collision.hitTop || collision.hitBottom) {
+            Gdx.app.log(
+                "SlimeCollision",
+                "Left=" + collision.hitLeft
+                    + ", Right=" + collision.hitRight
+                    + ", Top=" + collision.hitTop
+                    + ", Bottom=" + collision.hitBottom
+                    + ", DirX=" + movement.directionX
+                    + ", DirY=" + movement.directionY
+            );
         }
 
-        if (collision.hitTop || collision.hitBottom) {
-            movement.directionY *= -1f;
+        EnemyAIComponent ai =
+            entity.getComponent(EnemyAIComponent.class);
+
+        boolean followingAvoidancePath =
+            ai != null
+                && ai.state == EnemyAIComponent.State.CHASING
+                && ai.avoidingObstacle;
+
+        // The AI owns obstacle avoidance while chasing.
+        // Do not override its chosen direction here.
+        if (ai == null || ai.state != EnemyAIComponent.State.CHASING) {
+            if (collision.hitRight) {
+                movement.directionX = -1f;
+            } else if (collision.hitLeft) {
+                movement.directionX = 1f;
+            }
+
+            if (collision.hitTop || collision.hitBottom) {
+                movement.directionY *= -1f;
+            }
         }
+
+        Gdx.app.log(
+            "SlimeMovement",
+            "avoiding=" + (ai != null && ai.avoidingObstacle)
+                + ", dirX=" + movement.directionX
+                + ", dirY=" + movement.directionY
+        );
 
         vel.vx = movement.directionX * movement.speed;
         vel.vy = movement.directionY * movement.speed;

@@ -819,11 +819,5 @@
     <property name="type" value="enemy"/>
    </properties>
   </object>
-  <object id="43" name="slime2" x="576" y="992" width="32" height="32">
-   <properties>
-    <property name="enemyType" value="slime"/>
-    <property name="type" value="enemy"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

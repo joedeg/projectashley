@@ -44,6 +44,7 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.EnemyAISystem;
 import com.jdegnan.projectashley.systems.EnemyDeathAnimationSystem;
 import com.jdegnan.projectashley.systems.EnemyDeathSystem;
 import com.jdegnan.projectashley.systems.GateGlowSystem;
@@ -371,12 +372,14 @@ public class GameBootStrap {
         engine.addSystem(new DamageSystem());
         engine.addSystem(new LifetimeSystem());
 
+        // NPC and Baddies
+        engine.addSystem(new SlimeMovementSystem());
+        engine.addSystem(new EnemyAISystem());
+
         // Physics & Movement Systems
         engine.addSystem(new MovementCollisionSystem());
         engine.addSystem(new CollisionSystem());
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
-        // NPC and Baddies
-        engine.addSystem(new SlimeMovementSystem());
 
         // Combat
         engine.addSystem(new PlayerAttackSystem(engine, swordSwingFactory));

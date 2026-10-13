@@ -3,6 +3,7 @@ package com.jdegnan.projectashley.factories;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.jdegnan.projectashley.assets.Assets;
 
 import com.jdegnan.projectashley.assets.animations.AnimationState;
@@ -12,6 +13,7 @@ import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.DamageFlashComponent;
+import com.jdegnan.projectashley.components.EnemyAIComponent;
 import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
@@ -119,6 +121,14 @@ public class EnemyFactory implements LevelEntityFactory {
         EnemyDeathComponent death =
             engine.createComponent(EnemyDeathComponent.class);
 
+        EnemyAIComponent ai =
+            engine.createComponent(EnemyAIComponent.class);
+
+        ai.wanderInterval = MathUtils.random(1.5f, 3.5f);
+        ai.wanderTimer = ai.wanderInterval;
+
+
+        enemy.add(ai);
         enemy.add(death);
         enemy.add(knockback);
         enemy.add(damageFlash);
