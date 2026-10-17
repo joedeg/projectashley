@@ -48,7 +48,8 @@ public final class Levels {
             ItemAssets.FIRE_ROD,
             BrazierAssets.BRAZIER,
             PuzzleAssets.GATE_OPEN,
-            EnemyAssets.SLIME_IDLE
+            EnemyAssets.SLIME_IDLE,
+            EnemyAssets.SLIME_DYING
             ),
         new Vector2(160, 160)
     );

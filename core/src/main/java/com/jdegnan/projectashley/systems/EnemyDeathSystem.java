@@ -6,7 +6,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.jdegnan.projectashley.assets.animations.AnimationState;
+import com.jdegnan.projectashley.components.AnimationSetComponent;
+import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
@@ -53,7 +58,7 @@ public class EnemyDeathSystem extends EntitySystem {
         deadEnemies.clear();
 
 
-        for(int i = 0; i < enemies.size(); i++) {
+        for (int i = 0; i < enemies.size(); i++) {
             Entity enemy = enemies.get(i);
 
             HealthComponent health = hm.get(enemy);
@@ -66,26 +71,67 @@ public class EnemyDeathSystem extends EntitySystem {
                 death.dying = true;
                 death.remainingTime = DEATH_DURATION;
 
-                PositionComponent pos =
-                    enemy.getComponent(PositionComponent.class);
-                if(pos != null){
-                    float centerX = pos.x + 13.5f;
-                    float centerY = pos.y + 8f;
+                AnimationStateComponent anim =
+                    enemy.getComponent(AnimationStateComponent.class);
 
-                    particleFactory.createBurst(centerX, centerY, 12);
+                AnimationSetComponent animationSet =
+                    enemy.getComponent(AnimationSetComponent.class);
+
+                if (anim != null
+                    && animationSet != null
+                    && animationSet.set.get(AnimationState.DIE) != null) {
+
+                    anim.state = AnimationState.DIE;
+                    anim.stateTime = 0f;
+                    anim.looping = false;
                 }
+
+
             }
 
             if (death.dying) {
                 death.remainingTime -= deltaTime;
 
-                if (death.remainingTime <= 0f) {
+
+                AnimationStateComponent anim =
+                    enemy.getComponent(AnimationStateComponent.class);
+
+                AnimationSetComponent animationSet =
+                    enemy.getComponent(AnimationSetComponent.class);
+
+                if (!death.burstCreated
+                    && anim != null
+                    && animationSet != null
+                    && animationSet.set != null) {
+
+                    Animation<TextureRegion> dyingAnimation =
+                        animationSet.set.get(AnimationState.DIE);
+
+                    if (dyingAnimation != null
+                        && anim.state == AnimationState.DIE
+                        && anim.stateTime >= dyingAnimation.getAnimationDuration()) {
+
+                        PositionComponent pos =
+                            enemy.getComponent(PositionComponent.class);
+
+                        if (pos != null) {
+                            float centerX = pos.x + 13.5f;
+                            float centerY = pos.y + 8f;
+                            particleFactory.createBurst(centerX, centerY, 12);
+                        }
+
+                        death.burstCreated = true;
+                    }
+                }
+
+
+                if (death.remainingTime <= 0) {
                     deadEnemies.add(enemy);
                 }
             }
         }
 
-        for(int i = 0; i < deadEnemies.size; i++){
+        for (int i = 0; i < deadEnemies.size; i++) {
             engine.removeEntity(deadEnemies.get(i));
         }
     }

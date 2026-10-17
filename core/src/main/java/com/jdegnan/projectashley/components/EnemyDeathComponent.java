@@ -9,9 +9,12 @@ public class EnemyDeathComponent implements Component, Pool.Poolable{
 
     public float remainingTime;
 
+    public boolean burstCreated;
+
     @Override
     public void reset() {
         dying = false;
         remainingTime = 0f;
+        burstCreated = false;
     }
 }

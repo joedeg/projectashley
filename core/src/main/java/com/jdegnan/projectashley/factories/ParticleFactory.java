@@ -59,16 +59,16 @@ public class ParticleFactory {
 
             float angle = MathUtils.random(0f, MathUtils.PI2);
 
-            float speed = MathUtils.random(25f, 50f);
+            float speed = MathUtils.random(40f, 75f);
 
             float velocityX = MathUtils.cos(angle) * speed;
             float velocityY = MathUtils.sin(angle) * speed;
 
-            float size = MathUtils.random(2f, 4f);
+            float size = MathUtils.random(3f, 5f);
 
-            float lifetime = MathUtils.random(0.35f, 0.65f);
+            float lifetime = MathUtils.random(0.4f, 0.7f);
 
-            float drag = 35f;
+            float drag = 20f;
 
             create(
                 x,

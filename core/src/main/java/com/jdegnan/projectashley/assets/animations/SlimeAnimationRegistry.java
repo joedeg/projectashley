@@ -27,6 +27,21 @@ public class SlimeAnimationRegistry {
             idleAnimation
         );
 
+        Texture dyingTexture = assets.get(EnemyAssets.SLIME_DYING);
+
+        TextureRegion[][] dyingFrames =
+            TextureRegion.split(dyingTexture, 32,32);
+
+        Animation<TextureRegion> dyingAnimation =
+            new Animation<>(
+                0.1f,
+                dyingFrames[0]
+            );
+
+        dyingAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        animationSet.add(AnimationState.DIE, dyingAnimation);
+
         return animationSet;
     }
 }

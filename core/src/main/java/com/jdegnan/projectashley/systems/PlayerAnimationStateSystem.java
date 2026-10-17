@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
+import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
 
 /**
@@ -29,6 +30,7 @@ public class PlayerAnimationStateSystem extends IteratingSystem {
      */
     public PlayerAnimationStateSystem() {
         super(Family.all(
+            PlayerComponent.class,
             VelocityComponent.class,
             AnimationStateComponent.class
         ).get());

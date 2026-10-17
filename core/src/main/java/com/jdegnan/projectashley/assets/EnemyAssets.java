@@ -10,5 +10,12 @@ public class EnemyAssets {
             Texture.class
         );
 
-    private EnemyAssets(){}
+    public static final AssetDescriptor<Texture> SLIME_DYING =
+        new AssetDescriptor<>(
+            "sprites/slime/slimeDying.png",
+            Texture.class
+        );
+
+    private EnemyAssets() {
+    }
 }

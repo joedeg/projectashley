@@ -4,11 +4,13 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
+import com.jdegnan.projectashley.components.EnemyDeathComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
 
@@ -62,6 +64,7 @@ public class AnimationSystem extends IteratingSystem {
 
         // Increment the animation timer
         anim.stateTime += deltaTime;
+
 
         Animation<TextureRegion> current = set.set.get(anim.state);
 

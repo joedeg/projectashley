@@ -67,15 +67,6 @@ public class SlimeMovementSystem extends IteratingSystem {
 
         if (collision.hitLeft || collision.hitRight
             || collision.hitTop || collision.hitBottom) {
-            Gdx.app.log(
-                "SlimeCollision",
-                "Left=" + collision.hitLeft
-                    + ", Right=" + collision.hitRight
-                    + ", Top=" + collision.hitTop
-                    + ", Bottom=" + collision.hitBottom
-                    + ", DirX=" + movement.directionX
-                    + ", DirY=" + movement.directionY
-            );
         }
 
         EnemyAIComponent ai =
@@ -99,13 +90,6 @@ public class SlimeMovementSystem extends IteratingSystem {
                 movement.directionY *= -1f;
             }
         }
-
-        Gdx.app.log(
-            "SlimeMovement",
-            "avoiding=" + (ai != null && ai.avoidingObstacle)
-                + ", dirX=" + movement.directionX
-                + ", dirY=" + movement.directionY
-        );
 
         vel.vx = movement.directionX * movement.speed;
         vel.vy = movement.directionY * movement.speed;
