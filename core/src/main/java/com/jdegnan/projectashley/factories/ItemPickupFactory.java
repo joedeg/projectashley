@@ -79,4 +79,45 @@ public class ItemPickupFactory implements LevelEntityFactory {
         System.out.println("Item pickup created " + itemPickup.item);
         return pickup;
     }
+
+    public Entity createDrop(ItemType itemType, float x, float y){
+        Entity pickup = engine.createEntity();
+
+        PositionComponent pos =
+            engine.createComponent(PositionComponent.class);
+        pos.x = x;
+        pos.y = y;
+
+        ItemPickupComponent itemPickup =
+            engine.createComponent(ItemPickupComponent.class);
+        itemPickup.item = itemType;
+
+        RenderComponent render =
+            engine.createComponent(RenderComponent.class);
+
+        ItemDefinition definition = itemAssetRegistry.get(itemType);
+
+        Texture texture = assets.get(definition.getAsset());
+
+        render.region = new TextureRegion(texture);
+        render.width = render.region.getRegionWidth();
+        render.height = render.region.getRegionHeight();
+
+        pickup.add(render);
+        pickup.add(pos);
+        pickup.add(itemPickup);
+
+        engine.addEntity(pickup);
+
+        System.out.println(
+            "Item pickup created "
+                + itemType
+                + " at "
+                + x
+                + ", "
+                + y);
+
+        return pickup;
+
+    }
 }

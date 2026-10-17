@@ -15,6 +15,7 @@ import com.jdegnan.projectashley.components.CollisionComponent;
 import com.jdegnan.projectashley.components.DamageFlashComponent;
 import com.jdegnan.projectashley.components.EnemyAIComponent;
 import com.jdegnan.projectashley.components.EnemyDeathComponent;
+import com.jdegnan.projectashley.components.EnemyLootComponent;
 import com.jdegnan.projectashley.components.EnemyMovementComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.KnockbackComponent;
@@ -23,8 +24,11 @@ import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SpriteComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
+import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
+import com.jdegnan.projectashley.loot.EnemyLootTable;
+import com.jdegnan.projectashley.loot.LootDrop;
 
 public class EnemyFactory implements LevelEntityFactory {
     private final PooledEngine engine;
@@ -127,7 +131,21 @@ public class EnemyFactory implements LevelEntityFactory {
         ai.wanderInterval = MathUtils.random(1.5f, 3.5f);
         ai.wanderTimer = ai.wanderInterval;
 
+        EnemyLootTable lootTable = new EnemyLootTable();
 
+        lootTable.addDrop(new LootDrop(null, 50f));
+        lootTable.addDrop(new LootDrop(ItemType.FOREST_KEY, 25f));
+        lootTable.addDrop(new LootDrop(ItemType.MARSH_AMULET, 25f));
+
+
+        EnemyLootComponent loot =
+            engine.createComponent(EnemyLootComponent.class);
+
+        loot.lootTable = lootTable;
+
+
+
+        enemy.add(loot);
         enemy.add(ai);
         enemy.add(death);
         enemy.add(knockback);

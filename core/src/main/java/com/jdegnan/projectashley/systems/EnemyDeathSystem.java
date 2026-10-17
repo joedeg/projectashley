@@ -8,15 +8,20 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.EnemyDeathComponent;
+import com.jdegnan.projectashley.components.EnemyLootComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
+import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
+import com.jdegnan.projectashley.inventory.ItemType;
+import com.jdegnan.projectashley.loot.LootDrop;
 
 public class EnemyDeathSystem extends EntitySystem {
 
@@ -32,12 +37,17 @@ public class EnemyDeathSystem extends EntitySystem {
 
     private final ParticleFactory particleFactory;
 
+    private final ItemPickupFactory itemPickupFactory;
+
     private final Array<Entity> deadEnemies = new Array<>();
 
     private Engine engine;
 
-    public EnemyDeathSystem(ParticleFactory particleFactory) {
+    public EnemyDeathSystem(
+        ParticleFactory particleFactory,
+        ItemPickupFactory itemPickupFactory) {
         this.particleFactory = particleFactory;
+        this.itemPickupFactory = itemPickupFactory;
     }
 
     @Override
@@ -70,6 +80,26 @@ public class EnemyDeathSystem extends EntitySystem {
             if (!death.dying && health.hp <= 0) {
                 death.dying = true;
                 death.remainingTime = DEATH_DURATION;
+
+                PositionComponent pos =
+                    enemy.getComponent(PositionComponent.class);
+
+                EnemyLootComponent loot =
+                    enemy.getComponent(EnemyLootComponent.class);
+
+                if (loot != null && loot.lootTable != null) {
+                    LootDrop drop = loot.lootTable.roll();
+
+                    if(drop != null && drop.getItem() != null)
+
+                    if (pos != null) {
+                        itemPickupFactory.createDrop(
+                            drop.getItem(),
+                            pos.x,
+                            pos.y
+                        );
+                    }
+                }
 
                 AnimationStateComponent anim =
                     enemy.getComponent(AnimationStateComponent.class);
@@ -136,3 +166,4 @@ public class EnemyDeathSystem extends EntitySystem {
         }
     }
 }
+

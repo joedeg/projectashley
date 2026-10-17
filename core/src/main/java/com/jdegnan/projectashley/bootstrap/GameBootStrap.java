@@ -45,7 +45,6 @@ import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
 import com.jdegnan.projectashley.systems.EnemyAISystem;
-import com.jdegnan.projectashley.systems.EnemyDeathAnimationSystem;
 import com.jdegnan.projectashley.systems.EnemyDeathEffectSystem;
 import com.jdegnan.projectashley.systems.EnemyDeathSystem;
 import com.jdegnan.projectashley.systems.GateGlowSystem;
@@ -131,6 +130,12 @@ public class GameBootStrap {
         PlayerFactory playerFactory = createPlayerFactory(animationLibrary);
         particleFactory = new ParticleFactory(engine);
 
+        ItemPickupFactory itemPickupFactory =
+            new ItemPickupFactory(
+                engine,
+                assets,
+                itemAssetRegistry);
+
 
         // 4. Systems
         CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
@@ -142,7 +147,8 @@ public class GameBootStrap {
             cameraFollowSystem,
             bulletFactory,
             itemAssetRegistry,
-            swordSwingFactory);
+            swordSwingFactory,
+            itemPickupFactory);
 
         // 5. Level management
         LevelManager levelManager = createLevelManager(
@@ -151,7 +157,8 @@ public class GameBootStrap {
             gameConfig,
             playerFactory,
             cameraFollowSystem,
-            itemAssetRegistry
+            itemAssetRegistry,
+            itemPickupFactory
         );
 
         // 6. Service container assembly
@@ -286,7 +293,7 @@ public class GameBootStrap {
      * Configures entity factory registries and constructs the level management pipeline.
      *
      * @param engine             The Ashley ECS engine.
-     * @param assets             The game assets manager.
+     * @param assets             The game assets' manager.
      * @param gameConfig         The game configuration settings.
      * @param playerFactory      Factory for spawning the player entity.
      * @param cameraFollowSystem Camera tracking system used when spawning/loading levels.
@@ -299,7 +306,8 @@ public class GameBootStrap {
         GameConfig gameConfig,
         PlayerFactory playerFactory,
         CameraFollowSystem cameraFollowSystem,
-        ItemAssetRegistry itemAssetRegistry
+        ItemAssetRegistry itemAssetRegistry,
+        ItemPickupFactory itemPickupFactory
     ) {
 
         LevelEntityFactoryRegistry factoryRegistry =
@@ -312,7 +320,7 @@ public class GameBootStrap {
         factoryRegistry.register("door",
             new DoorFactory(engine, assets));
         factoryRegistry.register("item",
-            new ItemPickupFactory(engine, assets, itemAssetRegistry));
+            itemPickupFactory);
         factoryRegistry.register("brazier",
             new BrazierFactory(assets));
 
@@ -354,7 +362,8 @@ public class GameBootStrap {
         CameraFollowSystem cameraFollowSystem,
         BulletFactory bulletFactory,
         ItemAssetRegistry itemAssetRegistry,
-        SwordSwingFactory swordSwingFactory
+        SwordSwingFactory swordSwingFactory,
+        ItemPickupFactory itemPickupFactory
     ) {
 
 
@@ -385,7 +394,7 @@ public class GameBootStrap {
         // Combat
         engine.addSystem(new PlayerAttackSystem(engine, swordSwingFactory));
         engine.addSystem(new EnemyDeathEffectSystem());
-        engine.addSystem(new EnemyDeathSystem(particleFactory));
+        engine.addSystem(new EnemyDeathSystem(particleFactory, itemPickupFactory));
         engine.addSystem(new KnockbackSystem());
 
 
