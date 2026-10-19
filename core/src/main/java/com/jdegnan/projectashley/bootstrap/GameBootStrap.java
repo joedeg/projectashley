@@ -253,6 +253,16 @@ public class GameBootStrap {
             )
         );
 
+        itemAssetRegistry.register(
+            new ItemDefinition(
+                ItemType.HEART,
+                "Heart",
+                "Restores health when collected.",
+                ItemAssets.HEART
+            )
+        );
+
+
         return itemAssetRegistry;
     }
 
@@ -365,8 +375,6 @@ public class GameBootStrap {
         SwordSwingFactory swordSwingFactory,
         ItemPickupFactory itemPickupFactory
     ) {
-
-
 
 
         // Gameplay collision responses

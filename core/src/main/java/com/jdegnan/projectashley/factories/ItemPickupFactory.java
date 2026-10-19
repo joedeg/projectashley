@@ -99,7 +99,16 @@ public class ItemPickupFactory implements LevelEntityFactory {
 
         Texture texture = assets.get(definition.getAsset());
 
-        render.region = new TextureRegion(texture);
+        TextureRegion region;
+
+        if(itemType == ItemType.HEART){
+            region = new TextureRegion(texture, 0, 0, 32, 32);
+        }
+        else {
+            region = new TextureRegion(texture);
+        }
+
+        render.region = region;
         render.width = render.region.getRegionWidth();
         render.height = render.region.getRegionHeight();
 

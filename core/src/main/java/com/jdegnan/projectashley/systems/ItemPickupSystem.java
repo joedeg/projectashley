@@ -6,10 +6,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.InventoryComponent;
 import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
+import com.jdegnan.projectashley.inventory.ItemType;
 
 public class ItemPickupSystem extends IteratingSystem {
 
@@ -63,12 +65,28 @@ public class ItemPickupSystem extends IteratingSystem {
 
         ItemPickupComponent pickup = im.get(entity);
 
-        InventoryComponent inventory =
-            player.getComponent(InventoryComponent.class);
+        if(pickup.item == ItemType.HEART){
+            HealthComponent health =
+                player.getComponent(HealthComponent.class);
 
-        inventory.add(pickup.item);
+            if(health == null || health.hp >= health.maxHp){
+                return;
+            }
 
-        System.out.println("Item picked up: " + pickup.item);
+            health.hp = Math.min(health.hp + 1, health.maxHp);
+
+            System.out.println("Player health: " + health.hp);
+        }
+        else {
+            InventoryComponent inventory =
+                player.getComponent(InventoryComponent.class);
+
+            inventory.add(pickup.item);
+
+            System.out.println("Item picked up: " + pickup.item);
+
+
+        }
 
         getEngine().removeEntity(entity);
     }

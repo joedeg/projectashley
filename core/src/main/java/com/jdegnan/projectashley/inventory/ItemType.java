@@ -6,5 +6,8 @@ public enum ItemType {
     MARSH_AMULET,
     FIRE_ROD,
     ICE_PICK,
-    LIGHT_CRYSTAL
+    LIGHT_CRYSTAL,
+
+    HEART,
+    HEART_HUD;
 }

@@ -49,7 +49,9 @@ public final class Levels {
             BrazierAssets.BRAZIER,
             PuzzleAssets.GATE_OPEN,
             EnemyAssets.SLIME_IDLE,
-            EnemyAssets.SLIME_DYING
+            EnemyAssets.SLIME_DYING,
+            ItemAssets.HEART,
+            ItemAssets.HEART_HUD
             ),
         new Vector2(160, 160)
     );

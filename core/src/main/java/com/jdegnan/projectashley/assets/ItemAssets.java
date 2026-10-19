@@ -23,11 +23,17 @@ public class ItemAssets {
             Texture.class
         );
 
+    public static final AssetDescriptor<Texture> HEART =
+        new AssetDescriptor<>(
+            "sprites/heart.png",
+            Texture.class
+        );
 
-
-
-
-
+    public static final AssetDescriptor<Texture> HEART_HUD =
+        new AssetDescriptor<>(
+            "sprites/heartHud.png",
+            Texture.class
+        );
 
     private ItemAssets(){}
 }

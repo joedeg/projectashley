@@ -133,9 +133,9 @@ public class EnemyFactory implements LevelEntityFactory {
 
         EnemyLootTable lootTable = new EnemyLootTable();
 
-        lootTable.addDrop(new LootDrop(null, 50f));
-        lootTable.addDrop(new LootDrop(ItemType.FOREST_KEY, 25f));
-        lootTable.addDrop(new LootDrop(ItemType.MARSH_AMULET, 25f));
+        lootTable.addDrop(new LootDrop(null, 40f));
+        lootTable.addDrop(new LootDrop(ItemType.HEART, 60f));
+//        lootTable.addDrop(new LootDrop(ItemType.MARSH_AMULET, 30f));
 
 
         EnemyLootComponent loot =

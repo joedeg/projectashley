@@ -90,14 +90,14 @@ public class EnemyDeathSystem extends EntitySystem {
                 if (loot != null && loot.lootTable != null) {
                     LootDrop drop = loot.lootTable.roll();
 
-                    if(drop != null && drop.getItem() != null)
-
-                    if (pos != null) {
-                        itemPickupFactory.createDrop(
-                            drop.getItem(),
-                            pos.x,
-                            pos.y
-                        );
+                    if (drop != null && drop.getItem() != null) {
+                        if (pos != null) {
+                            itemPickupFactory.createDrop(
+                                drop.getItem(),
+                                pos.x,
+                                pos.y
+                            );
+                        }
                     }
                 }
 

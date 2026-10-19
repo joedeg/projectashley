@@ -34,6 +34,7 @@ public class Assets {
         // Global assets
         acquire(PlayerAssets.PLAYER_ATLAS);
         acquire(PlayerAssets.SWORD_SWING);
+        acquire(ItemAssets.HEART_HUD);
 
 
         // Other global assets...
