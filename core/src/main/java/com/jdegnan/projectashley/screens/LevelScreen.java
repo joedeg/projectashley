@@ -3,6 +3,8 @@ package com.jdegnan.projectashley.screens;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -19,6 +21,12 @@ import com.jdegnan.projectashley.rendering.InteractionMessageRenderer;
 import com.jdegnan.projectashley.rendering.ParticleRenderer;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.rendering.RenderPipeline;
+import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.SaveGameData;
+import com.jdegnan.projectashley.save.SaveGameSerializer;
+import com.jdegnan.projectashley.save.SaveGameService;
+import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
+import com.jdegnan.projectashley.save.SaveGameRestorer;
 import com.jdegnan.projectashley.ui.HealthHud;
 
 
@@ -38,12 +46,23 @@ public class LevelScreen extends BaseScreen {
 
     private final ParticleFactory particleFactory;
 
-    private HealthHud healthHud;
+    private final HealthHud healthHud;
+
+    private final SaveGameService saveGameService;
+    private final SaveGameSnapshotFactory saveGameSnapshotFactory;
+    private final SaveGameRestorer saveGameRestorer;
+    private final CollectedPickupTracker collectedPickupTracker;
+    private SaveGameData pendineSaveRestore;
 
     public LevelScreen(GameServices gameServices) {
         super(gameServices.getOrthographicCamera());
+
         this.engine = gameServices.getEngine();
         this.levelManager = gameServices.getLevelManager();
+        this.saveGameService = gameServices.getSaveGameService();
+        this.saveGameSnapshotFactory =
+            gameServices.getSaveGameSnapshotFactory();
+        this.saveGameRestorer = new SaveGameRestorer();
 
         renderContext = new RenderContext(
             gameServices.getOrthographicCamera(),
@@ -83,6 +102,7 @@ public class LevelScreen extends BaseScreen {
 
         healthHud = new HealthHud(gameServices.getAssets().get(ItemAssets.HEART_HUD));
 
+        this.collectedPickupTracker = gameServices.getCollectedPickupTracker();
 
     }
 
@@ -96,6 +116,52 @@ public class LevelScreen extends BaseScreen {
     @Override
     public void update(float deltaTime) {
         levelManager.update();
+
+        if (pendineSaveRestore != null
+            && !levelManager.isTransitioning()) {
+            saveGameRestorer.restorePlayer(
+                pendineSaveRestore,
+                levelManager);
+
+            pendineSaveRestore = null;
+
+            System.out.println("GAME RESTORED.");
+        }
+
+
+
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+            SaveGameData snapshot =
+                saveGameSnapshotFactory.create(levelManager);
+
+            saveGameService.save(snapshot);
+
+            System.out.println("GAME SAVED: ");
+            System.out.println(
+                new SaveGameSerializer().serialize(snapshot)
+            );
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) {
+            SaveGameData loaded = saveGameService.load();
+
+            if (loaded != null) {
+                collectedPickupTracker.restore(loaded.collectedPickupIds);
+
+                pendineSaveRestore = loaded;
+                levelManager.reloadCurrentLevel();
+
+                System.out.println(
+                    new SaveGameSerializer().serialize(
+                        saveGameSnapshotFactory.create(levelManager)
+                    )
+                );
+            } else {
+                System.out.println("NO SAVE FILE FOUND");
+            }
+        }
 
         LevelRuntime runtime = levelManager.getCurrentRuntime();
         if (runtime != null) {

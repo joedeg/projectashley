@@ -747,12 +747,14 @@
   </object>
   <object id="26" name="Forest_key" x="480" y="768" width="32" height="32">
    <properties>
+    <property name="id" value="forest_key_adventure_01"/>
     <property name="item" value="forest_key"/>
     <property name="type" value="item"/>
    </properties>
   </object>
   <object id="30" name="marsh_charm" x="928" y="1056" width="32" height="32">
    <properties>
+    <property name="id" value="marsh_amulet_adventure_01"/>
     <property name="item" value="marsh_amulet"/>
     <property name="type" value="item"/>
    </properties>
@@ -765,6 +767,7 @@
   </object>
   <object id="33" name="fire rod" x="352" y="1120" width="32" height="32">
    <properties>
+    <property name="id" value="fire_rod_adventure_01"/>
     <property name="item" value="fire_rod"/>
     <property name="type" value="item"/>
    </properties>

@@ -58,6 +58,16 @@ public class ItemPickupFactory implements LevelEntityFactory {
         itemPickup.item =
             ItemType.valueOf(itemName.toUpperCase());
 
+        itemPickup.id = object.getStringProperty("id", null);
+
+        if(itemPickup.id == null || itemPickup.id.isBlank()){
+            throw new IllegalStateException(
+                "Item pickup '" + object.getName() + "' missing 'id' property"
+            );
+        }
+
+
+
         ItemDefinition definition =
             itemAssetRegistry.get(itemPickup.item);
 

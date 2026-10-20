@@ -97,7 +97,6 @@ public class CollisionSystem extends EntitySystem {
      * @param b The second entity.
      */
     private void handleCollision(Entity a, Entity b){
-      //  System.out.println("collision! " + a.toString() + " | " + b.toString());
 
         EventBus.collisionEvents.add(new CollisionEvent(a, b));
     }

@@ -12,6 +12,7 @@ import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.inventory.ItemType;
+import com.jdegnan.projectashley.save.CollectedPickupTracker;
 
 public class ItemPickupSystem extends IteratingSystem {
 
@@ -25,11 +26,15 @@ public class ItemPickupSystem extends IteratingSystem {
 
     private static final float PICKUP_DISTANCE = 24;
 
-    public ItemPickupSystem() {
+    private CollectedPickupTracker collectedPickupTracker;
+
+    public ItemPickupSystem(CollectedPickupTracker collectedPickupTracker) {
         super(Family.all(
             ItemPickupComponent.class,
             PositionComponent.class
         ).get());
+
+        this.collectedPickupTracker = collectedPickupTracker;
     }
 
     @Override
@@ -82,6 +87,8 @@ public class ItemPickupSystem extends IteratingSystem {
                 player.getComponent(InventoryComponent.class);
 
             inventory.add(pickup.item);
+
+            collectedPickupTracker.record(pickup.id);
 
             System.out.println("Item picked up: " + pickup.item);
 

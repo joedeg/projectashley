@@ -75,7 +75,7 @@ public class PlayerFactory {
         entity.add(vel);
 
         ColliderComponent col = new ColliderComponent();
-        col.localBounds.set(0, 0, 32, 32); // Assuming some collider size
+        col.localBounds.set(0f + 16f, 0f, 32f, 32f); // Assuming some collider size
 
         CollisionComponent collision = new CollisionComponent();
 

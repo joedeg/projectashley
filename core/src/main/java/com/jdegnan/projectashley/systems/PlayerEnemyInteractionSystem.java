@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.jdegnan.projectashley.components.DamageCooldownComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
+import com.jdegnan.projectashley.components.TagComponents.DeadComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.events.CollisionEvent;
@@ -73,7 +74,7 @@ public class PlayerEnemyInteractionSystem extends EntitySystem {
                 }
             }
 
-            if(cooldown.remaining <= 0){
+            if (cooldown.remaining <= 0) {
                 render.color.set(Color.WHITE);
             }
         }
@@ -95,7 +96,8 @@ public class PlayerEnemyInteractionSystem extends EntitySystem {
             DamageCooldownComponent cooldown =
                 cooldownMapper.get(player);
 
-            if (health.hp <= 0) {
+            if (health.hp <= 0
+                || player.getComponent(DeadComponent.class) != null) {
                 continue;
             }
 
@@ -115,6 +117,7 @@ public class PlayerEnemyInteractionSystem extends EntitySystem {
                     + health.hp
             );
         }
+        EventBus.collisionEvents.clear();
     }
 
     private Entity getPlayer(CollisionEvent event) {

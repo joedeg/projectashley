@@ -32,6 +32,9 @@ import com.jdegnan.projectashley.level.LevelEntityLoader;
 import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.rendering.RenderQueue;
+import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.SaveGameService;
+import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 import com.jdegnan.projectashley.systems.AnimationSystem;
 import com.jdegnan.projectashley.systems.BrazierAnimationSystem;
 import com.jdegnan.projectashley.systems.BrazierGateSystem;
@@ -58,6 +61,7 @@ import com.jdegnan.projectashley.systems.MovementCollisionSystem;
 import com.jdegnan.projectashley.systems.ParticleMovementSystem;
 import com.jdegnan.projectashley.systems.PlayerAnimationStateSystem;
 import com.jdegnan.projectashley.systems.PlayerAttackSystem;
+import com.jdegnan.projectashley.systems.PlayerDeathSystem;
 import com.jdegnan.projectashley.systems.PlayerEnemyInteractionSystem;
 import com.jdegnan.projectashley.systems.PlayerInputSystem;
 import com.jdegnan.projectashley.systems.RenderSubmissionSystem;
@@ -100,7 +104,12 @@ public class GameBootStrap {
      */
     private final GameServices gameServices;
     private final ParticleFactory particleFactory;
+    private final LevelManager levelManager;
     private Assets assets;
+
+    private final SaveGameService saveGameService;
+    private final SaveGameSnapshotFactory saveGameSnapshotFactory;
+    private final CollectedPickupTracker collectedPickupTracker;
 
     /**
      * Initializes all game infrastructure, services, factories, systems, and level managers.
@@ -137,8 +146,26 @@ public class GameBootStrap {
                 itemAssetRegistry);
 
 
-        // 4. Systems
         CameraFollowSystem cameraFollowSystem = new CameraFollowSystem(camera);
+
+        // Save game infrastructure
+        saveGameService = new SaveGameService();
+        collectedPickupTracker = new CollectedPickupTracker();
+        saveGameSnapshotFactory = new SaveGameSnapshotFactory(collectedPickupTracker);
+
+
+        // 4. Level management
+        levelManager = createLevelManager(
+            engine,
+            assets,
+            gameConfig,
+            playerFactory,
+            cameraFollowSystem,
+            itemAssetRegistry,
+            itemPickupFactory
+        );
+
+        // 5. Systems
         registerSystems(
             engine,
             renderQueue,
@@ -150,16 +177,6 @@ public class GameBootStrap {
             swordSwingFactory,
             itemPickupFactory);
 
-        // 5. Level management
-        LevelManager levelManager = createLevelManager(
-            engine,
-            assets,
-            gameConfig,
-            playerFactory,
-            cameraFollowSystem,
-            itemAssetRegistry,
-            itemPickupFactory
-        );
 
         // 6. Service container assembly
         this.gameServices = new GameServices(
@@ -171,7 +188,10 @@ public class GameBootStrap {
             renderQueue,
             batch,
             levelManager,
-            itemAssetRegistry
+            itemAssetRegistry,
+            saveGameService,
+            saveGameSnapshotFactory,
+            collectedPickupTracker
         );
 
 
@@ -349,7 +369,8 @@ public class GameBootStrap {
             engine,
             levelLoader,
             playerFactory,
-            cameraFollowSystem
+            cameraFollowSystem,
+            collectedPickupTracker
         );
     }
 
@@ -404,6 +425,7 @@ public class GameBootStrap {
         engine.addSystem(new EnemyDeathEffectSystem());
         engine.addSystem(new EnemyDeathSystem(particleFactory, itemPickupFactory));
         engine.addSystem(new KnockbackSystem());
+        engine.addSystem(new PlayerDeathSystem(levelManager));
 
 
         // Environment & Interactive Object Systems
@@ -411,7 +433,7 @@ public class GameBootStrap {
         engine.addSystem(new ChestAnimationSystem());
         engine.addSystem(new ChestRewardSystem());
         engine.addSystem(new DoorInteractionSystem(itemAssetRegistry));
-        engine.addSystem(new ItemPickupSystem());
+        engine.addSystem(new ItemPickupSystem(collectedPickupTracker));
         engine.addSystem(new InteractionMessageSystem());
         engine.addSystem(new BrazierInteractionSystem());
 

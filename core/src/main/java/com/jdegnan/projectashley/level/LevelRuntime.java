@@ -13,14 +13,11 @@ import com.jdegnan.projectashley.systems.MapCollisionSystem;
  * and associated entities.
  */
 public class LevelRuntime {
-
     private final Level level;
     private final LevelAssetSet assetSet;
     private final MapCollisionSystem collisionSystem;
     private final MapRenderer mapRenderer;
-
     private final Array<Entity> entities = new Array<>();
-
     private final LevelEntityLoader entityLoader;
 
     /**

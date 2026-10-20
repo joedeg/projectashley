@@ -48,7 +48,7 @@ public class DoorInteractionSystem extends IteratingSystem {
 
     private ImmutableArray<Entity> players;
 
-    private static final float INTERACTION_DISTANCE = 48f;
+    private static final float INTERACTION_DISTANCE = 64f;
 
     private final ItemAssetRegistry itemAssetRegistry;
 

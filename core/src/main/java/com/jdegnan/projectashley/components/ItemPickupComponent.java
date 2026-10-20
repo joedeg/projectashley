@@ -6,8 +6,10 @@ import com.jdegnan.projectashley.inventory.ItemType;
 
 public class ItemPickupComponent implements Component, Pool.Poolable{
     public ItemType item;
+    public String id;
     @Override
     public void reset() {
         item = null;
+        id = null;
     }
 }

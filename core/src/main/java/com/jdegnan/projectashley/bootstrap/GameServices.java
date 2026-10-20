@@ -9,6 +9,9 @@ import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.factories.PlayerFactory;
 import com.jdegnan.projectashley.rendering.RenderQueue;
+import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.SaveGameService;
+import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 
 public class GameServices {
 
@@ -30,6 +33,9 @@ public class GameServices {
 
     private final ItemAssetRegistry itemAssetRegistry;
 
+    private final SaveGameService saveGameService;
+    private final SaveGameSnapshotFactory saveGameSnapshotFactory;
+    private final CollectedPickupTracker collectedPickupTracker;
     public GameServices(
         Assets assets,
         PooledEngine engine,
@@ -39,7 +45,10 @@ public class GameServices {
         RenderQueue renderQueue,
         SpriteBatch spriteBatch,
         LevelManager levelManager,
-        ItemAssetRegistry itemAssetRegistry) {
+        ItemAssetRegistry itemAssetRegistry,
+        SaveGameService saveGameService,
+        SaveGameSnapshotFactory saveGameSnapshotFactory,
+        CollectedPickupTracker collectedPickupTracker) {
 
         this.assets = assets;
         this.engine = engine;
@@ -50,6 +59,9 @@ public class GameServices {
         this.spriteBatch = spriteBatch;
         this.levelManager = levelManager;
         this.itemAssetRegistry = itemAssetRegistry;
+        this.saveGameService = saveGameService;
+        this.saveGameSnapshotFactory = saveGameSnapshotFactory;
+        this.collectedPickupTracker = collectedPickupTracker;
 
     }
 
@@ -87,5 +99,16 @@ public class GameServices {
 
     public ItemAssetRegistry getItemAssetRegistry(){
         return itemAssetRegistry;
+    }
+
+    public SaveGameService getSaveGameService(){
+        return saveGameService;
+    }
+    public SaveGameSnapshotFactory getSaveGameSnapshotFactory(){
+        return saveGameSnapshotFactory;
+    }
+
+    public CollectedPickupTracker getCollectedPickupTracker() {
+        return collectedPickupTracker;
     }
 }
