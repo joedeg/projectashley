@@ -22,6 +22,7 @@ import com.jdegnan.projectashley.rendering.ParticleRenderer;
 import com.jdegnan.projectashley.rendering.RenderContext;
 import com.jdegnan.projectashley.rendering.RenderPipeline;
 import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 import com.jdegnan.projectashley.save.SaveGameData;
 import com.jdegnan.projectashley.save.SaveGameSerializer;
 import com.jdegnan.projectashley.save.SaveGameService;
@@ -52,6 +53,7 @@ public class LevelScreen extends BaseScreen {
     private final SaveGameSnapshotFactory saveGameSnapshotFactory;
     private final SaveGameRestorer saveGameRestorer;
     private final CollectedPickupTracker collectedPickupTracker;
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
     private SaveGameData pendingSaveRestore;
 
     public LevelScreen(GameServices gameServices) {
@@ -103,6 +105,7 @@ public class LevelScreen extends BaseScreen {
         healthHud = new HealthHud(gameServices.getAssets().get(ItemAssets.HEART_HUD));
 
         this.collectedPickupTracker = gameServices.getCollectedPickupTracker();
+        this.defeatedEnemyTracker = gameServices.getDefeatedEnemyTracker();
 
     }
 
@@ -154,6 +157,7 @@ public class LevelScreen extends BaseScreen {
 
             if (loaded != null) {
                 collectedPickupTracker.restore(loaded.collectedPickupIds);
+                defeatedEnemyTracker.restore(loaded.defeatedEnemyIds);
 
                 pendingSaveRestore = loaded;
                 levelManager.reloadCurrentLevel();

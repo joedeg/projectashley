@@ -823,24 +823,28 @@
   <object id="42" name="slime" x="1088" y="1024" width="32" height="32">
    <properties>
     <property name="enemyType" value="slime"/>
+    <property name="id" value="adventure_slime_02"/>
     <property name="type" value="enemy"/>
    </properties>
   </object>
   <object id="44" name="slime" x="1184" y="960" width="32" height="32">
    <properties>
     <property name="enemyType" value="slime"/>
+    <property name="id" value="adventure_slime_03"/>
     <property name="type" value="enemy"/>
    </properties>
   </object>
   <object id="46" name="slime" x="928" y="800" width="32" height="32">
    <properties>
     <property name="enemyType" value="slime"/>
+    <property name="id" value="adventure_slime_04"/>
     <property name="type" value="enemy"/>
    </properties>
   </object>
   <object id="45" name="slime" x="992" y="1184" width="32" height="32">
    <properties>
     <property name="enemyType" value="slime"/>
+    <property name="id" value="adventure_slime_01"/>
     <property name="type" value="enemy"/>
    </properties>
   </object>

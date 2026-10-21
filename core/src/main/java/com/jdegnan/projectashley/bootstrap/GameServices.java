@@ -10,6 +10,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.factories.PlayerFactory;
 import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 import com.jdegnan.projectashley.save.SaveGameService;
 import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 
@@ -36,6 +37,8 @@ public class GameServices {
     private final SaveGameService saveGameService;
     private final SaveGameSnapshotFactory saveGameSnapshotFactory;
     private final CollectedPickupTracker collectedPickupTracker;
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
+
     public GameServices(
         Assets assets,
         PooledEngine engine,
@@ -48,7 +51,8 @@ public class GameServices {
         ItemAssetRegistry itemAssetRegistry,
         SaveGameService saveGameService,
         SaveGameSnapshotFactory saveGameSnapshotFactory,
-        CollectedPickupTracker collectedPickupTracker) {
+        CollectedPickupTracker collectedPickupTracker,
+        DefeatedEnemyTracker defeatedEnemyTracker) {
 
         this.assets = assets;
         this.engine = engine;
@@ -62,6 +66,7 @@ public class GameServices {
         this.saveGameService = saveGameService;
         this.saveGameSnapshotFactory = saveGameSnapshotFactory;
         this.collectedPickupTracker = collectedPickupTracker;
+        this.defeatedEnemyTracker = defeatedEnemyTracker;
 
     }
 
@@ -110,5 +115,9 @@ public class GameServices {
 
     public CollectedPickupTracker getCollectedPickupTracker() {
         return collectedPickupTracker;
+    }
+
+    public DefeatedEnemyTracker getDefeatedEnemyTracker() {
+        return defeatedEnemyTracker;
     }
 }

@@ -16,5 +16,6 @@ public class SaveGameData {
     public Array<String> collectedPickupIds = new Array<>();
 
     public Array<String> openedDoorIds = new Array<>();
+    public Array<String> defeatedEnemyIds = new Array<>();
 
 }

@@ -62,6 +62,8 @@ public class EnemyFactory implements LevelEntityFactory {
                 "unknown"
             );
 
+        enemyComponent.id = object.getStringProperty("id", null);
+
         AnimationSetComponent animSet =
             engine.createComponent(AnimationSetComponent.class);
 
@@ -135,15 +137,11 @@ public class EnemyFactory implements LevelEntityFactory {
 
         lootTable.addDrop(new LootDrop(null, 40f));
         lootTable.addDrop(new LootDrop(ItemType.HEART, 60f));
-//        lootTable.addDrop(new LootDrop(ItemType.MARSH_AMULET, 30f));
-
 
         EnemyLootComponent loot =
             engine.createComponent(EnemyLootComponent.class);
 
         loot.lootTable = lootTable;
-
-
 
         enemy.add(loot);
         enemy.add(ai);

@@ -33,6 +33,7 @@ import com.jdegnan.projectashley.level.LevelLoader;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.rendering.RenderQueue;
 import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 import com.jdegnan.projectashley.save.SaveGameService;
 import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 import com.jdegnan.projectashley.systems.AnimationSystem;
@@ -110,6 +111,7 @@ public class GameBootStrap {
     private final SaveGameService saveGameService;
     private final SaveGameSnapshotFactory saveGameSnapshotFactory;
     private final CollectedPickupTracker collectedPickupTracker;
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
 
     /**
      * Initializes all game infrastructure, services, factories, systems, and level managers.
@@ -151,7 +153,11 @@ public class GameBootStrap {
         // Save game infrastructure
         saveGameService = new SaveGameService();
         collectedPickupTracker = new CollectedPickupTracker();
-        saveGameSnapshotFactory = new SaveGameSnapshotFactory(collectedPickupTracker);
+        defeatedEnemyTracker = new DefeatedEnemyTracker();
+        saveGameSnapshotFactory =
+            new SaveGameSnapshotFactory(
+                collectedPickupTracker,
+                defeatedEnemyTracker);
 
 
         // 4. Level management
@@ -175,7 +181,8 @@ public class GameBootStrap {
             bulletFactory,
             itemAssetRegistry,
             swordSwingFactory,
-            itemPickupFactory);
+            itemPickupFactory,
+            defeatedEnemyTracker);
 
 
         // 6. Service container assembly
@@ -191,7 +198,8 @@ public class GameBootStrap {
             itemAssetRegistry,
             saveGameService,
             saveGameSnapshotFactory,
-            collectedPickupTracker
+            collectedPickupTracker,
+            defeatedEnemyTracker
         );
 
 
@@ -370,7 +378,8 @@ public class GameBootStrap {
             levelLoader,
             playerFactory,
             cameraFollowSystem,
-            collectedPickupTracker
+            collectedPickupTracker,
+            defeatedEnemyTracker
         );
     }
 
@@ -394,7 +403,8 @@ public class GameBootStrap {
         BulletFactory bulletFactory,
         ItemAssetRegistry itemAssetRegistry,
         SwordSwingFactory swordSwingFactory,
-        ItemPickupFactory itemPickupFactory
+        ItemPickupFactory itemPickupFactory,
+        DefeatedEnemyTracker defeatedEnemyTracker
     ) {
 
 
@@ -423,7 +433,10 @@ public class GameBootStrap {
         // Combat
         engine.addSystem(new PlayerAttackSystem(engine, swordSwingFactory));
         engine.addSystem(new EnemyDeathEffectSystem());
-        engine.addSystem(new EnemyDeathSystem(particleFactory, itemPickupFactory));
+        engine.addSystem(new EnemyDeathSystem(
+            particleFactory,
+            itemPickupFactory,
+            defeatedEnemyTracker));
         engine.addSystem(new KnockbackSystem());
         engine.addSystem(new PlayerDeathSystem(levelManager));
 

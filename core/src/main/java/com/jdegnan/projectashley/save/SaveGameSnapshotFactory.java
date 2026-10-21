@@ -12,9 +12,13 @@ import com.jdegnan.projectashley.level.LevelRuntime;
 public class SaveGameSnapshotFactory {
 
     private final CollectedPickupTracker collectedPickupTracker;
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
 
-    public SaveGameSnapshotFactory(CollectedPickupTracker collectedPickupTracker){
+    public SaveGameSnapshotFactory(
+        CollectedPickupTracker collectedPickupTracker,
+        DefeatedEnemyTracker defeatedEnemyTracker){
         this.collectedPickupTracker = collectedPickupTracker;
+        this.defeatedEnemyTracker = defeatedEnemyTracker;
     }
 
     public SaveGameData create(LevelManager levelManager){
@@ -51,6 +55,10 @@ public class SaveGameSnapshotFactory {
         data.openedDoorIds.addAll(
             levelManager.getOpenedDoorIds()
         );
+        data.defeatedEnemyIds.addAll(
+            defeatedEnemyTracker.getDefeatedEnemyIds()
+        );
+
 
 
         for(ObjectMap.Entry<ItemType, Integer> entry : inventory.items){

@@ -20,8 +20,8 @@ import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
-import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.loot.LootDrop;
+import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 
 public class EnemyDeathSystem extends EntitySystem {
 
@@ -31,6 +31,7 @@ public class EnemyDeathSystem extends EntitySystem {
 
     private final ComponentMapper<EnemyDeathComponent> edm =
         ComponentMapper.getFor(EnemyDeathComponent.class);
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
 
 
     private ImmutableArray<Entity> enemies;
@@ -45,9 +46,11 @@ public class EnemyDeathSystem extends EntitySystem {
 
     public EnemyDeathSystem(
         ParticleFactory particleFactory,
-        ItemPickupFactory itemPickupFactory) {
+        ItemPickupFactory itemPickupFactory,
+        DefeatedEnemyTracker defeatedEnemyTracker) {
         this.particleFactory = particleFactory;
         this.itemPickupFactory = itemPickupFactory;
+        this.defeatedEnemyTracker = defeatedEnemyTracker;
     }
 
     @Override
@@ -80,6 +83,13 @@ public class EnemyDeathSystem extends EntitySystem {
             if (!death.dying && health.hp <= 0) {
                 death.dying = true;
                 death.remainingTime = DEATH_DURATION;
+
+                EnemyComponent enemyComponent =
+                    enemy.getComponent(EnemyComponent.class);
+
+                if(enemyComponent != null){
+                    defeatedEnemyTracker.markDefeated(enemyComponent.id);
+                }
 
                 PositionComponent pos =
                     enemy.getComponent(PositionComponent.class);

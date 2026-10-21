@@ -11,8 +11,10 @@ import com.jdegnan.projectashley.components.DoorComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
+import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.factories.PlayerFactory;
 import com.jdegnan.projectashley.save.CollectedPickupTracker;
+import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 import com.jdegnan.projectashley.systems.CameraFollowSystem;
 
 /**
@@ -28,11 +30,11 @@ public class LevelManager {
     private final LevelLoader levelLoader;
     private LevelRuntime currentRuntime;
     private boolean transitionRequested;
-
     private final PlayerFactory playerFactory;
     private final CameraFollowSystem cameraFollowSystem;
     private Entity player;
     private final CollectedPickupTracker collectedPickupTracker;
+    private final DefeatedEnemyTracker defeatedEnemyTracker;
 
     /**
      * Constructs a new {@code LevelManager} with the necessary dependencies.
@@ -47,12 +49,14 @@ public class LevelManager {
                         LevelLoader levelLoader,
                         PlayerFactory playerFactory,
                         CameraFollowSystem cameraFollowSystem,
-                        CollectedPickupTracker collectedPickupTracker) {
+                        CollectedPickupTracker collectedPickupTracker,
+                        DefeatedEnemyTracker defeatedEnemyTracker) {
         this.engine = engine;
         this.levelLoader = levelLoader;
         this.playerFactory = playerFactory;
         this.cameraFollowSystem = cameraFollowSystem;
         this.collectedPickupTracker = collectedPickupTracker;
+        this.defeatedEnemyTracker = defeatedEnemyTracker;
     }
 
     /**
@@ -138,6 +142,7 @@ public class LevelManager {
         }
 
         applyCollectedPickupState();
+        applyDefeatedEnemyState();
     }
 
     /**
@@ -237,7 +242,7 @@ public class LevelManager {
                 entity.getComponent(ItemPickupComponent.class);
 
             if (pickup != null
-            && collectedPickupTracker.getCollectedIds()
+                && collectedPickupTracker.getCollectedIds()
                 .contains(pickup.id, false)) {
                 toRemove.add(entity);
             }
@@ -246,6 +251,43 @@ public class LevelManager {
         for (Entity entity : toRemove) {
             engine.removeEntity(entity);
         }
+    }
+
+    public void applyDefeatedEnemyState() {
+        ImmutableArray<Entity> enemies =
+            engine.getEntitiesFor(
+                Family.all(
+                    EnemyComponent.class
+                ).get()
+            );
+
+        Array<Entity> toRemove = new Array<>();
+
+        System.out.println(
+            "Saved defeated IDs: "
+                + defeatedEnemyTracker.getDefeatedEnemyIds()
+        );
+
+        for (Entity entity : enemies) {
+
+            EnemyComponent enemy = entity.getComponent(EnemyComponent.class);
+            System.out.println(
+                "Enemy found: id='" + enemy.id
+                    + "', type='" + enemy.enemyType + "'"
+            );
+
+            if (defeatedEnemyTracker.isDefeated(enemy.id)) {
+                System.out.println(
+                    "Removing defeated enemy: " + enemy.id
+                );
+                toRemove.add(entity);
+            }
+        }
+
+        for(Entity entity : toRemove) {
+            engine.removeEntity(entity);
+        }
+
     }
 
     /**
@@ -306,10 +348,10 @@ public class LevelManager {
                 DoorComponent.class
             ).get());
 
-        for(Entity entity : doors){
+        for (Entity entity : doors) {
             DoorComponent door = entity.getComponent(DoorComponent.class);
 
-            if(door.opened && door.id != null && !door.id.isBlank()){
+            if (door.opened && door.id != null && !door.id.isBlank()) {
                 openIds.add(door.id);
             }
         }
@@ -317,7 +359,7 @@ public class LevelManager {
         return openIds;
     }
 
-    public ImmutableArray<Entity> getEntitiesWithDoor(){
+    public ImmutableArray<Entity> getEntitiesWithDoor() {
         return engine.getEntitiesFor(
             Family.all(DoorComponent.class).get()
         );
