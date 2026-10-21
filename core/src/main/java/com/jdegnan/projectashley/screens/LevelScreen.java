@@ -52,7 +52,7 @@ public class LevelScreen extends BaseScreen {
     private final SaveGameSnapshotFactory saveGameSnapshotFactory;
     private final SaveGameRestorer saveGameRestorer;
     private final CollectedPickupTracker collectedPickupTracker;
-    private SaveGameData pendineSaveRestore;
+    private SaveGameData pendingSaveRestore;
 
     public LevelScreen(GameServices gameServices) {
         super(gameServices.getOrthographicCamera());
@@ -117,13 +117,18 @@ public class LevelScreen extends BaseScreen {
     public void update(float deltaTime) {
         levelManager.update();
 
-        if (pendineSaveRestore != null
+        if (pendingSaveRestore != null
             && !levelManager.isTransitioning()) {
             saveGameRestorer.restorePlayer(
-                pendineSaveRestore,
+                pendingSaveRestore,
                 levelManager);
 
-            pendineSaveRestore = null;
+            saveGameRestorer.restoreOpenedDoor(
+                pendingSaveRestore,
+                levelManager);
+
+
+            pendingSaveRestore = null;
 
             System.out.println("GAME RESTORED.");
         }
@@ -150,7 +155,7 @@ public class LevelScreen extends BaseScreen {
             if (loaded != null) {
                 collectedPickupTracker.restore(loaded.collectedPickupIds);
 
-                pendineSaveRestore = loaded;
+                pendingSaveRestore = loaded;
                 levelManager.reloadCurrentLevel();
 
                 System.out.println(

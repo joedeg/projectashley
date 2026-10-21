@@ -40,6 +40,7 @@ public class DoorFactory implements LevelEntityFactory {
 
         DoorComponent doorComp =
             engine.createComponent(DoorComponent.class);
+        doorComp.id = object.getStringProperty("id", null);
 
         WallComponent wallComp =
             engine.createComponent(WallComponent.class);

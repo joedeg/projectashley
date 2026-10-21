@@ -48,6 +48,10 @@ public class SaveGameSnapshotFactory {
         data.collectedPickupIds.addAll(
             collectedPickupTracker.getCollectedIds()
         );
+        data.openedDoorIds.addAll(
+            levelManager.getOpenedDoorIds()
+        );
+
 
         for(ObjectMap.Entry<ItemType, Integer> entry : inventory.items){
             data.inventory.put(entry.key.name(), entry.value);

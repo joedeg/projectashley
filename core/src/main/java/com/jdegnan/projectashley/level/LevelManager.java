@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jdegnan.projectashley.components.DamageCooldownComponent;
+import com.jdegnan.projectashley.components.DoorComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
@@ -296,4 +297,30 @@ public class LevelManager {
         }
         return levelLoader.getProgress();
     }
+
+    public Array<String> getOpenedDoorIds() {
+        Array<String> openIds = new Array<>();
+
+        ImmutableArray<Entity> doors = engine.getEntitiesFor(
+            Family.all(
+                DoorComponent.class
+            ).get());
+
+        for(Entity entity : doors){
+            DoorComponent door = entity.getComponent(DoorComponent.class);
+
+            if(door.opened && door.id != null && !door.id.isBlank()){
+                openIds.add(door.id);
+            }
+        }
+
+        return openIds;
+    }
+
+    public ImmutableArray<Entity> getEntitiesWithDoor(){
+        return engine.getEntitiesFor(
+            Family.all(DoorComponent.class).get()
+        );
+    }
+
 }
