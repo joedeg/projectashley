@@ -155,8 +155,6 @@ public class DoorInteractionSystem extends IteratingSystem {
             entity.remove(WallComponent.class);
         }
 
-        System.out.println("Door Opened ");
-
 
     }
 

@@ -112,10 +112,6 @@ public class PlayerEnemyInteractionSystem extends EntitySystem {
 
             render.color.set(Color.RED);
 
-            System.out.println(
-                "Player hit! Health: "
-                    + health.hp
-            );
         }
         EventBus.collisionEvents.clear();
     }

@@ -25,12 +25,7 @@ public class TestEntityFactory implements LevelEntityFactory {
         pos.y = object.getPosition().y;
         entity.add(pos);
 
-        System.out.println(
-            "Created test entity at "
-                + pos.x
-                + ", "
-                + pos.y
-        );
+
 
         return entity;
     }

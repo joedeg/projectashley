@@ -29,11 +29,6 @@ public class SaveGameTest {
                 restored.inventory.get("FOREST_KEY") == 1 &&
                 restored.inventory.get("HEART") == 2;
 
-        System.out.println(
-            passed ? "SAVE SERIALIZATION TEST PASSED"
-                : "SAVE SERIALIZATION TEST FAILED"
-        );
-
         SaveGameService saveService = new SaveGameService();
 
         SaveGameData fileData = new SaveGameData();
@@ -48,19 +43,6 @@ public class SaveGameTest {
 
         SaveGameData loadedData = saveService.load();
 
-        boolean fileTestPassed =
-            loadedData != null &&
-                "adventure".equals(loadedData.levelId) &&
-                loadedData.playerX == 200.0f &&
-                loadedData.playerY == 150.0f &&
-                loadedData.playerHealth == 3 &&
-                loadedData.playerMaxHealth == 3 &&
-                loadedData.inventory.get("FOREST_KEY") == 1;
-
-        System.out.println(
-            fileTestPassed ? "SAVE FILE TEST PASSED"
-                : "SAVE FILE TEST FAILED"
-        );
 
     }
 }

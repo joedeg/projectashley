@@ -146,15 +146,6 @@ public class EnemyAISystem extends EntitySystem {
                     ai.avoidingObstacle = true;
                     ai.avoidanceTimer = 1.5f;
 
-                    Gdx.app.log(
-                        "SlimeAI",
-                        "STARTING avoidance; hitLeft=" + collision.hitLeft
-                            + ", hitRight=" + collision.hitRight
-                            + ", hitTop=" + collision.hitTop
-                            + ", hitBottom=" + collision.hitBottom
-                    );
-
-
                     if (collision.hitLeft || collision.hitRight) {
                         // Wall blocks horizontal movement.
                         // Choose the vertical direction that moves toward the player.
@@ -193,19 +184,8 @@ public class EnemyAISystem extends EntitySystem {
                     }
                 }
             }
-            if (collision != null && collision.hitRight) {
-                Gdx.app.log(
-                    "SlimeAI",
-                    "avoiding=" + ai.avoidingObstacle
-                        + ", timer=" + ai.avoidanceTimer
-                        + ", avoidX=" + ai.avoidanceDirectionX
-                        + ", avoidY=" + ai.avoidanceDirectionY
-                        + ", preferLeft=" + ai.preferLeft
-                );
-            }
         }
     }
-
 
     private void chooseWanderingDirection(EnemyMovementComponent movement) {
         float angle = MathUtils.random(0f, MathUtils.PI2);

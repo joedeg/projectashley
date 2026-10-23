@@ -60,14 +60,9 @@ public class ChestRewardSystem extends IteratingSystem {
 
         inventory.add(chest.item);
 
-        System.out.println("Rewarding " + chest.item);
-
         chest.item = null;
 
-        System.out.println(
-            "Forest keys: " +
-                inventory.getCount(ItemType.FOREST_KEY)
-        );
+
 
     }
 }

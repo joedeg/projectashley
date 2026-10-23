@@ -143,6 +143,7 @@ public class LevelManager {
 
         applyCollectedPickupState();
         applyDefeatedEnemyState();
+        removeDynamicDrops();
     }
 
     /**
@@ -206,7 +207,7 @@ public class LevelManager {
             cooldown.remaining = 2f;
         }
 
-        System.out.println("Floki has been respawned");
+
     }
 
     /**
@@ -263,23 +264,11 @@ public class LevelManager {
 
         Array<Entity> toRemove = new Array<>();
 
-        System.out.println(
-            "Saved defeated IDs: "
-                + defeatedEnemyTracker.getDefeatedEnemyIds()
-        );
-
         for (Entity entity : enemies) {
 
             EnemyComponent enemy = entity.getComponent(EnemyComponent.class);
-            System.out.println(
-                "Enemy found: id='" + enemy.id
-                    + "', type='" + enemy.enemyType + "'"
-            );
 
             if (defeatedEnemyTracker.isDefeated(enemy.id)) {
-                System.out.println(
-                    "Removing defeated enemy: " + enemy.id
-                );
                 toRemove.add(entity);
             }
         }
@@ -363,6 +352,36 @@ public class LevelManager {
         return engine.getEntitiesFor(
             Family.all(DoorComponent.class).get()
         );
+    }
+
+    public ImmutableArray<Entity> getEntitiesWithItemPickup() {
+        return engine.getEntitiesFor(
+            Family.all(
+                ItemPickupComponent.class,
+                PositionComponent.class
+            ).get()
+        );
+    }
+
+    private void removeDynamicDrops(){
+        ImmutableArray<Entity> pickups = getEntitiesWithItemPickup();
+
+        Array<Entity> toRemove = new Array<>();
+
+        for(Entity entity : pickups){
+            ItemPickupComponent pickup =
+                entity.getComponent(ItemPickupComponent.class);
+
+            if(pickup != null
+            && pickup.id != null
+            && pickup.id.startsWith("drop_")){
+                toRemove.add(entity);
+            }
+        }
+
+        for(Entity entity : toRemove){
+            engine.removeEntity(entity);
+        }
     }
 
 }

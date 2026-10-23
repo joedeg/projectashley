@@ -196,6 +196,7 @@ public class GameBootStrap {
             batch,
             levelManager,
             itemAssetRegistry,
+            itemPickupFactory,
             saveGameService,
             saveGameSnapshotFactory,
             collectedPickupTracker,

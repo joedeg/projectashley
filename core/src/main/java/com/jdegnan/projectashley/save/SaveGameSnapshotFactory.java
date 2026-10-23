@@ -1,9 +1,11 @@
 package com.jdegnan.projectashley.save;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.InventoryComponent;
+import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelManager;
@@ -16,16 +18,16 @@ public class SaveGameSnapshotFactory {
 
     public SaveGameSnapshotFactory(
         CollectedPickupTracker collectedPickupTracker,
-        DefeatedEnemyTracker defeatedEnemyTracker){
+        DefeatedEnemyTracker defeatedEnemyTracker) {
         this.collectedPickupTracker = collectedPickupTracker;
         this.defeatedEnemyTracker = defeatedEnemyTracker;
     }
 
-    public SaveGameData create(LevelManager levelManager){
+    public SaveGameData create(LevelManager levelManager) {
         LevelRuntime runtime = levelManager.getCurrentRuntime();
         Entity player = levelManager.getPlayer();
 
-        if(runtime == null || player == null){
+        if (runtime == null || player == null) {
             throw new IllegalStateException(
                 "Cannot save: no active level or player."
             );
@@ -38,7 +40,7 @@ public class SaveGameSnapshotFactory {
         InventoryComponent inventory =
             player.getComponent(InventoryComponent.class);
 
-        if(pos == null || health == null || inventory == null){
+        if (pos == null || health == null || inventory == null) {
             throw new IllegalStateException(
                 "Cannot save: missing player components.");
         }
@@ -58,12 +60,46 @@ public class SaveGameSnapshotFactory {
         data.defeatedEnemyIds.addAll(
             defeatedEnemyTracker.getDefeatedEnemyIds()
         );
+        ImmutableArray<Entity> pickups =
+            levelManager.getEntitiesWithItemPickup();
 
 
 
-        for(ObjectMap.Entry<ItemType, Integer> entry : inventory.items){
+        for (Entity entity : pickups) {
+            ItemPickupComponent pickup =
+                entity.getComponent(ItemPickupComponent.class);
+
+            PositionComponent position =
+                entity.getComponent(PositionComponent.class);
+
+
+
+
+
+            if (pickup == null
+                || position == null
+                || pickup.id == null
+                || !pickup.id.startsWith("drop_")) {
+                continue;
+            }
+
+            SaveGameData.DroppedItemData droppedItem =
+                new SaveGameData.DroppedItemData();
+
+            droppedItem.id = pickup.id;
+            droppedItem.itemType = pickup.item.name();
+            droppedItem.x = position.x;
+            droppedItem.y = position.y;
+
+            data.droppedItems.add(droppedItem);
+
+
+        }
+
+        for (ObjectMap.Entry<ItemType, Integer> entry : inventory.items) {
             data.inventory.put(entry.key.name(), entry.value);
         }
+
 
         return data;
 

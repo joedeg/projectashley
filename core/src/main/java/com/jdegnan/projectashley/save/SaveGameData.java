@@ -18,4 +18,13 @@ public class SaveGameData {
     public Array<String> openedDoorIds = new Array<>();
     public Array<String> defeatedEnemyIds = new Array<>();
 
+    public Array<DroppedItemData> droppedItems = new Array<>();
+
+    public static class DroppedItemData {
+        public String id;
+        public String itemType;
+        public float x;
+        public float y;
+    }
+
 }

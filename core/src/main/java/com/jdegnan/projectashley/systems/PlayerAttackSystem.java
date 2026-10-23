@@ -284,7 +284,7 @@ public class PlayerAttackSystem extends EntitySystem {
 
             applyKnockback(attackEntity, enemy);
 
-            System.out.println("Enemy HP: " + enemyHealth.hp);
+
 
             DamageFlashComponent flash = dfm.get(enemy);
 

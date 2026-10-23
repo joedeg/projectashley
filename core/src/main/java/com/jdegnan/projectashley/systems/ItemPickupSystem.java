@@ -80,7 +80,6 @@ public class ItemPickupSystem extends IteratingSystem {
 
             health.hp = Math.min(health.hp + 1, health.maxHp);
 
-            System.out.println("Player health: " + health.hp);
         }
         else {
             InventoryComponent inventory =
@@ -90,7 +89,7 @@ public class ItemPickupSystem extends IteratingSystem {
 
             collectedPickupTracker.record(pickup.id);
 
-            System.out.println("Item picked up: " + pickup.item);
+
 
 
         }

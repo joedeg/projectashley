@@ -14,6 +14,8 @@ import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelEntityFactory;
 import com.jdegnan.projectashley.level.LevelObjectData;
 
+import java.util.UUID;
+
 
 public class ItemPickupFactory implements LevelEntityFactory {
 
@@ -60,12 +62,11 @@ public class ItemPickupFactory implements LevelEntityFactory {
 
         itemPickup.id = object.getStringProperty("id", null);
 
-        if(itemPickup.id == null || itemPickup.id.isBlank()){
+        if (itemPickup.id == null || itemPickup.id.isBlank()) {
             throw new IllegalStateException(
                 "Item pickup '" + object.getName() + "' missing 'id' property"
             );
         }
-
 
 
         ItemDefinition definition =
@@ -86,11 +87,27 @@ public class ItemPickupFactory implements LevelEntityFactory {
         pickup.add(pos);
         pickup.add(itemPickup);
 
-        System.out.println("Item pickup created " + itemPickup.item);
+
         return pickup;
     }
 
-    public Entity createDrop(ItemType itemType, float x, float y){
+    public Entity createDrop(ItemType itemType, float x, float y) {
+        return createDrop(
+            itemType,
+            x,
+            y,
+            "drop_" + UUID.randomUUID()
+        );
+    }
+
+    public Entity createDrop(
+        ItemType itemType,
+        float x,
+        float y,
+        String id
+    ) {
+
+
         Entity pickup = engine.createEntity();
 
         PositionComponent pos =
@@ -101,6 +118,7 @@ public class ItemPickupFactory implements LevelEntityFactory {
         ItemPickupComponent itemPickup =
             engine.createComponent(ItemPickupComponent.class);
         itemPickup.item = itemType;
+        itemPickup.id = id;
 
         RenderComponent render =
             engine.createComponent(RenderComponent.class);
@@ -111,10 +129,9 @@ public class ItemPickupFactory implements LevelEntityFactory {
 
         TextureRegion region;
 
-        if(itemType == ItemType.HEART){
+        if (itemType == ItemType.HEART) {
             region = new TextureRegion(texture, 0, 0, 32, 32);
-        }
-        else {
+        } else {
             region = new TextureRegion(texture);
         }
 
@@ -126,17 +143,14 @@ public class ItemPickupFactory implements LevelEntityFactory {
         pickup.add(pos);
         pickup.add(itemPickup);
 
+
+
         engine.addEntity(pickup);
 
-        System.out.println(
-            "Item pickup created "
-                + itemType
-                + " at "
-                + x
-                + ", "
-                + y);
 
         return pickup;
 
     }
+
+
 }

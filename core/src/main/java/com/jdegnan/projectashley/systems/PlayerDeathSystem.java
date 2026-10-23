@@ -43,7 +43,7 @@ public class PlayerDeathSystem extends EntitySystem {
                 deathHandled = true;
                 respawnTimer = RESPAWN_DELAY;
                 player.add(new DeadComponent());
-                System.out.println("Floki has died");
+
             }
 
             if(deathHandled){
@@ -56,7 +56,6 @@ public class PlayerDeathSystem extends EntitySystem {
                     deathHandled = false;
                     respawnTimer = 0f;
 
-                    System.out.println("Floki respawned");
                 }
             }
         }

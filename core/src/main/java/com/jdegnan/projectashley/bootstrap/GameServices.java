@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jdegnan.projectashley.assets.ItemAssetRegistry;
+import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
@@ -39,6 +40,8 @@ public class GameServices {
     private final CollectedPickupTracker collectedPickupTracker;
     private final DefeatedEnemyTracker defeatedEnemyTracker;
 
+    private final ItemPickupFactory itemPickupFactory;
+
     public GameServices(
         Assets assets,
         PooledEngine engine,
@@ -49,10 +52,12 @@ public class GameServices {
         SpriteBatch spriteBatch,
         LevelManager levelManager,
         ItemAssetRegistry itemAssetRegistry,
+        ItemPickupFactory itemPickupFactory,
         SaveGameService saveGameService,
         SaveGameSnapshotFactory saveGameSnapshotFactory,
         CollectedPickupTracker collectedPickupTracker,
-        DefeatedEnemyTracker defeatedEnemyTracker) {
+        DefeatedEnemyTracker defeatedEnemyTracker
+        ) {
 
         this.assets = assets;
         this.engine = engine;
@@ -63,6 +68,7 @@ public class GameServices {
         this.spriteBatch = spriteBatch;
         this.levelManager = levelManager;
         this.itemAssetRegistry = itemAssetRegistry;
+        this.itemPickupFactory = itemPickupFactory;
         this.saveGameService = saveGameService;
         this.saveGameSnapshotFactory = saveGameSnapshotFactory;
         this.collectedPickupTracker = collectedPickupTracker;
@@ -119,5 +125,9 @@ public class GameServices {
 
     public DefeatedEnemyTracker getDefeatedEnemyTracker() {
         return defeatedEnemyTracker;
+    }
+
+    public ItemPickupFactory getItemPickupFactory() {
+        return itemPickupFactory;
     }
 }

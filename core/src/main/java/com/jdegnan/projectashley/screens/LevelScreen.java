@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.jdegnan.projectashley.assets.ItemAssets;
 import com.jdegnan.projectashley.components.HealthComponent;
+import com.jdegnan.projectashley.components.ItemPickupComponent;
+import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.inventory.InventoryUIRenderer;
+import com.jdegnan.projectashley.inventory.ItemType;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.level.LevelRuntime;
 import com.jdegnan.projectashley.level.Levels;
@@ -55,6 +58,7 @@ public class LevelScreen extends BaseScreen {
     private final CollectedPickupTracker collectedPickupTracker;
     private final DefeatedEnemyTracker defeatedEnemyTracker;
     private SaveGameData pendingSaveRestore;
+    private final ItemPickupFactory itemPickupFactory;
 
     public LevelScreen(GameServices gameServices) {
         super(gameServices.getOrthographicCamera());
@@ -65,6 +69,7 @@ public class LevelScreen extends BaseScreen {
         this.saveGameSnapshotFactory =
             gameServices.getSaveGameSnapshotFactory();
         this.saveGameRestorer = new SaveGameRestorer();
+        this.itemPickupFactory = gameServices.getItemPickupFactory();
 
         renderContext = new RenderContext(
             gameServices.getOrthographicCamera(),
@@ -126,34 +131,44 @@ public class LevelScreen extends BaseScreen {
                 pendingSaveRestore,
                 levelManager);
 
+
             saveGameRestorer.restoreOpenedDoor(
                 pendingSaveRestore,
                 levelManager);
 
+            for (SaveGameData.DroppedItemData droppedItem
+                : pendingSaveRestore.droppedItems) {
+
+                if (droppedItem.id == null
+                    || droppedItem.itemType == null) {
+                    continue;
+                }
+
+                 itemPickupFactory.createDrop(
+                    ItemType.valueOf(droppedItem.itemType),
+                    droppedItem.x,
+                    droppedItem.y,
+                    droppedItem.id
+                );
+
+            }
 
             pendingSaveRestore = null;
 
-            System.out.println("GAME RESTORED.");
         }
 
-
-
-
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+
             SaveGameData snapshot =
                 saveGameSnapshotFactory.create(levelManager);
 
             saveGameService.save(snapshot);
-
-            System.out.println("GAME SAVED: ");
-            System.out.println(
-                new SaveGameSerializer().serialize(snapshot)
-            );
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) {
+
             SaveGameData loaded = saveGameService.load();
+
 
             if (loaded != null) {
                 collectedPickupTracker.restore(loaded.collectedPickupIds);
@@ -162,11 +177,6 @@ public class LevelScreen extends BaseScreen {
                 pendingSaveRestore = loaded;
                 levelManager.reloadCurrentLevel();
 
-                System.out.println(
-                    new SaveGameSerializer().serialize(
-                        saveGameSnapshotFactory.create(levelManager)
-                    )
-                );
             } else {
                 System.out.println("NO SAVE FILE FOUND");
             }
@@ -183,11 +193,15 @@ public class LevelScreen extends BaseScreen {
         SpriteBatch batch = renderContext.getSpriteBatch();
         Matrix4 worldProjection = batch.getProjectionMatrix().cpy();
         batch.setProjectionMatrix(
-            new Matrix4().setToOrtho2D(
-                0,
-                0,
-                fitViewport.getWorldWidth(),
-                fitViewport.getWorldHeight()));
+            new
+
+                Matrix4().
+
+                setToOrtho2D(
+                    0,
+                    0,
+                    fitViewport.getWorldWidth(),
+                    fitViewport.getWorldHeight()));
 
         batch.begin();
 

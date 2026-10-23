@@ -74,7 +74,5 @@ public class InventoryUIInputSystem extends EntitySystem {
 
         ui.selectedItem = ownedItems.get(selectedIndex);
 
-        System.out.println(ui.selectedItem);
-
     }
 }
