@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jdegnan.projectashley.assets.ItemAssetRegistry;
+import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.assets.Assets;
@@ -42,6 +43,8 @@ public class GameServices {
 
     private final ItemPickupFactory itemPickupFactory;
 
+    private final AudioManager audioManager;
+
     public GameServices(
         Assets assets,
         PooledEngine engine,
@@ -56,7 +59,8 @@ public class GameServices {
         SaveGameService saveGameService,
         SaveGameSnapshotFactory saveGameSnapshotFactory,
         CollectedPickupTracker collectedPickupTracker,
-        DefeatedEnemyTracker defeatedEnemyTracker
+        DefeatedEnemyTracker defeatedEnemyTracker,
+        AudioManager audioManager
         ) {
 
         this.assets = assets;
@@ -73,6 +77,7 @@ public class GameServices {
         this.saveGameSnapshotFactory = saveGameSnapshotFactory;
         this.collectedPickupTracker = collectedPickupTracker;
         this.defeatedEnemyTracker = defeatedEnemyTracker;
+        this.audioManager = audioManager;
 
     }
 
@@ -129,5 +134,9 @@ public class GameServices {
 
     public ItemPickupFactory getItemPickupFactory() {
         return itemPickupFactory;
+    }
+
+    public AudioManager getAudioManager(){
+        return audioManager;
     }
 }

@@ -42,6 +42,9 @@ public class Assets {
         acquire(ItemAssets.FIRE_ROD);
         acquire(ItemAssets.HEART);
 
+        // Sounds
+        acquire(AudioAssets.SWORD_SWING);
+        acquire(AudioAssets.OVERWORLD_MUSIC);
 
 
         // Other global assets...

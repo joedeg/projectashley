@@ -10,9 +10,9 @@ public class LoadingScreen extends BaseScreen{
     private final GameBootStrap gameBootStrap;
     private final Game game;
 
-    public LoadingScreen(Game game){
+    public LoadingScreen(Game game, GameBootStrap gameBootStrap){
         this.game = game;
-        gameBootStrap = new GameBootStrap();
+        this.gameBootStrap = gameBootStrap;
     }
 
     @Override
@@ -26,6 +26,15 @@ public class LoadingScreen extends BaseScreen{
 
         if(finished) {
             game.setScreen(new LevelScreen(gameBootStrap.getGameServices()));
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if(gameBootStrap != null){
+            gameBootStrap.dispose();
         }
     }
 }

@@ -8,7 +8,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.jdegnan.projectashley.assets.AudioAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
+import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.HealthComponent;
 import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
@@ -67,6 +69,8 @@ public class LevelScreen extends BaseScreen {
     private final TransitionController transitionController;
     private AreaTransitionController areaTransitionController;
 
+    private final AudioManager audioManager;
+
     public LevelScreen(GameServices gameServices) {
         super(gameServices.getOrthographicCamera());
 
@@ -77,6 +81,8 @@ public class LevelScreen extends BaseScreen {
             gameServices.getSaveGameSnapshotFactory();
         this.saveGameRestorer = new SaveGameRestorer();
         this.itemPickupFactory = gameServices.getItemPickupFactory();
+        this.audioManager = gameServices.getAudioManager();
+
 
         renderContext = new RenderContext(
             gameServices.getOrthographicCamera(),
@@ -99,6 +105,11 @@ public class LevelScreen extends BaseScreen {
         }
 
         levelManager.loadInitialLevel(Levels.ADVENTURE);
+        audioManager.playMusic(
+            gameServices.getAssets(),
+            AudioAssets.OVERWORLD_MUSIC,
+            true
+        );
 
         renderPipeline = new RenderPipeline(renderContext.getSpriteBatch());
 

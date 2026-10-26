@@ -1,6 +1,7 @@
 package com.jdegnan.projectashley;
 
 import com.badlogic.gdx.Game;
+import com.jdegnan.projectashley.bootstrap.GameBootStrap;
 import com.jdegnan.projectashley.screens.LoadingScreen;
 
 /**
@@ -9,12 +10,14 @@ import com.jdegnan.projectashley.screens.LoadingScreen;
 public class Main extends Game {
 
 
+    private GameBootStrap gameBootStrap;
 
     @Override
     public void create() {
 
+        gameBootStrap = new GameBootStrap();
 
-        setScreen(new LoadingScreen(this));
+        setScreen(new LoadingScreen(this, gameBootStrap));
     }
 
     @Override

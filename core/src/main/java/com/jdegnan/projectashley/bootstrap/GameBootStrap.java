@@ -14,6 +14,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationLibrary;
 import com.jdegnan.projectashley.assets.animations.AnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.PlayerAnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.SwordSwingAnimation;
+import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.config.GameConfig;
 import com.jdegnan.projectashley.factories.AreaTransitionFactory;
 import com.jdegnan.projectashley.factories.BrazierFactory;
@@ -108,11 +109,12 @@ public class GameBootStrap {
     private final ParticleFactory particleFactory;
     private final LevelManager levelManager;
     private Assets assets;
-
+    private AudioManager audioManager;
     private final SaveGameService saveGameService;
     private final SaveGameSnapshotFactory saveGameSnapshotFactory;
     private final CollectedPickupTracker collectedPickupTracker;
     private final DefeatedEnemyTracker defeatedEnemyTracker;
+
 
     /**
      * Initializes all game infrastructure, services, factories, systems, and level managers.
@@ -172,6 +174,8 @@ public class GameBootStrap {
             itemPickupFactory
         );
 
+        audioManager = new AudioManager();
+
         // 5. Systems
         registerSystems(
             engine,
@@ -184,6 +188,7 @@ public class GameBootStrap {
             swordSwingFactory,
             itemPickupFactory,
             defeatedEnemyTracker);
+
 
 
         // 6. Service container assembly
@@ -201,7 +206,8 @@ public class GameBootStrap {
             saveGameService,
             saveGameSnapshotFactory,
             collectedPickupTracker,
-            defeatedEnemyTracker
+            defeatedEnemyTracker,
+            audioManager
         );
 
 
@@ -434,7 +440,11 @@ public class GameBootStrap {
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
 
         // Combat
-        engine.addSystem(new PlayerAttackSystem(engine, swordSwingFactory));
+        engine.addSystem(new PlayerAttackSystem(
+            engine,
+            swordSwingFactory,
+            audioManager,
+            assets));
         engine.addSystem(new EnemyDeathEffectSystem());
         engine.addSystem(new EnemyDeathSystem(
             particleFactory,
@@ -481,5 +491,10 @@ public class GameBootStrap {
      */
     public GameServices getGameServices() {
         return gameServices;
+    }
+
+    public void dispose(){
+        audioManager.dispose();
+        assets.dispose();
     }
 }

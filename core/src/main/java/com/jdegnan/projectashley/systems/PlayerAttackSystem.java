@@ -9,6 +9,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.jdegnan.projectashley.assets.Assets;
+import com.jdegnan.projectashley.assets.AudioAssets;
+import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.AttackComponent;
 import com.jdegnan.projectashley.components.AttackCooldownComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
@@ -54,6 +57,8 @@ public class PlayerAttackSystem extends EntitySystem {
 
 
     private final SwordSwingFactory swordSwingFactory;
+    private final AudioManager audioManager;
+    private final Assets assets;
 
     private ImmutableArray<Entity> enemies;
     private ImmutableArray<Entity> players;
@@ -66,9 +71,13 @@ public class PlayerAttackSystem extends EntitySystem {
     private static final float ATTACK_COOLDOWN = 0.35f;
 
     public PlayerAttackSystem(PooledEngine engine,
-                              SwordSwingFactory factory) {
+                              SwordSwingFactory factory,
+                              AudioManager audioManager,
+                              Assets assets) {
         this.engine = engine;
         this.swordSwingFactory = factory;
+        this.audioManager = audioManager;
+        this.assets = assets;
     }
 
     @Override
@@ -252,6 +261,11 @@ public class PlayerAttackSystem extends EntitySystem {
             slashY,
             2,
             playerFacing.direction);
+
+        audioManager.playSound(
+            assets,
+            AudioAssets.SWORD_SWING
+        );
     }
 
     private void damageOverlappingEnemies(
