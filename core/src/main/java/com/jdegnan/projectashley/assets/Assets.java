@@ -45,6 +45,7 @@ public class Assets {
         // Sounds
         acquire(AudioAssets.SWORD_SWING);
         acquire(AudioAssets.OVERWORLD_MUSIC);
+        acquire(AudioAssets.DUNGEON_MUSIC);
 
 
         // Other global assets...

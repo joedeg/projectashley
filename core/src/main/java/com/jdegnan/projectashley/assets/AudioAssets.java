@@ -22,4 +22,7 @@ public class AudioAssets {
             Sound.class
         );
 
+    public static final AssetDescriptor<Music> DUNGEON_MUSIC =
+        new AssetDescriptor<>("audio/dungeon.mp3", Music.class);
+
 }

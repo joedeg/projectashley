@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.audio.Music;
 
 public class LevelDefinition {
 
@@ -13,15 +14,20 @@ public class LevelDefinition {
     private final Array<AssetDescriptor<?>> additionalAssets;
     private final Vector2 playerSpawn;
 
+    private final AssetDescriptor<Music> music;
+
     public LevelDefinition(
         String id,
         AssetDescriptor<TiledMap> map,
-        Array<AssetDescriptor<?>> additionalAssets, Vector2 playerSpawn) {
+        Array<AssetDescriptor<?>> additionalAssets,
+        Vector2 playerSpawn,
+        AssetDescriptor<Music> music) {
 
         this.id = id;
         this.map = map;
         this.additionalAssets = additionalAssets;
         this.playerSpawn = new Vector2(playerSpawn);
+        this.music = music;
     }
 
     public String getId() {
@@ -38,5 +44,9 @@ public class LevelDefinition {
 
     public Vector2 getPlayerSpawn(){
         return playerSpawn;
+    }
+
+    public AssetDescriptor<Music> getMusic() {
+        return music;
     }
 }

@@ -162,6 +162,7 @@ public class GameBootStrap {
                 collectedPickupTracker,
                 defeatedEnemyTracker);
 
+        audioManager = new AudioManager();
 
         // 4. Level management
         levelManager = createLevelManager(
@@ -173,8 +174,6 @@ public class GameBootStrap {
             itemAssetRegistry,
             itemPickupFactory
         );
-
-        audioManager = new AudioManager();
 
         // 5. Systems
         registerSystems(
@@ -388,7 +387,9 @@ public class GameBootStrap {
             playerFactory,
             cameraFollowSystem,
             collectedPickupTracker,
-            defeatedEnemyTracker
+            defeatedEnemyTracker,
+            audioManager,
+            assets
         );
     }
 

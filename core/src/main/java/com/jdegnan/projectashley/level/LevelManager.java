@@ -6,6 +6,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.jdegnan.projectashley.assets.Assets;
+import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.DamageCooldownComponent;
 import com.jdegnan.projectashley.components.DoorComponent;
 import com.jdegnan.projectashley.components.HealthComponent;
@@ -40,6 +42,9 @@ public class LevelManager {
     private float transitionSpawnX;
     private float transitionSpawnY;
 
+    private final AudioManager audioManager;
+    private final Assets assets;
+
 
     /**
      * Constructs a new {@code LevelManager} with the necessary dependencies.
@@ -55,13 +60,17 @@ public class LevelManager {
                         PlayerFactory playerFactory,
                         CameraFollowSystem cameraFollowSystem,
                         CollectedPickupTracker collectedPickupTracker,
-                        DefeatedEnemyTracker defeatedEnemyTracker) {
+                        DefeatedEnemyTracker defeatedEnemyTracker,
+                        AudioManager audioManager,
+                        Assets assets) {
         this.engine = engine;
         this.levelLoader = levelLoader;
         this.playerFactory = playerFactory;
         this.cameraFollowSystem = cameraFollowSystem;
         this.collectedPickupTracker = collectedPickupTracker;
         this.defeatedEnemyTracker = defeatedEnemyTracker;
+        this.audioManager = audioManager;
+        this.assets = assets;
     }
 
     /**
@@ -161,6 +170,12 @@ public class LevelManager {
 
         newRuntime.addTo(engine);
         currentRuntime = newRuntime;
+
+        audioManager.playMusic(
+            assets,
+            newRuntime.getDefinition().getMusic(),
+            true
+        );
 
         cameraFollowSystem.setMapBounds(newRuntime.getMapBounds());
 
