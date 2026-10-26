@@ -36,6 +36,11 @@ public class LevelManager {
     private final CollectedPickupTracker collectedPickupTracker;
     private final DefeatedEnemyTracker defeatedEnemyTracker;
 
+    private boolean hasTransitionSpawn;
+    private float transitionSpawnX;
+    private float transitionSpawnY;
+
+
     /**
      * Constructs a new {@code LevelManager} with the necessary dependencies.
      *
@@ -97,6 +102,31 @@ public class LevelManager {
 
         levelLoader.requestLoad(definition);
 
+        transitionRequested = true;
+    }
+
+    public void requestTransition(
+        LevelDefinition definition,
+        float spawnX,
+        float spawnY
+    ){
+        if(definition == null){
+            throw new IllegalArgumentException(
+                "Level definition cannot be null."
+            );
+        }
+
+        if(transitionRequested){
+            throw new IllegalStateException(
+                "A level transition is already requested."
+            );
+        }
+
+        transitionSpawnX = spawnX;
+        transitionSpawnY = spawnY;
+        hasTransitionSpawn = true;
+
+        levelLoader.requestLoad(definition);
         transitionRequested = true;
     }
 
@@ -170,11 +200,20 @@ public class LevelManager {
     private void spawnPlayer(LevelRuntime runtime) {
         Vector2 spawn = runtime.getDefinition().getPlayerSpawn();
 
+        float spawnX = spawn.x;
+        float spawnY = spawn.y;
+
+        if(hasTransitionSpawn){
+            spawnX = transitionSpawnX;
+            spawnY = transitionSpawnY;
+            hasTransitionSpawn = false;
+        }
+
         if (player == null) {
-            player = playerFactory.create(spawn.x, spawn.y);
+            player = playerFactory.create(spawnX, spawnY);
             engine.addEntity(player);
         } else {
-            setPlayerPosition(player, spawn.x, spawn.y);
+            setPlayerPosition(player, spawnX, spawnY);
         }
     }
 

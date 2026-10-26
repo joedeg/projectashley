@@ -59,4 +59,21 @@ public final class Levels {
     private Levels() {
 
     }
+
+    public static LevelDefinition getById(String id) {
+        if(id == null){
+            return null;
+        }
+
+        switch (id){
+            case "adventure":
+                return ADVENTURE;
+                case "forest":
+                    return FOREST;
+                case "dungeon":
+                    return DUNGEON;
+                default:
+                    return null;
+        }
+    }
 }

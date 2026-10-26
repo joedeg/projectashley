@@ -15,6 +15,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.PlayerAnimationRegistry;
 import com.jdegnan.projectashley.assets.animations.SwordSwingAnimation;
 import com.jdegnan.projectashley.config.GameConfig;
+import com.jdegnan.projectashley.factories.AreaTransitionFactory;
 import com.jdegnan.projectashley.factories.BrazierFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
 import com.jdegnan.projectashley.factories.ChestFactory;
@@ -362,14 +363,15 @@ public class GameBootStrap {
             itemPickupFactory);
         factoryRegistry.register("brazier",
             new BrazierFactory(assets));
-
-
         factoryRegistry.register("enemy",
             new EnemyFactory(
                 engine,
                 assets
             )
         );
+        factoryRegistry.register("areaTransition",
+            new AreaTransitionFactory());
+
 
 
         LevelLoader levelLoader = new LevelLoader(assets, gameConfig, levelEntityLoader);

@@ -31,7 +31,10 @@ import com.jdegnan.projectashley.save.SaveGameSerializer;
 import com.jdegnan.projectashley.save.SaveGameService;
 import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 import com.jdegnan.projectashley.save.SaveGameRestorer;
+import com.jdegnan.projectashley.systems.AreaTransitionSystem;
 import com.jdegnan.projectashley.ui.HealthHud;
+
+import org.apache.tools.ant.taskdefs.optional.depend.constantpool.Utf8CPInfo;
 
 
 public class LevelScreen extends BaseScreen {
@@ -60,6 +63,9 @@ public class LevelScreen extends BaseScreen {
     private SaveGameData pendingSaveRestore;
     private final ItemPickupFactory itemPickupFactory;
 
+    private final TransitionController transitionController;
+    private AreaTransitionController areaTransitionController;
+
     public LevelScreen(GameServices gameServices) {
         super(gameServices.getOrthographicCamera());
 
@@ -78,6 +84,17 @@ public class LevelScreen extends BaseScreen {
             gameServices.getSpriteBatch(),
             new ShapeRenderer()
         );
+
+        transitionController = new TransitionController(
+            gameServices.getOrthographicCamera()
+        );
+        areaTransitionController = new AreaTransitionController(
+            transitionController,
+            levelManager
+        );
+
+        engine.addSystem(new AreaTransitionSystem(areaTransitionController));
+
 
         levelManager.loadInitialLevel(Levels.ADVENTURE);
 
@@ -124,6 +141,7 @@ public class LevelScreen extends BaseScreen {
     @Override
     public void update(float deltaTime) {
         levelManager.update();
+        areaTransitionController.update();
 
         if (pendingSaveRestore != null
             && !levelManager.isTransitioning()) {
@@ -190,6 +208,8 @@ public class LevelScreen extends BaseScreen {
         engine.update(deltaTime);
         renderPipeline.render(renderContext);
 
+        transitionController.update(deltaTime);
+
         SpriteBatch batch = renderContext.getSpriteBatch();
         Matrix4 worldProjection = batch.getProjectionMatrix().cpy();
         batch.setProjectionMatrix(
@@ -226,11 +246,14 @@ public class LevelScreen extends BaseScreen {
         inventoryUIRenderer.render(levelManager.getPlayer());
 
         interactionMessageRenderer.render(levelManager.getPlayer());
+
+        transitionController.render();
     }
 
     @Override
     public void dispose() {
         inventoryUIRenderer.dispose();
+        transitionController.dispose();
         super.dispose();
 
     }
