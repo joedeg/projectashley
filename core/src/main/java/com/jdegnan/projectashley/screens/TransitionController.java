@@ -32,7 +32,7 @@ public class TransitionController implements Disposable {
 
     public void fadeIn() {
         elapsed = 0f;
-        alpha = 0;
+        alpha = 1f;
         fadingOut = false;
         fadingIn = true;
     }

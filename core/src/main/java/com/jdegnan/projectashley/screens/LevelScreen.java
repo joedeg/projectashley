@@ -15,6 +15,7 @@ import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.inventory.InventoryUIRenderer;
 import com.jdegnan.projectashley.inventory.ItemType;
+import com.jdegnan.projectashley.level.LevelDefinition;
 import com.jdegnan.projectashley.level.LevelManager;
 import com.jdegnan.projectashley.level.LevelRuntime;
 import com.jdegnan.projectashley.level.Levels;
@@ -93,8 +94,9 @@ public class LevelScreen extends BaseScreen {
             levelManager
         );
 
-        engine.addSystem(new AreaTransitionSystem(areaTransitionController));
-
+        if(engine.getSystem(AreaTransitionSystem.class) == null) {
+            engine.addSystem(new AreaTransitionSystem(areaTransitionController));
+        }
 
         levelManager.loadInitialLevel(Levels.ADVENTURE);
 
@@ -193,7 +195,18 @@ public class LevelScreen extends BaseScreen {
                 defeatedEnemyTracker.restore(loaded.defeatedEnemyIds);
 
                 pendingSaveRestore = loaded;
-                levelManager.reloadCurrentLevel();
+
+                LevelDefinition savedLevel = Levels.getById(loaded.levelId);
+                if(savedLevel == null){
+                    throw new IllegalStateException(
+                        "No level with id: " + loaded.levelId
+                    );
+                }
+                levelManager.requestTransition(
+                    savedLevel,
+                    loaded.playerX,
+                    loaded.playerY
+                );
 
             } else {
                 System.out.println("NO SAVE FILE FOUND");
@@ -252,6 +265,14 @@ public class LevelScreen extends BaseScreen {
 
     @Override
     public void dispose() {
+
+        AreaTransitionSystem system =
+            engine.getSystem(AreaTransitionSystem.class);
+
+        if (system != null) {
+            engine.removeSystem(system);
+        }
+
         inventoryUIRenderer.dispose();
         transitionController.dispose();
         super.dispose();

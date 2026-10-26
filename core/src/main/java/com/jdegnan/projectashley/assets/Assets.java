@@ -36,6 +36,13 @@ public class Assets {
         acquire(PlayerAssets.SWORD_SWING);
         acquire(ItemAssets.HEART_HUD);
 
+        // Inventory item textures
+        acquire(ItemAssets.FOREST_KEY);
+        acquire(ItemAssets.MARSH_AMULET);
+        acquire(ItemAssets.FIRE_ROD);
+        acquire(ItemAssets.HEART);
+
+
 
         // Other global assets...
     }
