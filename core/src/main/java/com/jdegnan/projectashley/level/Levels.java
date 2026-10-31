@@ -38,6 +38,17 @@ public final class Levels {
             AudioAssets.DUNGEON_MUSIC
         );
 
+    public static final LevelDefinition FLOKIS_HOUSE = new LevelDefinition(
+        "flokishouse",
+        new AssetDescriptor<>(
+            "maps/flokis_house.tmx",
+            TiledMap.class
+        ),
+        new Array<>(),
+        new Vector2(0, 0),
+        AudioAssets.DUNGEON_MUSIC
+    );
+
     public static final LevelDefinition ADVENTURE = new LevelDefinition(
         "adventure",
         new AssetDescriptor<>(
@@ -70,6 +81,8 @@ public final class Levels {
         }
 
         switch (id){
+            case "flokishouse":
+                return FLOKIS_HOUSE;
             case "adventure":
                 return ADVENTURE;
                 case "forest":

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public final class PlayerAssets {
 
     public static final AssetDescriptor<TextureAtlas> PLAYER_ATLAS =
-        new AssetDescriptor<>("sprites/player.atlas",
+        new AssetDescriptor<>("sprites/floki.atlas",
             TextureAtlas.class);
 
     public static final AssetDescriptor<Texture> SWORD_SWING =

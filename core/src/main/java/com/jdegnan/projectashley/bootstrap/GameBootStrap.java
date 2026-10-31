@@ -100,7 +100,7 @@ public class GameBootStrap {
     /**
      * World tile size in units used for game configuration.
      */
-    private static final float TILE_SIZE = 32f;
+    private static final float TILE_SIZE = 16f;
 
     /**
      * Container holding all core game services initialized during bootstrapping.

@@ -35,34 +35,29 @@ public class PlayerAnimationRegistry implements AnimationRegistry {
         // Assuming 64x64 frames based on atlas bounds (128x256 for idle = 2x4 frames)
         // layout North [0], West [1], South [2], East [3]
 
-        // IDLE
-        TextureRegion idleRegion = atlas.findRegion("idle");
-        TextureRegion[][] idleFrames = idleRegion.split(64, 64);
-
-        registerDirectionalAnimation(player, AnimationState.IDLE_NORTH, idleFrames[0]);
-        registerDirectionalAnimation(player, AnimationState.IDLE_WEST, idleFrames[1]);
-        registerDirectionalAnimation(player, AnimationState.IDLE_SOUTH, idleFrames[2]);
-        registerDirectionalAnimation(player, AnimationState.IDLE_EAST, idleFrames[3]);
 
 
-        // WALK
-        TextureRegion walkRegion = atlas.findRegion("walk");
-        TextureRegion[][] walkFrames = walkRegion.split(64, 64);
 
-        registerDirectionalAnimation(player, AnimationState.WALK_NORTH, walkFrames[0]);
-        registerDirectionalAnimation(player, AnimationState.WALK_WEST, walkFrames[1]);
-        registerDirectionalAnimation(player, AnimationState.WALK_SOUTH, walkFrames[2]);
-        registerDirectionalAnimation(player, AnimationState.WALK_EAST, walkFrames[3]);
+        // WALK UP
+        TextureRegion walkRegion = atlas.findRegion("floki_walk_up");
+        TextureRegion[][] walkNorth = walkRegion.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.WALK_NORTH, walkNorth[0]);
 
 
-        // RUN
-        TextureRegion runRegion = atlas.findRegion("run");
-        TextureRegion[][] runFrames = runRegion.split(64, 64);
+        // WALK DOWN
+        TextureRegion walkDown = atlas.findRegion("floki_walk_down");
+        TextureRegion[][] walkSouth = walkDown.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.WALK_SOUTH, walkSouth[0]);
 
-        registerDirectionalAnimation(player, AnimationState.RUN_NORTH, runFrames[0]);
-        registerDirectionalAnimation(player, AnimationState.RUN_WEST, runFrames[1]);
-        registerDirectionalAnimation(player, AnimationState.RUN_SOUTH, runFrames[2]);
-        registerDirectionalAnimation(player, AnimationState.RUN_EAST, runFrames[3]);
+        // WALK LEFT
+        TextureRegion walkLeft = atlas.findRegion("floki_walk_left");
+        TextureRegion[][] walkWest = walkLeft.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.WALK_WEST, walkWest[0]);
+
+        // WALK RIGHT
+        TextureRegion walkRight = atlas.findRegion("floki_walk_right");
+        TextureRegion[][] walkEast = walkRight.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.WALK_EAST, walkEast[0]);
 
 
         // Backwards compatibility for general states

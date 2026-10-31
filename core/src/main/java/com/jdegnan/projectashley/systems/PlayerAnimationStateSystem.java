@@ -51,16 +51,16 @@ public class PlayerAnimationStateSystem extends IteratingSystem {
         else if (vel.vx < 0) anim.state = AnimationState.WALK_WEST;
         else if (vel.vy > 0) anim.state = AnimationState.WALK_NORTH;
         else if (vel.vy < 0) anim.state = AnimationState.WALK_SOUTH;
-        else {
-            // Transition to idle states if there is no velocity
-            if (anim.state == AnimationState.WALK_EAST)
-                anim.state = AnimationState.IDLE_EAST;
-            else if (anim.state == AnimationState.WALK_WEST)
-                anim.state = AnimationState.IDLE_WEST;
-            else if (anim.state == AnimationState.WALK_NORTH)
-                anim.state = AnimationState.IDLE_NORTH;
-            else if (anim.state == AnimationState.WALK_SOUTH)
-                anim.state = AnimationState.IDLE_SOUTH;
-        }
+//        else {
+//            // Transition to idle states if there is no velocity
+//            if (anim.state == AnimationState.WALK_EAST)
+//                anim.state = AnimationState.IDLE_EAST;
+//            else if (anim.state == AnimationState.WALK_WEST)
+//                anim.state = AnimationState.IDLE_WEST;
+//            else if (anim.state == AnimationState.WALK_NORTH)
+//                anim.state = AnimationState.IDLE_NORTH;
+//            else if (anim.state == AnimationState.WALK_SOUTH)
+//                anim.state = AnimationState.IDLE_SOUTH;
+//        }
     }
 }

@@ -11,8 +11,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public abstract class BaseScreen implements Screen, InputProcessor {
 
-    public static final float VIEWPORT_WIDTH = 800;
-    public static final float VIEWPORT_HEIGHT = 400;
+    public static final float VIEWPORT_WIDTH = 400;
+    public static final float VIEWPORT_HEIGHT = 200;
     protected final Stage mainStage;
 
     protected final FitViewport fitViewport;

@@ -61,8 +61,8 @@ public class PlayerFactory {
         entity.add(animSet);
 
         RenderComponent render = new RenderComponent();
-        render.width = 64;
-        render.height = 64;
+        render.width = 32;
+        render.height = 32;
         render.layer = 1;
         entity.add(render);
 
@@ -75,7 +75,7 @@ public class PlayerFactory {
         entity.add(vel);
 
         ColliderComponent col = new ColliderComponent();
-        col.localBounds.set(0f + 16f, 0f, 32f, 32f); // Assuming some collider size
+        col.localBounds.set(0f + 8f, 0f + 8f, 16f, 16f); // Assuming some collider size
 
         CollisionComponent collision = new CollisionComponent();
 
@@ -102,7 +102,7 @@ public class PlayerFactory {
         entity.add(new PlayerComponent());
 
 
-        Animation<TextureRegion> idle = animSet.set.get(AnimationState.IDLE);
+        Animation<TextureRegion> idle = animSet.set.get(AnimationState.WALK_SOUTH);
 
         sprite.textureRegion = idle.getKeyFrame(0);
         render.region = sprite.textureRegion;

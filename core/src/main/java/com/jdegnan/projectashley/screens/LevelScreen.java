@@ -104,7 +104,7 @@ public class LevelScreen extends BaseScreen {
             engine.addSystem(new AreaTransitionSystem(areaTransitionController));
         }
 
-        levelManager.loadInitialLevel(Levels.ADVENTURE);
+        levelManager.loadInitialLevel(Levels.FLOKIS_HOUSE);
         audioManager.playMusic(
             gameServices.getAssets(),
             AudioAssets.OVERWORLD_MUSIC,
