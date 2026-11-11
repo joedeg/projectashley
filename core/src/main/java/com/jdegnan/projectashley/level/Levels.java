@@ -39,15 +39,27 @@ public final class Levels {
         );
 
     public static final LevelDefinition FLOKIS_HOUSE = new LevelDefinition(
-        "flokishouse",
+        "flokis_house",
         new AssetDescriptor<>(
             "maps/flokis_house.tmx",
             TiledMap.class
         ),
         new Array<>(),
-        new Vector2(0, 0),
+        new Vector2(156, 48),
         AudioAssets.DUNGEON_MUSIC
     );
+
+    public static final LevelDefinition FLOKIS_BEDROOM = new LevelDefinition(
+        "flokis_bedroom",
+        new AssetDescriptor<>(
+            "maps/flokis_bedroom.tmx",
+            TiledMap.class
+        ),
+        new Array<>(),
+        new Vector2(156, 48),
+        AudioAssets.DUNGEON_MUSIC
+    );
+
 
     public static final LevelDefinition ADVENTURE = new LevelDefinition(
         "adventure",
@@ -66,9 +78,19 @@ public final class Levels {
             EnemyAssets.SLIME_DYING,
             ItemAssets.HEART,
             ItemAssets.HEART_HUD
-            ),
+        ),
         new Vector2(160, 160),
         AudioAssets.OVERWORLD_MUSIC
+    );
+    private static final LevelDefinition OVERWORLD_01 = new LevelDefinition(
+        "overworld_01",
+        new AssetDescriptor<>(
+            "maps/overworld_01.tmx",
+            TiledMap.class
+        ),
+        Array.with(),
+        new Vector2(0,0),
+    AudioAssets.OVERWORLD_MUSIC
     );
 
     private Levels() {
@@ -76,21 +98,25 @@ public final class Levels {
     }
 
     public static LevelDefinition getById(String id) {
-        if(id == null){
+        if (id == null) {
             return null;
         }
 
-        switch (id){
-            case "flokishouse":
+        switch (id) {
+            case "flokis_house":
                 return FLOKIS_HOUSE;
+            case "flokis_bedroom":
+                return FLOKIS_BEDROOM;
+            case "overworld_01":
+                return OVERWORLD_01;
             case "adventure":
                 return ADVENTURE;
-                case "forest":
-                    return FOREST;
-                case "dungeon":
-                    return DUNGEON;
-                default:
-                    return null;
+            case "forest":
+                return FOREST;
+            case "dungeon":
+                return DUNGEON;
+            default:
+                return null;
         }
     }
 }

@@ -59,6 +59,26 @@ public class PlayerAnimationRegistry implements AnimationRegistry {
         TextureRegion[][] walkEast = walkRight.split(32, 32);
         registerDirectionalAnimation(player, AnimationState.WALK_EAST, walkEast[0]);
 
+        // IDLE DOWN
+        TextureRegion idleDown = atlas.findRegion("idle_down");
+        TextureRegion[][] idleSouth = idleDown.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.IDLE_SOUTH, idleSouth[0]);
+
+        // IDLE UP
+        TextureRegion idleUp = atlas.findRegion("idle_up");
+        TextureRegion[][] idleNorth = idleUp.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.IDLE_NORTH, idleNorth[0]);
+
+        // IDLE LEFT
+        TextureRegion idleLeft = atlas.findRegion("idle_left");
+        TextureRegion[][] idleWest = idleLeft.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.IDLE_WEST, idleWest[0]);
+
+        // IDLE RIGHT
+        TextureRegion idleRight = atlas.findRegion("idle_right");
+        TextureRegion[][] idleEast = idleRight.split(32, 32);
+        registerDirectionalAnimation(player, AnimationState.IDLE_EAST, idleEast[0]);
+
 
         // Backwards compatibility for general states
         player.add(AnimationState.IDLE, player.get(AnimationState.IDLE_SOUTH));
@@ -77,7 +97,7 @@ public class PlayerAnimationRegistry implements AnimationRegistry {
      */
     @Override
     public void registerDirectionalAnimation(AnimationSet set, AnimationState state, TextureRegion[] frames) {
-        Animation<TextureRegion> anim = new Animation<>(0.2f, frames);
+        Animation<TextureRegion> anim = new Animation<>(0.05f, frames);
         anim.setPlayMode(Animation.PlayMode.LOOP);
         set.add(state, anim);
     }

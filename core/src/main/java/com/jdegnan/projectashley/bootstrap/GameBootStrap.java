@@ -481,7 +481,7 @@ public class GameBootStrap {
 
 
         // Rendering & Debug Systems
-        engine.addSystem(new DebugCollisionRenderSystem(camera));
+    //    engine.addSystem(new DebugCollisionRenderSystem(camera));
         engine.addSystem(new RenderSubmissionSystem(renderQueue));
     }
 

@@ -37,8 +37,6 @@ import com.jdegnan.projectashley.save.SaveGameRestorer;
 import com.jdegnan.projectashley.systems.AreaTransitionSystem;
 import com.jdegnan.projectashley.ui.HealthHud;
 
-import org.apache.tools.ant.taskdefs.optional.depend.constantpool.Utf8CPInfo;
-
 
 public class LevelScreen extends BaseScreen {
     private final PooledEngine engine;

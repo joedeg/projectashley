@@ -58,19 +58,23 @@ public class PlayerInputSystem extends IteratingSystem {
         vel.vx = 0;
         vel.vy = 0;
 
-        float speed = 200;
+        float speed = 100;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.A) ||
+        Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             vel.vx = -speed;
             facing.direction = Direction.LEFT;
 
         }
-         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+         if(Gdx.input.isKeyPressed(Input.Keys.D) ||
+         Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             vel.vx = speed;
             facing.direction = Direction.RIGHT;
 
         }
-         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+         if(Gdx.input.isKeyPressed(Input.Keys.W) ||
+             Gdx.input.isKeyPressed(Input.Keys.UP)
+         ) {
             vel.vy = speed;
             facing.direction = Direction.UP;
 

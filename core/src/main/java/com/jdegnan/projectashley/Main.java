@@ -10,14 +10,13 @@ import com.jdegnan.projectashley.screens.LoadingScreen;
 public class Main extends Game {
 
 
-    private GameBootStrap gameBootStrap;
-
     @Override
     public void create() {
 
-        gameBootStrap = new GameBootStrap();
+        GameBootStrap gameBootStrap = new GameBootStrap();
 
         setScreen(new LoadingScreen(this, gameBootStrap));
+
     }
 
     @Override
