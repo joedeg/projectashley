@@ -221,12 +221,15 @@ public class LevelScreen extends BaseScreen {
             }
         }
 
+        // Update the camera before drawing any world layer so ground, entities,
+        // and foreground all use the same camera position for this frame.
+        engine.update(deltaTime);
+
         LevelRuntime runtime = levelManager.getCurrentRuntime();
         if (runtime != null) {
             runtime.getMapRenderer().renderGround(renderContext);
         }
 
-        engine.update(deltaTime);
         renderPipeline.render(renderContext);
 
         if (runtime != null) {
