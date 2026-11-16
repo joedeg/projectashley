@@ -90,7 +90,7 @@ public class EnemyFactory implements LevelEntityFactory {
 
         renderComponent.width = 27;
         renderComponent.height = 16;
-        renderComponent.layer = 0;
+        renderComponent.layer = 1;
 
         ColliderComponent collider =
             engine.createComponent(ColliderComponent.class);

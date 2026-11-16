@@ -44,9 +44,13 @@ public final class Levels {
             "maps/flokis_house.tmx",
             TiledMap.class
         ),
-        new Array<>(),
+        Array.with(
+            ChestAssets.BROWN_CHEST
+        ),
         new Vector2(156, 48),
         AudioAssets.DUNGEON_MUSIC
+
+
     );
 
     public static final LevelDefinition FLOKIS_BEDROOM = new LevelDefinition(
@@ -88,7 +92,9 @@ public final class Levels {
             "maps/overworld_01.tmx",
             TiledMap.class
         ),
-        Array.with(),
+        Array.with(
+            EnemyAssets.SLIME_IDLE,
+            EnemyAssets.SLIME_DYING),
         new Vector2(0,0),
     AudioAssets.OVERWORLD_MUSIC
     );

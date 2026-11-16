@@ -2,6 +2,7 @@ package com.jdegnan.projectashley.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jdegnan.projectashley.assets.Assets;
@@ -30,7 +31,7 @@ public class ChestFactory implements LevelEntityFactory {
     @Override
     public Entity create(LevelObjectData object) {
 
-        if(!assets.isLoaded(ChestAssets.CHEST_ATLAS)){
+        if(!assets.isLoaded(ChestAssets.BROWN_CHEST)){
             throw new IllegalStateException("Chest atlas not loaded");
         }
 
@@ -74,15 +75,15 @@ public class ChestFactory implements LevelEntityFactory {
             engine.createComponent(
                 ChestAnimationComponent.class);
 
-        TextureAtlas atlas = assets.get(ChestAssets.CHEST_ATLAS);
+        Texture chest_texture = assets.get(ChestAssets.BROWN_CHEST);
 
+        TextureRegion chest_region = new TextureRegion(chest_texture);
         TextureRegion[][] split =
-            atlas.findRegion("blue_chest")
-                .split(32, 32);
+            chest_region.split(16, 32);
 
-        for(int y = 0; y < split.length; y++){
-            for(int x = 0; x < split[y].length; x++){
-                animationComponent.frames.add(split[y][x]);
+        for (TextureRegion[] textureRegions : split) {
+            for (TextureRegion textureRegion : textureRegions) {
+                animationComponent.frames.add(textureRegion);
             }
         }
 

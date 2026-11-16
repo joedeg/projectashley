@@ -12,7 +12,6 @@ import com.jdegnan.projectashley.assets.AudioAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
 import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.HealthComponent;
-import com.jdegnan.projectashley.components.ItemPickupComponent;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
 import com.jdegnan.projectashley.inventory.InventoryUIRenderer;
@@ -30,7 +29,6 @@ import com.jdegnan.projectashley.rendering.RenderPipeline;
 import com.jdegnan.projectashley.save.CollectedPickupTracker;
 import com.jdegnan.projectashley.save.DefeatedEnemyTracker;
 import com.jdegnan.projectashley.save.SaveGameData;
-import com.jdegnan.projectashley.save.SaveGameSerializer;
 import com.jdegnan.projectashley.save.SaveGameService;
 import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 import com.jdegnan.projectashley.save.SaveGameRestorer;
@@ -65,7 +63,7 @@ public class LevelScreen extends BaseScreen {
     private final ItemPickupFactory itemPickupFactory;
 
     private final TransitionController transitionController;
-    private AreaTransitionController areaTransitionController;
+    private final AreaTransitionController areaTransitionController;
 
     private final AudioManager audioManager;
 
@@ -108,6 +106,7 @@ public class LevelScreen extends BaseScreen {
             AudioAssets.OVERWORLD_MUSIC,
             true
         );
+
 
         renderPipeline = new RenderPipeline(renderContext.getSpriteBatch());
 
@@ -224,21 +223,23 @@ public class LevelScreen extends BaseScreen {
 
         LevelRuntime runtime = levelManager.getCurrentRuntime();
         if (runtime != null) {
-            runtime.renderMap(renderContext);
+            runtime.getMapRenderer().renderGround(renderContext);
         }
 
         engine.update(deltaTime);
         renderPipeline.render(renderContext);
+
+        if (runtime != null) {
+            runtime.getMapRenderer().renderAbovePlayer(renderContext);
+        }
+
 
         transitionController.update(deltaTime);
 
         SpriteBatch batch = renderContext.getSpriteBatch();
         Matrix4 worldProjection = batch.getProjectionMatrix().cpy();
         batch.setProjectionMatrix(
-            new
-
-                Matrix4().
-
+            new Matrix4().
                 setToOrtho2D(
                     0,
                     0,
