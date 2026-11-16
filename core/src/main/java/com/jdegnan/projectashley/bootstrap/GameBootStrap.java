@@ -21,6 +21,7 @@ import com.jdegnan.projectashley.factories.BrazierFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
 import com.jdegnan.projectashley.factories.ChestFactory;
 import com.jdegnan.projectashley.factories.DoorFactory;
+import com.jdegnan.projectashley.factories.DialogueTriggerFactory;
 import com.jdegnan.projectashley.factories.EnemyFactory;
 import com.jdegnan.projectashley.factories.ItemPickupFactory;
 import com.jdegnan.projectashley.factories.ParticleFactory;
@@ -50,6 +51,7 @@ import com.jdegnan.projectashley.systems.CollisionSystem;
 import com.jdegnan.projectashley.systems.DamageSystem;
 import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.systems.DoorInteractionSystem;
+import com.jdegnan.projectashley.systems.DialogueTriggerSystem;
 import com.jdegnan.projectashley.systems.EnemyAISystem;
 import com.jdegnan.projectashley.systems.EnemyDeathEffectSystem;
 import com.jdegnan.projectashley.systems.EnemyDeathSystem;
@@ -376,6 +378,8 @@ public class GameBootStrap {
         );
         factoryRegistry.register("areaTransition",
             new AreaTransitionFactory());
+        factoryRegistry.register("dialogueTrigger",
+            new DialogueTriggerFactory());
 
 
 
@@ -461,6 +465,7 @@ public class GameBootStrap {
         engine.addSystem(new ChestRewardSystem());
         engine.addSystem(new DoorInteractionSystem(itemAssetRegistry));
         engine.addSystem(new ItemPickupSystem(collectedPickupTracker));
+        engine.addSystem(new DialogueTriggerSystem());
         engine.addSystem(new InteractionMessageSystem());
         engine.addSystem(new BrazierInteractionSystem());
 
