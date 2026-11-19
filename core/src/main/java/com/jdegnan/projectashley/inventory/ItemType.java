@@ -9,5 +9,5 @@ public enum ItemType {
     LIGHT_CRYSTAL,
 
     HEART,
-    HEART_HUD;
+    HEART_HUD
 }

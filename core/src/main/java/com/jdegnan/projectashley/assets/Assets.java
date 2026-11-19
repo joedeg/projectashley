@@ -41,6 +41,7 @@ public class Assets {
         acquire(ItemAssets.MARSH_AMULET);
         acquire(ItemAssets.FIRE_ROD);
         acquire(ItemAssets.HEART);
+        acquire(ItemAssets.HOUSES);
 
         // Sounds
         acquire(AudioAssets.SWORD_SWING);

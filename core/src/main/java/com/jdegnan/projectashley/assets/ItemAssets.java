@@ -35,5 +35,11 @@ public class ItemAssets {
             Texture.class
         );
 
+    public static final AssetDescriptor<Texture> HOUSES =
+        new AssetDescriptor<>(
+            "sprites/houses.png",
+            Texture.class
+        );
+
     private ItemAssets(){}
 }

@@ -13,6 +13,7 @@ import com.jdegnan.projectashley.assets.Assets;
 import com.jdegnan.projectashley.assets.AudioAssets;
 import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.AttackComponent;
+import com.jdegnan.projectashley.components.BarrelComponent;
 import com.jdegnan.projectashley.components.AttackCooldownComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
@@ -26,6 +27,13 @@ import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.factories.SwordSwingFactory;
 
+/**
+ * Creates short-lived sword hitboxes for player attack requests.
+ *
+ * <p>Each hitbox damages each overlapping enemy once and destroys overlapping
+ * barrel entities. Sword visuals and audio are delegated to their respective
+ * factories and managers.</p>
+ */
 public class PlayerAttackSystem extends EntitySystem {
 
     private static final float ATTACK_LIFETIME = 0.20f;
@@ -63,13 +71,23 @@ public class PlayerAttackSystem extends EntitySystem {
     private ImmutableArray<Entity> enemies;
     private ImmutableArray<Entity> players;
     private ImmutableArray<Entity> attacks;
+    private ImmutableArray<Entity> barrels;
 
     private final Array<Entity> expiredAttacks = new Array<>();
+    private final Array<Entity> brokenBarrels = new Array<>();
 
     private final PooledEngine engine;
 
     private static final float ATTACK_COOLDOWN = 0.35f;
 
+    /**
+     * Creates the attack system and supplies its entity and presentation services.
+     *
+     * @param engine engine that owns attack entities
+     * @param factory creates the visible sword swing
+     * @param audioManager plays attack sounds
+     * @param assets provides the sound assets
+     */
     public PlayerAttackSystem(PooledEngine engine,
                               SwordSwingFactory factory,
                               AudioManager audioManager,
@@ -80,6 +98,11 @@ public class PlayerAttackSystem extends EntitySystem {
         this.assets = assets;
     }
 
+    /**
+     * Caches Ashley family views used to find players, attacks, enemies, and barrels.
+     *
+     * @param engine Ashley engine hosting this system
+     */
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
@@ -110,8 +133,21 @@ public class PlayerAttackSystem extends EntitySystem {
                     PositionComponent.class,
                     ColliderComponent.class
                 ).get());
+
+        barrels =
+            engine.getEntitiesFor(
+                Family.all(
+                    BarrelComponent.class,
+                    PositionComponent.class,
+                    ColliderComponent.class
+                ).get());
     }
 
+    /**
+     * Advances active hitboxes and creates hitboxes requested by ready players.
+     *
+     * @param deltaTime elapsed time in seconds since the previous update
+     */
     @Override
     public void update(float deltaTime) {
         updateExistingAttacks(deltaTime);
@@ -119,6 +155,7 @@ public class PlayerAttackSystem extends EntitySystem {
 
     }
 
+    /** Ages active hitboxes, applies their delayed hit check, and removes expired ones. */
     private void updateExistingAttacks(float deltaTime) {
         expiredAttacks.clear();
 
@@ -150,6 +187,11 @@ public class PlayerAttackSystem extends EntitySystem {
         }
     }
 
+    /**
+     * Consumes player attack requests, respecting each player's attack cooldown.
+     *
+     * @param deltaTime elapsed time used to decrement cooldowns
+     */
     private void createRequestedAttacks(float deltaTime){
         for(int i = 0; i < players.size(); i++){
             Entity player = players.get(i);
@@ -176,6 +218,11 @@ public class PlayerAttackSystem extends EntitySystem {
         }
     }
 
+    /**
+     * Creates a directional hitbox and the matching swing visual and sound.
+     *
+     * @param player player entity whose position and facing determine the attack
+     */
     private void createAttack(Entity player) {
 
         PositionComponent playerPos = pm.get(player);
@@ -268,6 +315,15 @@ public class PlayerAttackSystem extends EntitySystem {
         );
     }
 
+    /**
+     * Applies an attack to overlapping targets.
+     *
+     * <p>Each enemy can be damaged only once by a given hitbox. Barrels have no
+     * health component, so an overlap removes the barrel entity immediately.</p>
+     *
+     * @param attackEntity entity carrying the attack's world-space collider
+     * @param attack attack state tracking lifetime, damage, and enemies hit
+     */
     private void damageOverlappingEnemies(
         Entity attackEntity, AttackComponent attack) {
 
@@ -308,8 +364,21 @@ public class PlayerAttackSystem extends EntitySystem {
             }
 
         }
+
+        brokenBarrels.clear();
+        for (int i = 0; i < barrels.size(); i++) {
+            Entity barrel = barrels.get(i);
+            if (attackBounds.overlaps(getWorldBounds(barrel))) {
+                brokenBarrels.add(barrel);
+            }
+        }
+
+        for (int i = 0; i < brokenBarrels.size; i++) {
+            engine.removeEntity(brokenBarrels.get(i));
+        }
     }
 
+    /** Applies a short impulse to an enemy away from the attack's position. */
     private void applyKnockback(Entity attackEntity, Entity enemy) {
         PositionComponent attackPos = pm.get(attackEntity);
         PositionComponent enemyPos = pm.get(enemy);
@@ -335,6 +404,7 @@ public class PlayerAttackSystem extends EntitySystem {
         knockback.active = true;
     }
 
+    /** Returns the entity collider translated from local to world coordinates. */
     private Rectangle getWorldBounds(Entity attackEntity) {
         PositionComponent position = pm.get(attackEntity);
         ColliderComponent collider = cm.get(attackEntity);

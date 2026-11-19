@@ -18,6 +18,7 @@ import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.config.GameConfig;
 import com.jdegnan.projectashley.factories.AreaTransitionFactory;
 import com.jdegnan.projectashley.factories.BrazierFactory;
+import com.jdegnan.projectashley.factories.BarrelFactory;
 import com.jdegnan.projectashley.factories.BulletFactory;
 import com.jdegnan.projectashley.factories.ChestFactory;
 import com.jdegnan.projectashley.factories.DoorFactory;
@@ -368,6 +369,8 @@ public class GameBootStrap {
             new DoorFactory(engine, assets));
         factoryRegistry.register("item",
             itemPickupFactory);
+        factoryRegistry.register("barrel",
+            new BarrelFactory(engine, assets));
         factoryRegistry.register("brazier",
             new BrazierFactory(assets));
         factoryRegistry.register("enemy",

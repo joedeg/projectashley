@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Matrix4;
 import com.jdegnan.projectashley.assets.AudioAssets;
 import com.jdegnan.projectashley.assets.ItemAssets;
@@ -229,6 +230,7 @@ public class LevelScreen extends BaseScreen {
         if (runtime != null) {
             runtime.getMapRenderer().renderGround(renderContext);
         }
+
 
         renderPipeline.render(renderContext);
 
