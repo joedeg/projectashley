@@ -12,6 +12,11 @@ import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.RenderComponent;
 import com.jdegnan.projectashley.components.SwordSwingComponent;
 
+/**
+ * Updates sword-swing visuals by following their owners and selecting animation frames.
+ *
+ * <p>Effects are removed when their frames are exhausted or their lifetime expires.</p>
+ */
 public class SwordSwingSystem extends EntitySystem {
     private final ComponentMapper<SwordSwingComponent> ssw =
         ComponentMapper.getFor(SwordSwingComponent.class);
@@ -30,6 +35,11 @@ public class SwordSwingSystem extends EntitySystem {
     private final Array<Entity> expiredEffects = new Array<>();
     private Engine engine;
 
+    /**
+     * Caches the engine and the family of active sword-swing effects.
+     *
+     * @param engine Ashley engine hosting this system
+     */
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
@@ -44,6 +54,11 @@ public class SwordSwingSystem extends EntitySystem {
     }
 
 
+    /**
+     * Follows each effect's owner, advances its frame, and removes expired effects.
+     *
+     * @param deltaTime elapsed time in seconds since the previous update
+     */
     @Override
     public void update(float deltaTime) {
         expiredEffects.clear();

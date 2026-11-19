@@ -34,6 +34,7 @@ import com.jdegnan.projectashley.save.SaveGameService;
 import com.jdegnan.projectashley.save.SaveGameSnapshotFactory;
 import com.jdegnan.projectashley.save.SaveGameRestorer;
 import com.jdegnan.projectashley.systems.AreaTransitionSystem;
+import com.jdegnan.projectashley.systems.DebugCollisionRenderSystem;
 import com.jdegnan.projectashley.ui.HealthHud;
 
 
@@ -236,6 +237,11 @@ public class LevelScreen extends BaseScreen {
 
         if (runtime != null) {
             runtime.getMapRenderer().renderAbovePlayer(renderContext);
+        }
+
+        DebugCollisionRenderSystem debugSystem = engine.getSystem(DebugCollisionRenderSystem.class);
+        if (debugSystem != null) {
+            debugSystem.render();
         }
 
 

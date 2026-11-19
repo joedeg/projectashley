@@ -11,7 +11,7 @@ public final class PlayerAssets {
             TextureAtlas.class);
 
     public static final AssetDescriptor<Texture> SWORD_SWING =
-        new AssetDescriptor<>("sprites/sword_swing.png",
+        new AssetDescriptor<>("sprites/wepons.png",
             Texture.class);
 
 

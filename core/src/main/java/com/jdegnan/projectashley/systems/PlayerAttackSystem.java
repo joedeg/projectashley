@@ -259,13 +259,6 @@ public class PlayerAttackSystem extends EntitySystem {
         ColliderComponent collider =
             engine.createComponent(ColliderComponent.class);
 
-        collider.localBounds.set(
-            0,
-            0,
-            ATTACK_SIZE,
-            ATTACK_SIZE
-        );
-
         AttackComponent attack =
             engine.createComponent(AttackComponent.class);
 
@@ -282,23 +275,52 @@ public class PlayerAttackSystem extends EntitySystem {
         float slashX = playerPos.x;
         float slashY = playerPos.y;
 
+        /*
+        We can adjust the sword swing positions in the cases below
+         */
         switch (playerFacing.direction){
             case UP:
-                slashX += 16f;
-                slashY += 32f;
+                collider.localBounds.set(
+                    0,
+                    0,
+                    ATTACK_SIZE,
+                    ATTACK_SIZE/2
+                );
+                slashX += 36f;
+                slashY += 8f;
                 break;
 
             case DOWN:
-                slashX += 48f;
+                collider.localBounds.set(
+                    0,
+                    0 + ATTACK_SIZE/2,
+                    ATTACK_SIZE,
+                    ATTACK_SIZE/2
+                );
+                slashX += 0f;
+                slashY += 24f;
                 break;
 
             case LEFT:
-                slashX += 16f;
+                collider.localBounds.set(
+                    0 + ATTACK_SIZE/2,
+                    0 ,
+                    ATTACK_SIZE/2,
+                    ATTACK_SIZE
+                );
+                slashX += 24f;
+                slashY += 32f;
                 break;
 
             case RIGHT:
-                slashX += 48f;
-                slashY += 32f;
+                collider.localBounds.set(
+                    0,
+                    0 ,
+                    ATTACK_SIZE/2,
+                    ATTACK_SIZE
+                );
+                slashX += 8f;
+                slashY += 0f;
                 break;
         }
 

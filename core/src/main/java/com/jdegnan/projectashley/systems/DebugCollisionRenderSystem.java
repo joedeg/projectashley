@@ -33,15 +33,15 @@ public class DebugCollisionRenderSystem
 
         this.camera = camera;
         renderer = new ShapeRenderer();
+        setProcessing(false);
     }
 
-    @Override
-    public void update(float deltaTime) {
+    public void render() {
         renderer.setProjectionMatrix(camera.combined);
         renderer.begin(
             ShapeRenderer.ShapeType.Line);
 
-        super.update(deltaTime);
+        super.update(0f);
 
         renderer.end();
     }
