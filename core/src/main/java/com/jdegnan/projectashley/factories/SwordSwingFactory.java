@@ -19,7 +19,7 @@ import com.jdegnan.projectashley.components.EffectLifetimeComponent;
  */
 public class SwordSwingFactory {
 
-    private static final float FRAME_DURATION = 0.05f;
+    private static final float FRAME_DURATION = 0.02f;
     private static final float EFFECT_WIDTH = 32f;
     private static final float EFFECT_HEIGHT = 48f;
 

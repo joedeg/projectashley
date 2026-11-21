@@ -433,6 +433,11 @@ public class GameBootStrap {
 
         // Gameplay, Logic & Interaction Systems
         engine.addSystem(new PlayerInputSystem());
+        engine.addSystem(new PlayerAttackSystem(
+            engine,
+            swordSwingFactory,
+            audioManager,
+            assets));
         engine.addSystem(new WeaponSystem(bulletFactory));
         engine.addSystem(new BulletHitSystem());
         engine.addSystem(new DamageSystem());
@@ -448,11 +453,6 @@ public class GameBootStrap {
         engine.addSystem(new SpatialPartitionSystem(spatialGrid));
 
         // Combat
-        engine.addSystem(new PlayerAttackSystem(
-            engine,
-            swordSwingFactory,
-            audioManager,
-            assets));
         engine.addSystem(new EnemyDeathEffectSystem());
         engine.addSystem(new EnemyDeathSystem(
             particleFactory,
@@ -489,7 +489,7 @@ public class GameBootStrap {
 
 
         // Rendering & Debug Systems
-        engine.addSystem(new DebugCollisionRenderSystem(camera));
+        //engine.addSystem(new DebugCollisionRenderSystem(camera));
         engine.addSystem(new RenderSubmissionSystem(renderQueue));
     }
 

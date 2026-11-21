@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.jdegnan.projectashley.Direction;
+import com.jdegnan.projectashley.components.AttackLockComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.FacingComponent;
 import com.jdegnan.projectashley.components.InteractionRequestComponent;
@@ -14,6 +15,9 @@ import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
 import com.jdegnan.projectashley.components.VelocityComponent;
 
 public class PlayerInputSystem extends IteratingSystem {
+
+    private final ComponentMapper<AttackLockComponent> alm =
+        ComponentMapper.getFor(AttackLockComponent.class);
 
     private final ComponentMapper<VelocityComponent> vm =
         ComponentMapper.getFor(VelocityComponent.class);
@@ -34,7 +38,8 @@ public class PlayerInputSystem extends IteratingSystem {
             VelocityComponent.class,
             InteractionRequestComponent.class,
             FacingComponent.class,
-            AttackRequestComponent.class
+            AttackRequestComponent.class,
+            AttackLockComponent.class
         ).get());
     }
 
@@ -45,6 +50,7 @@ public class PlayerInputSystem extends IteratingSystem {
         InteractionRequestComponent interactionComp = im.get(entity);
 
         FacingComponent facing = fm.get(entity);
+        AttackLockComponent attackLock = alm.get(entity);
 
         AttackRequestComponent attackComp = am.get(entity);
 
@@ -54,6 +60,14 @@ public class PlayerInputSystem extends IteratingSystem {
 
         vel.vx = 0;
         vel.vy = 0;
+
+        if (attackLock.remainingTime > 0f) {
+            attackLock.remainingTime = Math.max(
+                0f,
+                attackLock.remainingTime - deltaTime
+            );
+            return;
+        }
 
         float speed = 100;
 

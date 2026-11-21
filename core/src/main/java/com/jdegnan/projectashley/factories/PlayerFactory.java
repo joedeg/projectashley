@@ -9,6 +9,7 @@ import com.jdegnan.projectashley.assets.animations.AnimationState;
 import com.jdegnan.projectashley.components.AnimationStateComponent;
 import com.jdegnan.projectashley.components.AnimationSetComponent;
 import com.jdegnan.projectashley.components.AttackCooldownComponent;
+import com.jdegnan.projectashley.components.AttackLockComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.CollisionComponent;
@@ -70,6 +71,7 @@ public class PlayerFactory {
         entity.add(interaction);
 
         entity.add(new AttackRequestComponent());
+        entity.add(new AttackLockComponent());
 
         VelocityComponent vel = new VelocityComponent();
         entity.add(vel);

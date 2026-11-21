@@ -15,6 +15,7 @@ import com.jdegnan.projectashley.audio.AudioManager;
 import com.jdegnan.projectashley.components.AttackComponent;
 import com.jdegnan.projectashley.components.BarrelComponent;
 import com.jdegnan.projectashley.components.AttackCooldownComponent;
+import com.jdegnan.projectashley.components.AttackLockComponent;
 import com.jdegnan.projectashley.components.AttackRequestComponent;
 import com.jdegnan.projectashley.components.ColliderComponent;
 import com.jdegnan.projectashley.components.DamageFlashComponent;
@@ -25,6 +26,7 @@ import com.jdegnan.projectashley.components.KnockbackComponent;
 import com.jdegnan.projectashley.components.PositionComponent;
 import com.jdegnan.projectashley.components.TagComponents.EnemyComponent;
 import com.jdegnan.projectashley.components.TagComponents.PlayerComponent;
+import com.jdegnan.projectashley.components.VelocityComponent;
 import com.jdegnan.projectashley.factories.SwordSwingFactory;
 
 /**
@@ -36,7 +38,7 @@ import com.jdegnan.projectashley.factories.SwordSwingFactory;
  */
 public class PlayerAttackSystem extends EntitySystem {
 
-    private static final float ATTACK_LIFETIME = 0.20f;
+    private static final float ATTACK_LIFETIME = 0.10f;
     private static final float ATTACK_SIZE = 32f;
     private static final float ATTACK_OFFSET = 28f;
 
@@ -60,6 +62,9 @@ public class PlayerAttackSystem extends EntitySystem {
     private final ComponentMapper<KnockbackComponent> km =
         ComponentMapper.getFor(KnockbackComponent.class);
 
+    private final ComponentMapper<AttackLockComponent> alm =
+        ComponentMapper.getFor(AttackLockComponent.class);
+
     private final ComponentMapper<AttackCooldownComponent> acm =
         ComponentMapper.getFor(AttackCooldownComponent.class);
 
@@ -78,7 +83,7 @@ public class PlayerAttackSystem extends EntitySystem {
 
     private final PooledEngine engine;
 
-    private static final float ATTACK_COOLDOWN = 0.35f;
+    private static final float ATTACK_COOLDOWN = 0.15f;
 
     /**
      * Creates the attack system and supplies its entity and presentation services.
@@ -114,7 +119,8 @@ public class PlayerAttackSystem extends EntitySystem {
                     PositionComponent.class,
                     FacingComponent.class,
                     AttackRequestComponent.class,
-                    AttackCooldownComponent.class
+                    AttackCooldownComponent.class,
+                    AttackLockComponent.class
                 ).get());
 
         enemies =
@@ -213,7 +219,10 @@ public class PlayerAttackSystem extends EntitySystem {
                 continue;
             }
 
+
             createAttack(player);
+
+
             cooldown.remaningTime = ATTACK_COOLDOWN;
         }
     }
@@ -225,8 +234,16 @@ public class PlayerAttackSystem extends EntitySystem {
      */
     private void createAttack(Entity player) {
 
+
+
         PositionComponent playerPos = pm.get(player);
         FacingComponent playerFacing = fm.get(player);
+        AttackLockComponent attackLock = alm.get(player);
+        attackLock.remainingTime = ATTACK_LIFETIME;
+
+        VelocityComponent velocity = player.getComponent(VelocityComponent.class);
+        velocity.vx = 0f;
+        velocity.vy = 0f;
 
         float attackX = playerPos.x;
         float attackY = playerPos.y;
